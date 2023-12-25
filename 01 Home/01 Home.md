@@ -3,6 +3,7 @@ note_type: Dashboard
 aliases:
   - Home
 ---
+
 # Recent Files (Ctrl/Cmd + O)
 ## Today's Notes (last 25 hrs)
 ``` dataviewjs

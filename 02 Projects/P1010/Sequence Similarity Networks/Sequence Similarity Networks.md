@@ -9,6 +9,8 @@ created: 2023-12-25T11:52:51-06:00
 created_by: BMohr
 ---
 # Notebook
+## 2023-12-25-AlphaFold Variants
+ ![[2023-12-25-AlphaFold Variants]]
 ## 2023-12-25-GFP Issue
  ![[2023-12-25-GFP Issue]]
 ## 2023-12-25-ATP Recycling
