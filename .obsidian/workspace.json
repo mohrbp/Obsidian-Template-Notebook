@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "04 Resources/Notebook/Templater/20 New Project.md",
+                "file": "04 Resources/Notebook/Templater/08 Note Mover.md",
                 "mode": "source",
                 "source": false
               }
@@ -110,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "04 Resources/Notebook/Templater/20 New Project.md",
+                "file": "04 Resources/Notebook/Templater/08 Note Mover.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "04 Resources/Notebook/Templater/20 New Project.md",
+                "file": "04 Resources/Notebook/Templater/08 Note Mover.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "04 Resources/Notebook/Templater/20 New Project.md"
+                "file": "04 Resources/Notebook/Templater/08 Note Mover.md"
               }
             }
           }
@@ -174,31 +174,31 @@
   },
   "active": "f237cd3414183220",
   "lastOpenFiles": [
+    "04 Resources/Notebook/Templater/10 New Notebook Page.md",
+    "04 Resources/Notebook/Templater/30 New Experiment.md",
+    "04 Resources/Notebook/Templater/22 New Project with Board.md",
+    "04 Resources/Notebook/Templater/20 New Project.md",
+    "01 Home/01 Home.md",
+    "04 Resources/Notebook/Note Templates/41 PCode-Inbox Template.md",
+    "04 Resources/Notebook/Templater/40 New PCode.md",
+    "01 Home/!Inbox/!Inbox.md",
     "04 Resources/Notebook/Note Templates/22 Topic Template.md",
     "04 Resources/Notebook/Note Templates/21 Project Template.md",
-    "04 Resources/Notebook/Note Templates/41 PCode-Inbox Template.md",
     "04 Resources/Notebook/Note Templates/32 Notebook Card Template.md",
     "04 Resources/Notebook/Note Templates/31 Experiments-Kanban Template.md",
     "04 Resources/Notebook/Note Templates/11 Notebook Page Template.md",
-    "01 Home/!Inbox/!Inbox.md",
     "01 Home/!Inbox/2023-12-25-Echo Problems.md",
     "04 Resources/Notebook/ScriptsMD/annotateTask.js.md",
     "04 Resources/Notebook/Templater/06 Task Annotator.md",
     "04 Resources/Notebook/Templater/07 Task Assigner.md",
     "04 Resources/Notebook/Templater/08 Note Mover.md",
-    "04 Resources/Notebook/Templater/20 New Project.md",
-    "04 Resources/Notebook/Templater/10 New Notebook Page.md",
     "02 Projects/P1010/In Vitro Assay/Expression/Expression.md",
     "02 Projects/P1010/In Vitro Assay/Expression/notebook/2023-12-26-NewInbox.md",
     "02 Projects/P1010/In Vitro Assay/In Vitro Assay.md",
     "02 Projects/P1010/In Vitro Assay2023-12-26-WhatAWorld.md",
-    "01 Home/01 Home.md",
     "01 Home/!Inbox/2023-12-26-FutureFeatures.md",
     "02 Projects/P1010/P1010.md",
     "02 Projects/P1010/Sequence Similarity Networks/notebook/2023-12-25-AlphaFold Variants.md",
-    "02 Projects/P1010/In Vitro Assay/notebook/2023-12-25-NADH Spectroscopy.md",
-    "01 Home/!Inbox/2023-12-26-TuesdaysGone_ifimnotfast.md",
-    "02 Projects/P1010/In Vitro Assay/experiments/experiments.md",
-    "01 Home/!Inbox/2023-12-22-SomeNote.md"
+    "02 Projects/P1010/In Vitro Assay/notebook/2023-12-25-NADH Spectroscopy.md"
   ]
 }

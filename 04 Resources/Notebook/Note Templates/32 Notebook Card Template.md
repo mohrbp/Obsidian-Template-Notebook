@@ -14,7 +14,7 @@ await tp.file.move(newPath + "/" + today + "-" + fileName);
 await this.app.vault.createFolder(newPath + "/data");
 await this.app.vault.createFolder(newPath + "/analysis");
 
-let projectFile = folder.split("/experiments")[0] + "/" + folder.split("/").reverse()[1];
+let projectFile = folder.split("/Experiments")[0] + "/" + folder.split("/").reverse()[1];
 // Link to Target Project
 await tp.user.embedPageToTarget(tp, projectFile, (newPath + "/" + today + "-" + fileName), "# Notebook", today + "-" + fileName, linkToHeading = false); 
 

@@ -2,7 +2,7 @@
 const dv = this.app.plugins.plugins["dataview"].api;
 
 let recentFiles = dv.pages().file
-					.where(p => p.frontmatter.note_type == "atomic")
+					.where(p => p.frontmatter.note_type == "Atomic")
 					.where(p => String(p.frontmatter.PCode).indexOf("!Inbox")  !== -1)
 					.sort(p => p.mtime.diffNow(), "asc")
 					.limit(100);
@@ -36,7 +36,7 @@ let selected_FilePath = selected_Project.folder;
 target_Folder = selected_FilePath;
 
 let moved_Tfile = await tp.file.find_tfile(selected_File.name);
-await tp.file.move(selected_FilePath + "/notebook/" + selected_File.name, moved_Tfile);
+await tp.file.move(selected_FilePath + "/Notebook/" + selected_File.name, moved_Tfile);
 
 await tp.user.embedPageToTarget(tp, selected_Project.name, selected_File.name, "# Notebook", "selected_File.name", linkToHeading = false);
 

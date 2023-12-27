@@ -1,3 +1,4 @@
+
 ---
 note_type: Project Template
 PCode: []
@@ -6,9 +7,9 @@ template_type: All
 <%*
 // Template project setup 
 // Build Project Folder Structure
-await this.app.vault.createFolder(tp.file.folder(true) + "/notebook");
-await this.app.vault.createFolder(tp.file.folder(true) + "/experiments");
-await this.app.vault.createFolder(tp.file.folder(true) + "/meetings");
+await this.app.vault.createFolder(tp.file.folder(true) + "/Notebook");
+await this.app.vault.createFolder(tp.file.folder(true) + "/Experiments");
+await this.app.vault.createFolder(tp.file.folder(true) + "/Meetings");
 -%>
 # Notebook
 
@@ -19,7 +20,7 @@ await this.app.vault.createFolder(tp.file.folder(true) + "/meetings");
 ``` dataviewjs
 let modifiedNotes = dv.pages()
 	.where(p => String(dv.current().project).indexOf(p.project) != -1)
-	.where(p => p.note_type == "atomic" | p.note_type == "experiment")
+	.where(p => p.note_type == "Atomic" | p.note_type == "Experiment")
 	.where(p => DateTime.fromISO(p.file.mtime).diffNow().as("minutes") > -(3*1440))
 
 
@@ -49,7 +50,7 @@ dv.table(["Created","Last Modified", "Note","Project Notebook"],
 ``` dataviewjs
 let createdNotes = dv.pages()
 	.where(p => String(dv.current().project).indexOf(p.project) != -1)
-	.where(p => p.note_type == "atomic" | p.note_type == "experiment")
+	.where(p => p.note_type == "Atomic" | p.note_type == "Experiment")
 	.where(p => DateTime.fromISO(p.created).diffNow().as("minutes") > - (3*1440))
 
 

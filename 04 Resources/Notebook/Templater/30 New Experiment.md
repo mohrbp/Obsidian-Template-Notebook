@@ -42,13 +42,13 @@ let selected_Template = await tp.system.suggester(suggestions3,values3);
 
 // Write File Name and add Folder Path
 let fileName = await tp.system.prompt("Enter Experiment Name");
-let filePath = await target_Folder + "/experiments/" + fileName;
+let filePath = await target_Folder + "/Experiments/" + fileName;
 
 // Build new file
 let newFile = await tp.user.buildPageAndLink(tp, selected_Template, filePath, "/", false);
 
 // Link to Experiment Board
-let expPath = await target_Folder + "/experiments/experiments";
+let expPath = await target_Folder + "/Experiments/Experiments";
 let exp_TF = await tp.file.find_tfile(expPath);
 let expContent = await app.vault.read(exp_TF);
 let targetContent = "## To-Do";

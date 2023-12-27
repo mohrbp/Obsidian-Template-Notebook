@@ -83,7 +83,7 @@ let suggestions4 = selected_templates_EX.name;
 let values4 = selected_templates_EX.path;
 let selected_Template_EX = await tp.system.suggester(suggestions4,values4);
 
-let filePath_EX = await target_Folder + "/" + fileName + "/experiments/experiments";
+let filePath_EX = await target_Folder + "/" + fileName + "/Experiments/Experiments";
 
 let newFile_EX = await tp.user.buildPageAndLink(tp, selected_Template_EX, filePath_EX, "/", false); 
 
@@ -118,8 +118,8 @@ let selected_Template_EXNote = await tp.system.suggester(suggestions5,values5);
 let note_Content_EX = await app.vault.read(new_Tfile_EX);
 
 let kanbanSettings = '%% kanban:settings\n```\n{"kanban-plugin":"basic"}\n```\n%%';
-/// Add the target folder for subsequent experiments (if generated from the board)
-let kanbanSettingsUpdated = await'%% kanban:settings\n```\n{"kanban-plugin":"basic", "new-note-folder":"'+ target_Folder + '/' + fileName + '/experiments", "new-note-template":"' + selected_Template_EXNote + '"}\n```\n%%';
+/// Add the target folder for subsequent Experiments (if generated from the board)
+let kanbanSettingsUpdated = await'%% kanban:settings\n```\n{"kanban-plugin":"basic", "new-note-folder":"'+ target_Folder + '/' + fileName + '/Experiments", "new-note-template":"' + selected_Template_EXNote + '"}\n```\n%%';
 
 let targetNoteReplaced = note_Content_EX.replace(kanbanSettings, kanbanSettingsUpdated);
 await app.vault.modify(new_Tfile_EX, targetNoteReplaced);

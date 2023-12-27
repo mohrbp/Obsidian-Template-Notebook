@@ -62,7 +62,7 @@ await app.fileManager.processFrontMatter(
 		delete frontmatter['template_type'];
 
 		// Update Template Frontmatter
-		frontmatter["note_type"] = "atomic";
+		frontmatter["note_type"] = "Atomic";
 		frontmatter["PCode"] = String(selected_PCode);		(String(selected_PCode).indexOf("!Inbox")  <= 0) ? frontmatter["project"] = String(selected_Project.link) : frontmatter["project"] = null;
         // Apply Default frontmatter
 		frontmatter["people"] = null;
