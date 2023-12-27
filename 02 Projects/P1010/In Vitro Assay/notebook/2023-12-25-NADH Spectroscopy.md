@@ -12,4 +12,5 @@ incomplete_tasks: 0
 ---
 # Notes
 # Tasks
-- [ ] Run dilution curves in spec ⌛ 2023-12-29 
+- [ ] Testing ⌛ 2023-12-27 
+- [x] Run dilution curves in spec ⌛ 2023-12-29 

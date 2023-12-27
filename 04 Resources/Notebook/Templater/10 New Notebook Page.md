@@ -1,3 +1,4 @@
+
 <%*
 // Config
 const user = "BMohr";
@@ -59,9 +60,10 @@ await app.fileManager.processFrontMatter(
       frontmatter => {
 		// Remove Excess Template Frontmatter
 		delete frontmatter['template_type'];
+
 		// Update Template Frontmatter
 		frontmatter["note_type"] = "atomic";
-		(String(selected_PCode).indexOf("!Inbox")  <= 0) ? frontmatter["PCode"] = String(selected_PCode) : frontmatter["PCode"] = null;		(String(selected_PCode).indexOf("!Inbox")  <= 0) ? frontmatter["project"] = String(selected_Project.link) : frontmatter["project"] = null;
+		frontmatter["PCode"] = String(selected_PCode);		(String(selected_PCode).indexOf("!Inbox")  <= 0) ? frontmatter["project"] = String(selected_Project.link) : frontmatter["project"] = null;
         // Apply Default frontmatter
 		frontmatter["people"] = null;
         frontmatter["topics"] = null;
@@ -72,5 +74,4 @@ await app.fileManager.processFrontMatter(
         frontmatter["incomplete_tasks"] = 0;
         // Apply PCode/Template Specific frontmatter
       })
-
-%>
+_%>

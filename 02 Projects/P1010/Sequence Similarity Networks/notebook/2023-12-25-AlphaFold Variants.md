@@ -13,4 +13,4 @@ incomplete_tasks: 0
 # Notes
 # Tasks
 - [ ] test 📆 2024-04-21 
-- [ ] Screen Alphafold for mRuby variants ⌛ 2024-02-01 
+- [ ] Screen Alphafold for mRuby variants ⌛ 2024-02-01 ✅ 2023-12-26

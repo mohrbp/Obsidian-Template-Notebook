@@ -2,8 +2,9 @@
 const dv = this.app.plugins.plugins["dataview"].api;
 
 let recentFiles = dv.pages().file
-					.where(p => p.mtime.diffNow().as("minutes") > -1500)
-					.sort(p => p.mtime)
+					.where(p => p.frontmatter.note_type == "atomic")
+					.where(p => (p.mtime).diffNow().as("minutes") > -(3*1400))
+					.sort(p => p.mtime.diffNow(), "asc")
 					.limit(100);
 
 let suggestions1 = recentFiles.name;

@@ -9,6 +9,8 @@ created: 2023-12-25T11:52:35-06:00
 created_by: BMohr
 ---
 # Notebook
+## 2023-12-26-NewInbox
+ ![[2023-12-26-NewInbox]]
 
 
 # Documents

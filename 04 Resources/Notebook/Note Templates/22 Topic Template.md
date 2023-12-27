@@ -1,13 +1,22 @@
 ---
-note_type: Dashboard
-aliases:
-  - Home
+note_type: Project Template
+template_type: All
 ---
+<%*
+// Template project setup 
+// Build Project Folder Structure
+await this.app.vault.createFolder(tp.file.folder(true) + "/notebook");
+await this.app.vault.createFolder(tp.file.folder(true) + "/meetings");
+-%>
+# Notebook
 
-# Today's Notes (last 3 days)
-## Recently Modified Notes (limit 25 notes)
+
+
+## Recent Notes 
+### Recently Modified Notes (last 3 days)
 ``` dataviewjs
 let modifiedNotes = dv.pages()
+	.where(p => String(dv.current().topic).indexOf(p.topic) != -1)
 	.where(p => p.note_type == "atomic" | p.note_type == "experiment")
 	.where(p => DateTime.fromISO(p.file.mtime).diffNow().as("minutes") > -(3*1440))
 
@@ -23,7 +32,7 @@ for (let n of modifiedNotes) {
 let sortedNotes = modifiedNotes
 	.sort(p => DateTime.fromISO(p.file.mtime).diffNow(), "desc")
 
-dv.table(["Created","Last Modified", "Note","Project"],
+dv.table(["Created","Last Modified", "Note","Project Notebook"],
     sortedNotes
     .map(p => [
 		new DateTime(p.created).toFormat("ccc DD"),
@@ -34,9 +43,10 @@ dv.table(["Created","Last Modified", "Note","Project"],
     .limit(25)
 );
 ```
-## Recently Created Notes
+### Recently Created Notes
 ``` dataviewjs
 let createdNotes = dv.pages()
+	.where(p => String(dv.current().topic).indexOf(p.topic) != -1)
 	.where(p => p.note_type == "atomic" | p.note_type == "experiment")
 	.where(p => DateTime.fromISO(p.created).diffNow().as("minutes") > - (3*1440))
 
@@ -52,7 +62,7 @@ for (let n of createdNotes) {
 let sortedNotes = createdNotes
 	.sort(p => new DateTime(p.created).diffNow(), "desc")
 
-dv.table(["Created", "Time", "Note", "Project"],
+dv.table(["Created", "Time", "Note", "Project Notebook"],
     sortedNotes
     .map(p => [
 		new DateTime(p.created).toFormat("ccc DD"),
@@ -61,5 +71,14 @@ dv.table(["Created", "Time", "Note", "Project"],
         p.project,
     ])
 );
+```
+# Files 
+## Documents (non-markdown)
+```dataview
+TABLE file.ext as "File Extension", file.ctime as Created
+FROM "<%tp.file.path(true)%>"
+WHERE file !=this.file
+WHERE file.ext != "md"
+SORT file.ctime DESC
 ```
 

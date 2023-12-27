@@ -3,7 +3,9 @@ PCode:
   - "[[!Inbox]]"
 note_type: PCode
 ---
-# Tasks
+# Tasks - Inbox should just be those in the InBox
+# General tasks go up to Home!
+
 ``` dataviewjs
 const currentTime = dv.date(`today`)
 // console.log(`Current Time = ${currentTime}`);
@@ -115,10 +117,8 @@ dv.table(["Task","PCode", "Project", "Note", "Created"],
 		.limit(50)
     )
 ```
+## Recently Completed
+
 # Notes
-# Files
 
-## Data (.xlsx, .csv)
-
-## Presentations (.pdf, .pptx)
 

@@ -1,8 +1,6 @@
 ---
 note_type: Template
-PCode:
-  - "[[P1000]]"
-  - "[[P2000]]"
+PCode: []
 template_type: All
 ---
 # Notes
