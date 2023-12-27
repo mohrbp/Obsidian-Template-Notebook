@@ -6,7 +6,6 @@ template_type: All
 // Template project setup 
 // Build Project Folder Structure
 await this.app.vault.createFolder(tp.file.folder(true) + "/Notebook");
-await this.app.vault.createFolder(tp.file.folder(true) + "/Meetings");
 _%>
 # Notebook
 

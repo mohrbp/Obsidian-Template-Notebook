@@ -233,7 +233,7 @@ dv.table(["Created", "Time", "Note", "Project Notebook"],
 ### Documents (non-markdown)
 ```dataview
 TABLE file.ext as "File Extension", file.ctime as Created
-FROM "02 Projects/!Inbox/!Inbox.md"
+FROM "01 Home/!Inbox"
 WHERE file !=this.file
 WHERE file.ext != "md"
 SORT file.ctime DESC

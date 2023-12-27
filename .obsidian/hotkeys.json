@@ -1,0 +1,20 @@
+{
+  "file-explorer:new-file": [],
+  "templater-obsidian:04 Resources/Notebook/Templater/10 New Notebook Page.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "N"
+    }
+  ],
+  "templater-obsidian:04 Resources/Notebook/Templater/07 Task Assigner.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "T"
+    }
+  ],
+  "workspace:new-tab": []
+}
