@@ -7,7 +7,7 @@ note_type: PCode Template
 const currentTime = dv.date(`today`);
 // console.log(`Current Time = ${currentTime}`);
 const myTasks = dv.pages()
-					.where(p => p.note_type == "Atomic")
+					.where(p => p.note_type == "Atomic" || p.note_type == "Experiment")
 					.where(p => String(dv.current().PCode).indexOf(p.PCode) != -1)
 					.file.tasks
 						.where(t => t.checked === false);
@@ -123,7 +123,7 @@ dv.table(["Task","PCode", "Project", "Note", "Created"],
 
 // Recently completed tasks sorted by recent first to limit scope of search on completed tasks
 const myRecentCompleteTasks = dv.pages()
-					.where(p => p.note_type == "Atomic")
+					.where(p => p.note_type == "Atomic" || p.note_type == "Experiment")
 					.where(p => DateTime.fromISO(p.file.mtime).diffNow().as("minutes") > -(3*1440))
 					.where(p => String(dv.current().PCode).indexOf(p.PCode) != -1)
 					.file.tasks

@@ -1,4 +1,3 @@
-
 <%*
 // Config
 const user = "BMohr";

@@ -65,10 +65,6 @@ await app.fileManager.processFrontMatter(
 		frontmatter["project"] = String("[[" + new_Tfile.path + "|" + new_Tfile.basename + "]]");
 		/// If the selected Project isn't a PCode, add the parent project, otherwise add the PCode
 		(String(selected_PCode.link).indexOf(String(selected_Project.link))  <= 0) ? frontmatter["parent_project"] = String(selected_Project.link) : frontmatter["parent_project"] = String(selected_PCode.link);
-
-        // Apply Default frontmatter
-		frontmatter["people"] = null;
-        frontmatter["topics"] = null;
         frontmatter["created"] = tp.date.now("YYYY-MM-DDTHH:mm:ssZ");
         frontmatter["created_by"] = user; 
         // Apply PCode/Template Specific frontmatter

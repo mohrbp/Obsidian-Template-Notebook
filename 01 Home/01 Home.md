@@ -8,7 +8,7 @@ aliases:
 const currentTime = dv.date(`today`);
 // console.log(`Current Time = ${currentTime}`);
 const myTasks = dv.pages()
-					.where(p => p.note_type == "atomic")
+					.where(p => p.note_type == "Atomic" || p.note_type == "Experiment")
 					.file.tasks
 						.where(t => t.checked === false);
 							
@@ -123,7 +123,7 @@ dv.table(["Task","PCode", "Project", "Note", "Created"],
 
 // Recently completed tasks sorted by recent first to limit scope of search on completed tasks
 const myRecentCompleteTasks = dv.pages()
-					.where(p => p.note_type == "atomic")
+					.where(p => p.note_type == "Atomic" || p.note_type == "Experiment")
 					.where(p => DateTime.fromISO(p.file.mtime).diffNow().as("minutes") > -(3*1440))
 					.where(p => String(dv.current().PCode).indexOf(p.PCode) != -1)
 					.file.tasks
@@ -169,7 +169,7 @@ dv.table(["Task","PCode", "Project", "Note", "Created"],
 ### Recently Modified Notes (last 3 days)
 ``` dataviewjs
 let modifiedNotes = dv.pages()
-	.where(p => p.note_type == "atomic" | p.note_type == "experiment")
+	.where(p => p.note_type == "Atomic" | p.note_type == "Experiment")
 	.where(p => DateTime.fromISO(p.file.mtime).diffNow().as("minutes") > -(3*1440))
 
 
@@ -198,7 +198,7 @@ dv.table(["Created","Last Modified", "Note","Project Notebook"],
 ### Recently Created Notes
 ``` dataviewjs
 let createdNotes = dv.pages()
-	.where(p => p.note_type == "atomic" | p.note_type == "experiment")
+	.where(p => p.note_type == "Atomic" | p.note_type == "Experiment")
 	.where(p => DateTime.fromISO(p.created).diffNow().as("minutes") > - (3*1440))
 
 

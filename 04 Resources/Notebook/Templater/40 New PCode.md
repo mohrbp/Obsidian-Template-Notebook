@@ -31,8 +31,6 @@ await app.fileManager.processFrontMatter(
 		frontmatter["note_type"] = "PCode";
 		frontmatter["PCode"] = String("[[" + new_Tfile.path + "|" + new_Tfile.basename + "]]");
         // Apply Default frontmatter
-		frontmatter["people"] = null;
-        frontmatter["topics"] = null;
         frontmatter["created"] = tp.date.now("YYYY-MM-DDTHH:mm:ssZ");
         frontmatter["created_by"] = user; 
       })

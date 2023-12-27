@@ -13,19 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01 Home/01 Home.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "4a62d1433010f4d0",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "04 Resources/Notebook/Templater/10 New Notebook Page.md",
+                "file": "01 Home/!Inbox/!Inbox.md",
                 "mode": "source",
                 "source": false
               }
@@ -37,14 +25,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "04 Resources/Notebook/Templater/08 Note Mover.md",
+                "file": "01 Home/!Inbox/!Inbox.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -94,7 +81,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 247.50271224975586
+    "width": 296.50271224975586
   },
   "right": {
     "id": "2be075a8bad3ac91",
@@ -110,7 +97,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "04 Resources/Notebook/Templater/08 Note Mover.md",
+                "file": "01 Home/!Inbox/!Inbox.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +114,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "04 Resources/Notebook/Templater/08 Note Mover.md",
+                "file": "01 Home/!Inbox/!Inbox.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +137,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "04 Resources/Notebook/Templater/08 Note Mover.md"
+                "file": "01 Home/!Inbox/!Inbox.md"
               }
             }
           }
@@ -172,33 +159,43 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "f237cd3414183220",
+  "active": "d6fddcac47d228f1",
   "lastOpenFiles": [
-    "04 Resources/Notebook/Templater/10 New Notebook Page.md",
-    "04 Resources/Notebook/Templater/30 New Experiment.md",
-    "04 Resources/Notebook/Templater/22 New Project with Board.md",
-    "04 Resources/Notebook/Templater/20 New Project.md",
+    "01 Home/!Inbox/2023-12-26-TestNote.md",
     "01 Home/01 Home.md",
-    "04 Resources/Notebook/Note Templates/41 PCode-Inbox Template.md",
-    "04 Resources/Notebook/Templater/40 New PCode.md",
-    "01 Home/!Inbox/!Inbox.md",
+    "04 Resources/Notebook/Templater/07 Task Assigner.md",
     "04 Resources/Notebook/Note Templates/22 Topic Template.md",
+    "01 Home/!Inbox/!Inbox.md",
+    "04 Resources/Notebook/Templater/20 New Project.md",
+    "04 Resources/Notebook/Templater/21 New Topic.md",
+    "04 Resources/Notebook/Templater/22 New Project with Board.md",
+    "04 Resources/Notebook/Templater/40 New PCode.md",
+    "02 Projects/P1111/MachineLearning/MachineLearning.md",
+    "02 Projects/P1111/P1111.md",
+    "03 Areas/Computers/Computers.md",
+    "02 Projects/P1111/Turing/Turing.md",
+    "02 Projects/P1111/Turing/Experiments/2023-12-26-Break A Code/2023-12-26-Break A Code.md",
+    "02 Projects/P1111/MachineLearning/Experiments/Experiments.md",
+    "02 Projects/P1111/MachineLearning/Meetings",
+    "02 Projects/P1111/MachineLearning/Experiments",
+    "02 Projects/P1111/MachineLearning/Notebook",
+    "02 Projects/P1111/MachineLearning",
     "04 Resources/Notebook/Note Templates/21 Project Template.md",
+    "02 Projects/P8990/Humanities/Humanities.md",
+    "02 Projects/P8990/P8990.md",
+    "03 Areas/Proteomics/Proteomics.md",
+    "04 Resources/Notebook/Note Templates/41 PCode-Inbox Template.md",
     "04 Resources/Notebook/Note Templates/32 Notebook Card Template.md",
     "04 Resources/Notebook/Note Templates/31 Experiments-Kanban Template.md",
     "04 Resources/Notebook/Note Templates/11 Notebook Page Template.md",
-    "01 Home/!Inbox/2023-12-25-Echo Problems.md",
-    "04 Resources/Notebook/ScriptsMD/annotateTask.js.md",
-    "04 Resources/Notebook/Templater/06 Task Annotator.md",
-    "04 Resources/Notebook/Templater/07 Task Assigner.md",
-    "04 Resources/Notebook/Templater/08 Note Mover.md",
-    "02 Projects/P1010/In Vitro Assay/Expression/Expression.md",
-    "02 Projects/P1010/In Vitro Assay/Expression/notebook/2023-12-26-NewInbox.md",
-    "02 Projects/P1010/In Vitro Assay/In Vitro Assay.md",
-    "02 Projects/P1010/In Vitro Assay2023-12-26-WhatAWorld.md",
-    "01 Home/!Inbox/2023-12-26-FutureFeatures.md",
-    "02 Projects/P1010/P1010.md",
-    "02 Projects/P1010/Sequence Similarity Networks/notebook/2023-12-25-AlphaFold Variants.md",
-    "02 Projects/P1010/In Vitro Assay/notebook/2023-12-25-NADH Spectroscopy.md"
+    "03 Areas/Computers/Meetings",
+    "03 Areas/Computers/Notebook",
+    "03 Areas/Computers",
+    "02 Projects/P1111/Turing/Experiments/Experiments.md",
+    "04 Resources/Notebook/Templater/10 New Notebook Page.md",
+    "02 Projects/P1111/Turing/Experiments/2023-12-26-Break A Code/analysis",
+    "02 Projects/P1111/Turing/Experiments/2023-12-26-Break A Code/data",
+    "02 Projects/P1111/Turing/Experiments/2023-12-26-Break A Code",
+    "04 Resources/Notebook/Templater/30 New Experiment.md"
   ]
 }

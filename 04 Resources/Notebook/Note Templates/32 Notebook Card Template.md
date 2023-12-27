@@ -22,7 +22,6 @@ await tp.user.embedPageToTarget(tp, projectFile, (newPath + "/" + today + "-" + 
 let pcode = "[[" + folder.split("/").slice(1,2) + "|" + folder.split("/")[1] + "]]";
 let project = "[[" + projectFile + "|" + folder.split("/").reverse()[1] + "]]";
 _%>
-
 # Notes
 
 # Tasks

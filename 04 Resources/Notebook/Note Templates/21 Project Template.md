@@ -1,4 +1,3 @@
-
 ---
 note_type: Project Template
 PCode: []
@@ -10,7 +9,7 @@ template_type: All
 await this.app.vault.createFolder(tp.file.folder(true) + "/Notebook");
 await this.app.vault.createFolder(tp.file.folder(true) + "/Experiments");
 await this.app.vault.createFolder(tp.file.folder(true) + "/Meetings");
--%>
+_%>
 # Notebook
 
 
