@@ -1,10 +1,10 @@
 ---
-note_type: Experiment Template
+note_type: card template
 template_type: All
 ---
 <%*
-// Template Experiment setup 
-// Build Experiment Folder Structure
+// Template experiment setup 
+// Build experiment Folder Structure
 const user = "BMohr";
 let folder = tp.file.folder(true);
 let fileName = tp.file.title;
@@ -14,12 +14,12 @@ await tp.file.move(newPath + "/" + today + "-" + fileName);
 await this.app.vault.createFolder(newPath + "/data");
 await this.app.vault.createFolder(newPath + "/analysis");
 
-let projectFile = folder.split("/Experiments")[0] + "/" + folder.split("/").reverse()[1];
-// Link to Target Project
+let projectFile = folder.split("/experiments")[0] + "/" + folder.split("/").reverse()[1];
+// Link to Target project
 await tp.user.embedPageToTarget(tp, projectFile, (newPath + "/" + today + "-" + fileName), "# Notebook", today + "-" + fileName, linkToHeading = false); 
 
-// Update Experiment Frontmatter
-let pcode = "[[" + folder.split("/").slice(1,2) + "|" + folder.split("/")[1] + "]]";
+// Update experiment Frontmatter
+let projectCategory = "[[" + folder.split("/").slice(1,2) + "|" + folder.split("/")[1] + "]]";
 let project = "[[" + projectFile + "|" + folder.split("/").reverse()[1] + "]]";
 _%>
 # Notes
@@ -34,10 +34,10 @@ setTimeout(() => {
     // Add a new field
 		delete frontmatter['template_type'];
 		// Update Template Frontmatter
-		frontmatter["note_type"] = "Experiment";
-		frontmatter["PCode"] = pcode;
+		frontmatter["note_type"] = "card";
+		frontmatter["projectCategory"] = projectCategory;
 		frontmatter["project"] = project;
-		// Update Project Frontmatter
+		// Update project Frontmatter
         // Apply Default frontmatter
 		frontmatter["people"] = null;
         frontmatter["topics"] = null;

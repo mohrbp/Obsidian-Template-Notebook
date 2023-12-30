@@ -1,7 +1,7 @@
 ---
 kanban-plugin: basic
 template_type: All
-note_type: Kanban Template
+note_type: board template
 ---
 ## To-Do
 

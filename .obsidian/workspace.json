@@ -8,18 +8,43 @@
         "type": "tabs",
         "children": [
           {
-            "id": "d6fddcac47d228f1",
+            "id": "cb38d31af03a680d",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "04 Resources/Notebook/Note Templates/22 Topic Template.md",
+                "file": "04 Resources/Notebook/Templater/10 New Notebook Page.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "3b1371df97d7ff04",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "04 Resources/Notebook/Templater/10 New Notebook Page.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "25ed8eb8a0fcc5ff",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "04 Resources/Notebook/Templater/20 New Project.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -69,7 +94,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 423.50271224975586
+    "width": 200
   },
   "right": {
     "id": "2be075a8bad3ac91",
@@ -85,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "04 Resources/Notebook/Note Templates/22 Topic Template.md",
+                "file": "04 Resources/Notebook/Templater/20 New Project.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "04 Resources/Notebook/Note Templates/22 Topic Template.md",
+                "file": "04 Resources/Notebook/Templater/20 New Project.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "04 Resources/Notebook/Note Templates/22 Topic Template.md"
+                "file": "04 Resources/Notebook/Templater/20 New Project.md"
               }
             }
           }
@@ -133,8 +158,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -147,48 +171,48 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "d6fddcac47d228f1",
+  "active": "25ed8eb8a0fcc5ff",
   "lastOpenFiles": [
-    "04 Resources/Notebook/Note Templates/23 Experiments-Kanban Template.md",
-    "04 Resources/Notebook/Note Templates/22 Topic Template.md",
-    "04 Resources/Notebook/Note Templates/21 Project Template.md",
-    "04 Resources/Notebook/Note Templates/11 Notebook Page Template.md",
-    "04 Resources/Notebook/Note Templates/25 PCode-Inbox Template.md",
-    "04 Resources/Notebook/Note Templates/24 Notebook Card Template.md",
-    "02 Projects/I1000/Impressionist/Impressionist.md",
-    "02 Projects/I1000/I1000.md",
+    "04 Resources/Notebook/Templater/21 New Topic.md",
+    "04 Resources/Notebook/Templater/10 New Notebook Page.md",
+    "04 Resources/Notebook/Templater/20 New Project.md",
     "01 Home/!Inbox/!Inbox.md",
-    "04 Resources/Notebook/Templater/04 Inbox Mover.md",
-    "02 Projects/I1000/Impressionist/Notebook/attachments",
+    "01 Home/!Inbox/2023-12-29-test.md",
+    "01 Home/!Inbox/2023-12-29-Turning.md",
+    "02 Projects/P1235/Humming/notebook/2023-12-29-awefwe.md",
+    "02 projects/P1235/Humming/notebook/2023-12-29-awefwe.md",
+    "02 Projects/P1235/Humming/Hurting/notebook/2023-12-29-asdfasd.md",
+    "02 projects/P1235/Humming/Hurting/notebook/2023-12-29-asdfasd.md",
+    "02 Projects/P1235/Humming/notebook/2023-12-29-Testing.md",
+    "02 Projects/P1235/Humming/notebook/2023-12-29-test.md",
+    "02 Projects/P1235/Humming/Humming.md",
+    "02 Projects/P1235/Humming/Hurting/Hurting.md",
+    "02 projects/P1235/Humming/notebook/2023-12-29-test.md",
+    "02 projects/P1235/Humming/notebook/2023-12-29-Testing.md",
     "04 Resources/Notebook/Templater/22 New Project with Board.md",
-    "02 Projects/I1000/Impressionist/Experiments/Experiments.md",
-    "02 Projects/I1000/Impressionist/Meetings",
-    "02 Projects/I1000/Impressionist/Experiments",
-    "02 Projects/I1000/Impressionist/Notebook",
-    "02 Projects/I1000/Impressionist",
-    "04 Resources/Notebook/Templater/24 New PCode.md",
-    "02 Projects/I1000",
-    "02 Projects/I1000/Impressionist/Notebook/2023-12-26-HotKeys.md",
-    "01 Home/!Inbox/attachments",
+    "02 Projects/P1235/Humming/Hurting/experiments/experiments.md",
+    "02 projects/P1235/Humming/Hurting/experiments/experiments.md",
+    "02 Projects/P1235/Humming/Hurting/experiments",
+    "02 Projects/P1235/Humming/Hurting/notebook",
+    "02 projects/P1235/Humming/Hurting/experiments",
+    "02 projects/P1235/Humming/Hurting/notebook",
+    "02 Projects/P1235/Humming/Hurting",
+    "02 projects/P1235/Humming/Hurting/Hurting.md",
+    "02 projects/P1235/Humming/Hurting",
+    "02 Projects/P1235/P1235.md",
+    "04 Resources/Notebook/Note Templates/25 Project Category Template.md",
+    "02 Projects/P1111/Test/Test.md",
+    "02 Projects/P1111/P1111.md",
+    "02 Projects/P1235/Humming/experiments/experiments.md",
+    "02 projects/P1235/Humming/experiments/experiments.md",
+    "02 Projects/P1235/Humming/experiments",
+    "02 Projects/P1235/Humming/notebook",
+    "02 projects/P1235/Humming/experiments",
+    "02 projects/P1235/Humming/notebook",
     "02 Projects/I1000/Impressionist/Notebook/attachments/image-removebg-preview(3).png",
-    "01 Home/!Inbox/01 Home/!Inbox/2023-12-26-HotKeys",
-    "01 Home/!Inbox/01 Home/!Inbox",
-    "01 Home/!Inbox/01 Home",
     "01 Home/!Inbox/01 Home/!Inbox/2023-12-26-HotKeys/2023-12-26-HotKeys-20231226225601360.png",
-    "01 Home/!Inbox/2023-12-26-Attachments 1/2023-12-26-Attachments.md",
     "01 Home/!Inbox/2023-12-26-HotKeys/2023-12-26-HotKeys-20231226225504668.png",
     "01 Home/!Inbox/2023-12-26-Attachments 1/2023-12-26-Attachments/2023-12-26-Attachments-20231226225416105.png",
-    "01 Home/!Inbox/2023-12-26-Attachments 1/2023-12-26-Attachments/2023-12-26-Attachments-20231226225417217.png",
-    "04 Resources/Notebook/Templater/23 New Experiment.md",
-    "04 Resources/Notebook/Templater/21 New Topic.md",
-    "04 Resources/Notebook/Templater/03 Date Picker.md",
-    "04 Resources/Notebook/Notebook.md",
-    "01 Home/!Inbox/2023-12-26-TestNote.md",
-    "01 Home/01 Home.md",
-    "04 Resources/Notebook/Templater/05 Task Assigner.md",
-    "04 Resources/Notebook/Templater/20 New Project.md",
-    "02 Projects/P1111/MachineLearning/MachineLearning.md",
-    "02 Projects/P1111/P1111.md",
-    "03 Areas/Computers/Computers.md"
+    "01 Home/!Inbox/2023-12-26-Attachments 1/2023-12-26-Attachments/2023-12-26-Attachments-20231226225417217.png"
   ]
 }

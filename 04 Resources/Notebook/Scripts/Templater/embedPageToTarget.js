@@ -5,7 +5,7 @@ async function embedPageToTarget (tp, Target, Source, TargetHeading = null, NewH
 
   let sourceNote = await tp.file.find_tfile(Source);
 
-  (TargetHeading) ? targetHeading = TargetHeading : targetHeading = "# Notebook";
+  (TargetHeading) ? targetHeading = TargetHeading : targetHeading = "# notebook";
   let headerContent = targetHeading;
   if (NewHeading) headerContent = targetHeading + "\n## " + sourceNote.basename;
   let linkContent = "\n ![[" + sourceNote.basename + "]]";

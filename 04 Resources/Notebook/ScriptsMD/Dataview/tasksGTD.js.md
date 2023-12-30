@@ -1,21 +1,12 @@
----
-note_type: projectCategory
-projectCategory: "[[!Inbox|!Inbox]]"
-people: 
-topics: 
-created: 2023-12-26T21:39:16-06:00
-created_by: BMohr
----
-# Tasks 
-```dataviewjs
-    dv.view("04 Resources/notebook/Scripts/Dataview/tasksGTD", {"target": dv.current().note_type})
-```
-``` dataviewjs
+const { DateTime, Duration } = dv.luxon;
+let target = input.target;
+let query = dv.current()[target];
+
 const currentTime = dv.date(`today`);
 // console.log(`Current Time = ${currentTime}`);
 const myTasks = dv.pages()
-					.where(p => p.note_type == "Atomic" || p.note_type == "Experiment")
-					.where(p => String(dv.current().PCode).indexOf(p.PCode) != -1)
+			.where(p => String(p[target]).indexOf(query) != -1)
+			.where(p => p.note_type == "atomic" | p.note_type == "experiment")
 					.file.tasks
 						.where(t => t.checked === false);
 							
@@ -30,8 +21,8 @@ for (let task of myTasks) {
 	if (typeof (task.created) == "undefined") {
 	task.created = dv.page(task.path).file.frontmatter.created
 	};
-	if (dv.page(task.path).file.frontmatter.PCode) {
-	task.PCode = dv.page(task.path).file.frontmatter.PCode
+	if (dv.page(task.path).file.frontmatter.projectCategory) {
+	task.projectCategory = dv.page(task.path).file.frontmatter.projectCategory
 	};
 	if (dv.page(task.path).file.frontmatter.project) {
 	task.project = dv.page(task.path).file.frontmatter.project
@@ -70,17 +61,16 @@ for (let task of scheduledTasks) {
 
 let overdueTasks = scheduledTasks
 	    .where(t => t.dateSch < 0)
-	    
+dv.header(2, "Tasks where " + target + " = " + query);
 if(overdueTasks.length > 0 ){
-
 dv.header(3, "⚠️Overdue⚠️");
-// Task, PCode, Project, File, Note Type, Created, Scheduled/Due
-dv.table(["Task", "Scheduled","PCode", "Project", "Note", "Created"],
+// Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
+dv.table(["Task", "Scheduled","projectCategory", "Project", "Note", "Created"],
     overdueTasks
 	    .map(t => [
 		t.visual,
 		t.timingSch.toFormat("DD"),		
-		t.PCode,
+		t.projectCategory,
 		t.project,
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
@@ -91,14 +81,14 @@ dv.table(["Task", "Scheduled","PCode", "Project", "Note", "Created"],
 
     
 dv.header(3, "Up Next");
-// Task, PCode, Project, File, Note Type, Created, Scheduled/Due
-dv.table(["Task", "Scheduled","PCode", "Project", "Note", "Created"],
+// Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
+dv.table(["Task", "Scheduled","projectCategory", "Project", "Note", "Created"],
     scheduledTasks
 		.where(t => t.dateSch >= 0 && t.dateSch < (1440 * 14))
 	    .map(t => [
 		t.visual,
 		t.timingSch.toFormat("DD"),		
-		t.PCode,
+		t.projectCategory,
 		t.project,
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
@@ -115,11 +105,11 @@ for (let task of unscheduledTasks) {
 };
 							
 dv.header(3, "Unscheduled (Limit 50)");
-// Task, PCode, Project, File, Note Type, Created, Scheduled/Due
-dv.table(["Task","PCode", "Project", "Note", "Created"],
+// Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
+dv.table(["Task","projectCategory", "Project", "Note", "Created"],
     unscheduledTasks.map(t => [
 		t.visual,
-		t.PCode,
+		t.projectCategory,
 		t.project,
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
@@ -130,9 +120,9 @@ dv.table(["Task","PCode", "Project", "Note", "Created"],
 
 // Recently completed tasks sorted by recent first to limit scope of search on completed tasks
 const myRecentCompleteTasks = dv.pages()
-					.where(p => p.note_type == "Atomic")
+					.where(p => String(p[target]).indexOf(query) != -1)
+					.where(p => p.note_type == "atomic" | p.note_type == "experiment")
 					.where(p => DateTime.fromISO(p.file.mtime).diffNow().as("minutes") > -(3*1440))
-					.where(p => String(dv.current().PCode).indexOf(p.PCode) != -1)
 					.file.tasks
 						.where(t => t.checked === true);
 
@@ -141,8 +131,8 @@ for (let task of myRecentCompleteTasks) {
 	if (typeof (task.created) == "undefined") {
 	task.created = dv.page(task.path).file.frontmatter.created
 	};
-	if (dv.page(task.path).file.frontmatter.PCode) {
-	task.PCode = dv.page(task.path).file.frontmatter.PCode
+	if (dv.page(task.path).file.frontmatter.projectCategory) {
+	task.projectCategory = dv.page(task.path).file.frontmatter.projectCategory
 	};
 	if (dv.page(task.path).file.frontmatter.project) {
 	task.project = dv.page(task.path).file.frontmatter.project
@@ -157,11 +147,11 @@ for (let task of myRecentCompleteTasks) {
 };
 
 dv.header(3, "Recently Completed (Limit 25)");
-// Task, PCode, Project, File, Note Type, Created, Scheduled/Due
-dv.table(["Task","PCode", "Project", "Note", "Created"],
+// Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
+dv.table(["Task","projectCategory", "Project", "Note", "Created"],
     myRecentCompleteTasks.map(t => [
 		t.visual,
-		t.PCode,
+		t.projectCategory,
 		t.project,
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
@@ -170,81 +160,3 @@ dv.table(["Task","PCode", "Project", "Note", "Created"],
 		.limit(25)
     )
 							
-```
-
-^8b579b
-
-# Notes 
-
-### Test
-
-`$=dv.span(await dv.io.load("04 Resources/Notebook/Scripts/recentlyCreated.js"))
-### Recently Modified Notes (last 3 days)
-``` dataviewjs
-let modifiedNotes = dv.pages()
-	.where(p => String(dv.current().PCode).indexOf(p.PCode) != -1)
-	.where(p => p.note_type == "Atomic" | p.note_type == "Experiment")
-	.where(p => DateTime.fromISO(p.file.mtime).diffNow().as("minutes") > -(3*1440))
-
-
-// Format file based on file frontmatter and other info
-for (let n of modifiedNotes) {
-	if (n.file.mtime) {
-	n.modifiedTime = Math.abs(Math.round(n.file.mtime.diffNow().as("hours")))
-	n.modified = n.modifiedTime + " hours ago"
-	};
-};
-
-let sortedNotes = modifiedNotes
-	.sort(p => DateTime.fromISO(p.file.mtime).diffNow(), "desc")
-
-dv.table(["Created","Last Modified", "Note","Project Notebook"],
-    sortedNotes
-    .map(p => [
-		new DateTime(p.created).toFormat("ccc DD"),
-		p.modified,
-		p.file.link,
-        p.project,
-    ])
-    .limit(25)
-);
-```
-### Recently Created Notes
-``` dataviewjs
-let createdNotes = dv.pages()
-	.where(p => String(dv.current().PCode).indexOf(p.PCode) != -1)
-	.where(p => p.note_type == "Atomic" | p.note_type == "Experiment")
-	.where(p => DateTime.fromISO(p.created).diffNow().as("minutes") > - (3*1440))
-
-
-// Format file based on file frontmatter and other info
-for (let n of createdNotes) {
-	if (n.created) {
-	n.createdTime = Math.abs(Math.round(n.created.diffNow().as("minutes")))
-	n.createdAgo = n.createdTime + " hours ago"
-	};
-};
-
-let sortedNotes = createdNotes
-	.sort(p => new DateTime(p.created).diffNow(), "desc")
-
-dv.table(["Created", "Time", "Note", "Project Notebook"],
-    sortedNotes
-    .map(p => [
-		new DateTime(p.created).toFormat("ccc DD"),
-		new DateTime(p.created).toFormat("t"),
-		p.file.link,
-        p.project,
-    ])
-);
-```
-# Files 
-### Documents (non-markdown)
-```dataview
-TABLE file.ext as "File Extension", file.ctime as Created
-FROM "01 Home/!Inbox"
-WHERE file !=this.file
-WHERE file.ext != "md"
-SORT file.ctime DESC
-```
-

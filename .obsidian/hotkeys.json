@@ -1,13 +1,5 @@
 {
   "file-explorer:new-file": [],
-  "templater-obsidian:04 Resources/Notebook/Templater/10 New Notebook Page.md": [
-    {
-      "modifiers": [
-        "Mod"
-      ],
-      "key": "N"
-    }
-  ],
   "templater-obsidian:04 Resources/Notebook/Templater/07 Task Assigner.md": [
     {
       "modifiers": [
@@ -16,5 +8,21 @@
       "key": "T"
     }
   ],
-  "workspace:new-tab": []
+  "workspace:new-tab": [],
+  "templater-obsidian:04 Resources/Notebook/Templater/10 New Notebook Page.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "N"
+    }
+  ],
+  "templater-obsidian:04 Resources/Notebook/Templater/05 Task Assigner.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "T"
+    }
+  ]
 }
