@@ -19,7 +19,8 @@ let projectFile = folder.split("/experiments")[0] + "/" + folder.split("/").reve
 await tp.user.embedPageToTarget(tp, projectFile, (newPath + "/" + today + "-" + fileName), "# Notebook", today + "-" + fileName, linkToHeading = false); 
 
 // Update experiment Frontmatter
-let projectCategory = "[[" + folder.split("/").slice(1,2) + "|" + folder.split("/")[1] + "]]";
+let projectCategory = folder.split("/")[0] + "/" + folder.split("/")[1] + "/" + folder.split("/")[1];
+let projectCategory_TFile = await tp.file.find_tfile(projectCategory)
 let project = "[[" + projectFile + "|" + folder.split("/").reverse()[1] + "]]";
 _%>
 # Notes
@@ -35,7 +36,7 @@ setTimeout(() => {
 		delete frontmatter['template_type'];
 		// Update Template Frontmatter
 		frontmatter["note_type"] = "card";
-		frontmatter["projectCategory"] = projectCategory;
+		frontmatter["projectCategory"] = "[[" + projectCategory_TFile.path + "|" + projectCategory_TFile.basename + "]]";
 		frontmatter["project"] = project;
 		// Update project Frontmatter
         // Apply Default frontmatter

@@ -33,7 +33,7 @@ target_Folder = selected_FilePath;
 
 // Find and Select Templates
 let selected_templates = dv.pages()
-	.where(p => p.note_type == "kanban card template")
+	.where(p => p.note_type == "card template")
 	.where(p => String(selected_projectCategory.link).indexOf(p.projectCategory) !== -1 || p.template_type == "All")
 	.file.sort(n => n.name);
 let suggestions3 = selected_templates.name;
@@ -57,4 +57,4 @@ let replacementContent = await "## To-Do\n- [ ] [[" + tp.date.now("YYYY-MM-DD") 
 let targetNoteReplaced = expContent.replace(targetContent, replacementContent);
 await app.vault.modify(exp_TF, targetNoteReplaced);
 
-%>
+_%>

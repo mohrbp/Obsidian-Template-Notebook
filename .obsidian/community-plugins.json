@@ -5,5 +5,7 @@
   "templater-obsidian",
   "folder-notes",
   "obsidian-style-settings",
-  "attachment-management"
+  "attachment-management",
+  "buttons",
+  "metaedit"
 ]

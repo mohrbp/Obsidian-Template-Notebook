@@ -2,7 +2,7 @@
 const dv = this.app.plugins.plugins["dataview"].api;
 
 let recentFiles = dv.pages().file
-					.where(p => p.frontmatter.note_type == "atomic")
+					.where(p => p.frontmatter.note_type == "page")
 					.where(p => String(p.frontmatter.projectCategory).indexOf("!Inbox")  !== -1)
 					.sort(p => p.mtime.diffNow(), "asc")
 					.limit(100);

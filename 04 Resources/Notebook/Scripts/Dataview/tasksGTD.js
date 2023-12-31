@@ -2,11 +2,16 @@ const { DateTime, Duration } = dv.luxon;
 let target = input.target;
 let query = dv.current()[target];
 
+// Assign variables for recency 
+let recentLow = 3;
+let recentMid = 7;
+let recentHigh = 14;
+
 const currentTime = dv.date(`today`);
 // console.log(`Current Time = ${currentTime}`);
 const myTasks = dv.pages()
 			.where(p => String(p[target]).indexOf(query) != -1)
-			.where(p => p.note_type == "page" | p.note_type == "experiment")
+			.where(p => p.note_type == "page" | p.note_type == "card")
 					.file.tasks
 						.where(t => t.checked === false);
 							
@@ -48,11 +53,11 @@ for (let task of scheduledTasks) {
 	task.matchSch = task.text.match(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/)[2];
 	task.timingSch = DateTime.fromISO(task.matchSch);
 	task.dateSch = Math.round(task.timingSch.diff(currentTime, "days").as("minutes"));
-	if (task.dateSch < (1400 * 3)){
+	if (task.dateSch < (1400 * recentLow)){
 	task.visual = red;
-	} else if ((task.dateSch < (1400 * 7)) && (task.dateSch > (1400 * 3))) {
+	} else if ((task.dateSch < (1400 * recentMid)) && (task.dateSch > (1400 * recentLow))) {
 	task.visual = orange;
-	} else if (task.dateSch > (1400 * 7)) {
+	} else if (task.dateSch > (1400 * recentMid)) {
 	task.visual = green;
 	};
 	task.visual += task.text.replace(/[📅📆⌛⏳].*$/g, "");
@@ -61,7 +66,7 @@ for (let task of scheduledTasks) {
 
 let overdueTasks = scheduledTasks
 	    .where(t => t.dateSch < 0)
-dv.header(2, "Tasks where " + target + " = " + query);
+dv.el("b", "Tasks within " + recentHigh + " days, where " + target + " = " + query);
 if(overdueTasks.length > 0 ){
 dv.header(3, "⚠️Overdue⚠️");
 // Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
@@ -84,7 +89,7 @@ dv.header(3, "Up Next");
 // Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
 dv.table(["Task", "Scheduled","Project Category", "Project", "Note", "Created"],
     scheduledTasks
-		.where(t => t.dateSch >= 0 && t.dateSch < (1440 * 14))
+		.where(t => t.dateSch >= 0 && t.dateSch < (1440 * recentHigh))
 	    .map(t => [
 		t.visual,
 		t.timingSch.toFormat("DD"),		
@@ -121,8 +126,8 @@ dv.table(["Task","Project Category", "Project", "Note", "Created"],
 // Recently completed tasks sorted by recent first to limit scope of search on completed tasks
 const myRecentCompleteTasks = dv.pages()
 					.where(p => String(p[target]).indexOf(query) != -1)
-					.where(p => p.note_type == "page" | p.note_type == "experiment")
-					.where(p => DateTime.fromISO(p.file.mtime).diffNow().as("minutes") > -(3*1440))
+					.where(p => p.note_type == "page" | p.note_type == "card")
+					.where(p => DateTime.fromISO(p.file.mtime).diffNow().as("minutes") > - (recentLow * 1440))
 					.file.tasks
 						.where(t => t.checked === true);
 

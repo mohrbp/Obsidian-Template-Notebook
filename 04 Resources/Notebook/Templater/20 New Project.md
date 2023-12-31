@@ -69,4 +69,4 @@ await app.fileManager.processFrontMatter(
         frontmatter["created_by"] = user; 
         // Apply projectCategory/Template Specific frontmatter
       })
-%>
+_%>

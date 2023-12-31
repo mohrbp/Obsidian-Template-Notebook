@@ -3,7 +3,7 @@
 const user = "BMohr";
 // Initialize dataview plugin variable
 const dv = this.app.plugins.plugins["dataview"].api;
-const target_Folder = "02 projects";
+const target_Folder = "02 Projects";
 
 // Find and Select Templates
 let selected_templates = dv.pages()
@@ -35,4 +35,4 @@ await app.fileManager.processFrontMatter(
         frontmatter["created_by"] = user; 
       })
 
-%>
+_%>

@@ -2,7 +2,7 @@
 const dv = this.app.plugins.plugins["dataview"].api;
 
 let recentFiles = dv.pages().file
-					.where(p => p.frontmatter.note_type == "atomic" || p.frontmatter.note_type == "experiment")
+					.where(p => p.frontmatter.note_type == "page" || p.frontmatter.note_type == "card")
 					.where(p => (p.mtime).diffNow().as("minutes") > -(3*1400))
 					.sort(p => p.mtime.diffNow(), "asc")
 					.limit(100);

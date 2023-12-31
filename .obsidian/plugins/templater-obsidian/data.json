@@ -23,7 +23,10 @@
   "syntax_highlighting_mobile": false,
   "enabled_templates_hotkeys": [
     "04 Resources/Notebook/Templater/05 Task Assigner.md",
-    "04 Resources/Notebook/Templater/10 New Notebook Page.md"
+    "04 Resources/Notebook/Templater/10 New Notebook Page.md",
+    "04 Resources/Notebook/Templater/22 New Project with Board.md",
+    "04 Resources/Notebook/Templater/23 New Card.md",
+    "04 Resources/Notebook/Templater/24 New Project Category.md"
   ],
   "startup_templates": [
     ""

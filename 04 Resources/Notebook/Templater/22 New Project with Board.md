@@ -124,6 +124,6 @@ let kanbanSettingsUpdated = await'%% kanban:settings\n```\n{"kanban-plugin":"bas
 let targetNoteReplaced = note_Content_EX.replace(kanbanSettings, kanbanSettingsUpdated);
 await app.vault.modify(new_Tfile_EX, targetNoteReplaced);
 
-%>
+_%>
 
 

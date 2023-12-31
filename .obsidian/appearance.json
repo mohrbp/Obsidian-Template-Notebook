@@ -1,6 +1,10 @@
 {
   "accentColor": "",
-  "baseFontSize": 10,
-  "cssTheme": "Things",
-  "theme": "obsidian"
+  "baseFontSize": 11,
+  "cssTheme": "",
+  "theme": "obsidian",
+  "enabledCssSnippets": [
+    "clean_embeds",
+    "embed-adjustments"
+  ]
 }

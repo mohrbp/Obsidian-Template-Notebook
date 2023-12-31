@@ -11,6 +11,20 @@ completed_tasks: 0
 incomplete_tasks: 0
 ---
 # Notes
+`$=dv.current()['total_tasks']`
+
+### Table of Buttons for Hotkeys
+https://forum.obsidian.md/t/using-metaedit-buttons-templater-nldates-and-dataview-together/35911
+https://www.reddit.com/r/ObsidianMD/comments/rre6wk/button_to_add_or_substract_from_yaml_or_dataview/
+
+```dataviewjs
+    dv.view("04 Resources/Notebook/Buttons/increment", {"target": "total_tasks"})
+```
+
+| ![New Task\|clean no-title no-link](04%20Resources/Notebook/Buttons/New%20Task.md) | ![New Card\|clean no-title no-link](04%20Resources/Notebook/Buttons/New%20Card.md) | ![New Page\|clean no-title no-link](04%20Resources/Notebook/Buttons/New%20Page.md) |
+| ---- | ---- | ---- |
+### Templater commands in templates
+https://forum.obsidian.md/t/buttons-with-templater-code-in-templater-template/70068
 
 ### Task color formatting
 
@@ -27,6 +41,7 @@ dv.executeJs(await dv.io.load("04 Resources/Notebook/Scripts/recentlyCreated.js"
 
 Or use dv.view to load in arguments, which can include front matter
 - Do you have an example of this?
+- ![](01%20Home/!Inbox/attachments/Screenshot%202023-12-29%20at%2016-47-06%20r_ObsidianMD%20-%20Using%20dataview.js%20how%20can%20you%20get%20myArg%20from%20a%20dv.view('my_script'%20{myArg%201}).png)
 
 
 ### Topics
