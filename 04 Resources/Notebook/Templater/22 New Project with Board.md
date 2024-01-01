@@ -73,7 +73,7 @@ await app.fileManager.processFrontMatter(
         // Apply projectCategory/Template Specific frontmatter
       })
 
-// Build new experiment file
+// Build Linked Experiment Kanban Board
 // Find and Select Templates
 let selected_templates_EX = dv.pages()
 	.where(p => p.note_type == "board template")
@@ -95,7 +95,7 @@ await app.fileManager.processFrontMatter(
 		// Remove Excess Template Frontmatter
 		delete frontmatter['template_type'];
 		// Update Template Frontmatter
-		frontmatter["note_type"] = "kanban";
+		frontmatter["note_type"] = "board";
 		// Update project Frontmatter
 		frontmatter["projectCategory"] = String(selected_projectCategory.link);	
 		frontmatter["project"] = "[[" + new_Tfile.path + "|" + new_Tfile.basename + "]]";
@@ -105,7 +105,7 @@ await app.fileManager.processFrontMatter(
         // Apply projectCategory/Template Specific frontmatter
       })
 // Update Kanban Settings
-/// Get the Template for experimental Notes
+/// Get the Template for Experimental Cards
 let selected_templates_EXNote = dv.pages()
 	.where(p => p.note_type == "card template")
 	.where(p => String(selected_projectCategory.link).indexOf(p.projectCategory) !== -1 || p.template_type == "All")

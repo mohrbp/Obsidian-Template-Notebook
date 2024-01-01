@@ -49,7 +49,7 @@ let newFile = await tp.user.buildPageAndLink(tp, selected_Template, filePath, "/
 
 // Link to Target project
 if(String(selected_projectCategory).indexOf("!Inbox")  <= 0) { 
-await tp.user.embedPageToTarget(tp, selected_project.name, newFile, "# Notebook", "newFile", linkToHeading = false);
+await tp.user.embedPageToTarget(tp, selected_project.name, newFile, "# Notebook", "## ", linkToHeading = false);
 }
 
 // Apply Frontmatter to new file

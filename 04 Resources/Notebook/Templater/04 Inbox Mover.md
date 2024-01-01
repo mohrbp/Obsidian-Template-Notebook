@@ -38,14 +38,15 @@ target_Folder = selected_FilePath;
 let moved_Tfile = await tp.file.find_tfile(selected_File.name);
 await tp.file.move(selected_FilePath + "/notebook/" + selected_File.name, moved_Tfile);
 
-await tp.user.embedPageToTarget(tp, selected_project.name, selected_File.name, "# Notebook", "selected_File.name", linkToHeading = false);
+await tp.user.embedPageToTarget(tp, selected_project.name, selected_File.name, "# Notebook", "## ", linkToHeading = false);
 
 await app.fileManager.processFrontMatter(
       moved_Tfile,
       frontmatter => {
 		// Remove Excess Template Frontmatter
 		// Update Template Frontmatter
-		frontmatter["projectCategory"] = String(selected_projectCategory.link);		frontmatter["project"] = String(selected_project.link)
+		frontmatter["projectCategory"] = String(selected_projectCategory.link);		
+		frontmatter["project"] = String(selected_project.link)
         // Apply projectCategory/Template Specific frontmatter
       });
 _%>

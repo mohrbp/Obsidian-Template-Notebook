@@ -16,7 +16,7 @@ await this.app.vault.createFolder(newPath + "/analysis");
 
 let projectFile = folder.split("/experiments")[0] + "/" + folder.split("/").reverse()[1];
 // Link to Target project
-await tp.user.embedPageToTarget(tp, projectFile, (newPath + "/" + today + "-" + fileName), "# Notebook", today + "-" + fileName, linkToHeading = false); 
+await tp.user.embedPageToTarget(tp, projectFile, (newPath + "/" + today + "-" + fileName), "# Notebook", "## ", linkToHeading = false); 
 
 // Update experiment Frontmatter
 let projectCategory = folder.split("/")[0] + "/" + folder.split("/")[1] + "/" + folder.split("/")[1];
