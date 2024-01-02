@@ -5,36 +5,13 @@ const user = "BMohr";
 const dv = this.app.plugins.plugins["dataview"].api;
 
 // Select a projectCategory
-/// Filter all files that are projectCategoryd - excluding the inbox
-let all_projectCategorys = dv.pages()
-	.where(p => p.note_type == "projectCategory")
-	.where(p => String(p.projectCategory).indexOf("!Inbox")  <= 0)
-	.file.sort(n => n.name);
-let suggestions1 = all_projectCategorys.name;
-let values1 = all_projectCategorys;
-let selected_projectCategory = await tp.system.suggester(suggestions1,values1);
-
-// If you pick a project instead of your Inbox
-let target_Folder;
-let selected_project;
-/// Choose from all projects that contain that projectCategory
-/// Does not only include projects from that folder
-/// Match is fuzzy
-let selected_projects = dv.pages()
-	.where(p => p.note_type == "project")
-	.where(p => String(selected_projectCategory.link).indexOf(p.projectCategory) !== -1)
-	.file.sort(n => n.name);
-let suggestions2 = selected_projects.name;
-let values2 = selected_projects;
-selected_project = await tp.system.suggester(suggestions2,values2);
-/// Trimming the filepath from the Folder Note and finding the notebook for this project
-let selected_FilePath = selected_project.folder;
-target_Folder = selected_FilePath;
+selected_project = await tp.user.selectProject(tp, dv, true);
+let target_Folder = selected_project.folder;
 
 // Find and Select Templates
 let selected_templates = dv.pages()
 	.where(p => p.note_type == "card template")
-	.where(p => String(selected_projectCategory.link).indexOf(p.projectCategory) !== -1 || p.template_type == "All")
+	.where(p => p.template_type == "All")
 	.file.sort(n => n.name);
 let suggestions3 = selected_templates.name;
 let values3 = selected_templates.path;
@@ -58,3 +35,4 @@ let targetNoteReplaced = expContent.replace(targetContent, replacementContent);
 await app.vault.modify(exp_TF, targetNoteReplaced);
 
 _%>
+

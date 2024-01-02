@@ -21,7 +21,7 @@ await tp.user.embedPageToTarget(tp, projectFile, (newPath + "/" + today + "-" + 
 // Update experiment Frontmatter
 let projectCategory = folder.split("/")[0] + "/" + folder.split("/")[1] + "/" + folder.split("/")[1];
 let projectCategory_TFile = await tp.file.find_tfile(projectCategory)
-let project = "[[" + projectFile + "|" + folder.split("/").reverse()[1] + "]]";
+let project = "[[" + projectFile + ".md|" + folder.split("/").reverse()[1] + "]]";
 _%>
 # Notes
 

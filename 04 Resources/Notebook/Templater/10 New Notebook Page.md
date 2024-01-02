@@ -3,38 +3,19 @@
 const user = "BMohr";
 // Initialize dataview plugin variable
 const dv = this.app.plugins.plugins["dataview"].api;
-// Select a project
-/// Filter all files that are projectCategoryd
-let all_projects = dv.pages().where(p => p.note_type == "projectCategory").file.sort(n => n.name);
-let suggestions1 = all_projects.name;
-let values1 = all_projects.link;
-let selected_projectCategory = await tp.system.suggester(suggestions1,values1);
-
-// If you pick a project instead of your Inbox
-let target_Folder;
-let selected_project;
-if (String(selected_projectCategory).indexOf("!Inbox") <= 0) {
-/// Choose from all projects that contain that projectCategory
-/// Does not only include projects from that folder
-/// Match is fuzzy
-let selected_projects = dv.pages()
-	.where(p => p.note_type == "project")
-//	.where(p => String(selected_projectCategory).indexOf(p.projectCategory) !== -1)
-	.file.sort(n => n.name);
-let suggestions2 = selected_projects.name;
-let values2 = selected_projects;
-selected_project = await tp.system.suggester(suggestions2,values2);
-/// Trimming the filepath from the Folder Note and finding the notebook for this project
-let selected_FilePath = selected_project.folder + "/notebook";
-target_Folder = selected_FilePath;
-} else {
-target_Folder = "01 Home/!Inbox";
-};
+// Select where to create the note
+let noteDest = await tp.system.suggester(["Inbox", "Projects"], ["Inbox", "Projects"]);
+let selected_FilePath = "";
+let target_Folder = "01 Home/!Inbox";
+if (noteDest == "Projects") {
+selected_project = await tp.user.selectProject(tp, dv, false);
+target_Folder = selected_project.folder + "/notebook";
+} 
 
 // Find and Select Templates
 let selected_templates = dv.pages()
 	.where(p => p.note_type == "page template")
-	.where(p => String(selected_projectCategory).indexOf(p.projectCategory) != -1 || p.template_type == "All")
+	.where(p => p.template_type == "All")
 	.file.sort(n => n.name);
 let suggestions3 = selected_templates.name;
 let values3 = selected_templates.path;
@@ -48,7 +29,7 @@ let filePath = await target_Folder + "/" + tp.date.now("YYYY-MM-DD") + "-" + fil
 let newFile = await tp.user.buildPageAndLink(tp, selected_Template, filePath, "/", false); 
 
 // Link to Target project
-if(String(selected_projectCategory).indexOf("!Inbox")  <= 0) { 
+if (noteDest == "Projects") {
 await tp.user.embedPageToTarget(tp, selected_project.name, newFile, "# Notebook", "## ", linkToHeading = false);
 }
 
@@ -62,7 +43,8 @@ await app.fileManager.processFrontMatter(
 
 		// Update Template Frontmatter
 		frontmatter["note_type"] = "page";
-		frontmatter["projectCategory"] = String(selected_projectCategory);		(String(selected_projectCategory).indexOf("!Inbox")  <= 0) ? frontmatter["project"] = String(selected_project.link) : frontmatter["project"] = null;
+		frontmatter["projectCategory"] = String(selected_project.frontmatter.projectCategory);
+		(noteDest != "Inbox") ? frontmatter["project"] = String(selected_project.link) : frontmatter["project"] = null;
         // Apply Default frontmatter
 		frontmatter["people"] = null;
         frontmatter["topics"] = null;
