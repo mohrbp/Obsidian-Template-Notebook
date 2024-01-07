@@ -5,7 +5,7 @@ const user = "BMohr";
 const dv = this.app.plugins.plugins["dataview"].api;
 
 // Select a projectCategory
-selected_project = await tp.user.selectProject(tp, dv, true);
+selected_project = await tp.user.selectProject(tp, dv, false);
 let target_Folder = selected_project.folder;
 
 // Find and Select Templates

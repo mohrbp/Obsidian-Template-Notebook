@@ -1,14 +1,14 @@
 ---
-note_type: page
-projectCategory: "[[01 Home/!Inbox/!Inbox.md|!Inbox]]"
-project: 
-people: 
-topics: 
-created: 2023-12-31T14:27:38-06:00
-created_by: BMohr
-total_tasks: 0
 completed_tasks: 0
+created: 2023-12-31T20:27:00
+created_by: BMohr
 incomplete_tasks: 0
+note_type: page
+people: 
+project: []
+projectCategory: "[[01 Home/!Inbox/!Inbox.md|!Inbox]]"
+topics: []
+total_tasks: 0
 ---
 # Notes
 
@@ -91,4 +91,4 @@ await tp.user.embedPageToTarget(tp, projectFile, (newPath + "/" + today + "-" + 
 ```
 
 # Tasks
-- [ ] Refactor EmbedPagetoTarget ⌛ 2023-12-31 
+- [x] Refactor EmbedPagetoTarget ⏳ 2023-12-31 ✅ 2024-01-02

@@ -26,7 +26,7 @@ dv.el("b", "Notes modified within " + recentLow + " days, where " + target + " =
 dv.table(["Created","Last Modified", "Note","Project Notebook"],
     sortedNotes
     .map(p => [
-		new DateTime(p.created).toFormat("ccc DD"),
+		DateTime.fromISO(p.created).toFormat("ccc DD"),
 		p.modified,
 		p.file.link,
         p.project,

@@ -43,12 +43,12 @@ await app.fileManager.processFrontMatter(
 
 		// Update Template Frontmatter
 		frontmatter["note_type"] = "page";
-		frontmatter["projectCategory"] = String(selected_project.frontmatter.projectCategory);
+		(noteDest != "Inbox") ?frontmatter["projectCategory"] = String(selected_project.frontmatter.projectCategory) : frontmatter["projectCategory"] = null;
 		(noteDest != "Inbox") ? frontmatter["project"] = String(selected_project.link) : frontmatter["project"] = null;
         // Apply Default frontmatter
 		frontmatter["people"] = null;
         frontmatter["topics"] = null;
-        frontmatter["created"] = tp.date.now("YYYY-MM-DDTHH:mm:ssZ");
+        frontmatter["created"] = tp.date.now("YYYY-MM-DDTHH:mm");
         frontmatter["created_by"] = user; 
         frontmatter["total_tasks"] = 0;
         frontmatter["completed_tasks"] = 0;

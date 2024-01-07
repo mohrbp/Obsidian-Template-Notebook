@@ -1,7 +1,6 @@
 ---
+aliases: Home
 note_type: Dashboard
-aliases:
-  - Home
 ---
 
 # Buttons

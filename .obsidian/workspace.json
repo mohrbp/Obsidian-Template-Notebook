@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01 Home/01 Home.md",
+                "file": "02 Projects/P1270/Home/Home.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "01 Home/01 Home.md",
+                "file": "02 Projects/P1270/Home/Home.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "01 Home/01 Home.md",
+                "file": "02 Projects/P1270/Home/Home.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "01 Home/01 Home.md"
+                "file": "02 Projects/P1270/Home/Home.md"
               }
             }
           }
@@ -149,8 +149,22 @@
   },
   "active": "82310bbd83e072cb",
   "lastOpenFiles": [
-    "01 Home/!Inbox/2023-12-26-FutureFeatures.md",
+    "02 Projects/P1270/Home/Away/Away.md",
+    "02 Projects/P1270/Home/Home.md",
     "01 Home/01 Home.md",
+    "02 Projects/P1270/Home/Away/experiments/experiments.md",
+    "02 Projects/P1270/Home/Away/experiments",
+    "02 Projects/P1270/Home/Away/notebook",
+    "02 Projects/P1270/Home/Away",
+    "02 Projects/P1270/Home/experiments/experiments.md",
+    "02 Projects/P1270/Home/experiments",
+    "02 Projects/P1270/Home/notebook",
+    "02 Projects/P1270/Home",
+    "04 Resources/Notebook/Templater/24 New Project Category.md",
+    "02 Projects/P1270/P1270.md",
+    "02 Projects/P1270",
+    "04 Resources/Notebook/Note Templates/25 Project Category Template.md",
+    "01 Home/!Inbox/2023-12-26-FutureFeatures.md",
     "01 Home/!Inbox/2024-01-02-null.md",
     "04 Resources/Notebook/Templater/23 New Card.md",
     "02 Projects/P1270 Words/Project 1/Project 1.md",
@@ -159,7 +173,6 @@
     "02 Projects/P1270 Words/Project 1/experiments/2024-01-02-hundresd/analysis",
     "02 Projects/P1270 Words/Project 1/experiments/2024-01-02-hundresd/data",
     "02 Projects/P1270 Words/Project 1/experiments/2024-01-02-hundresd",
-    "04 Resources/Notebook/Templater/24 New Project Category.md",
     "04 Resources/Notebook/Templater/22 New Project with Board.md",
     "02 Projects/P1111/Bandana/Doorag/Doorag.md",
     "02 Projects/P1111/Bandana/Bandana.md",
@@ -167,24 +180,11 @@
     "01 Home/!Inbox/2024-01-02-TestingIn.md",
     "02 Projects/P1111/Bandana/Doorag/notebook/2024-01-02-Tupac.md",
     "02 Projects/P1111/Bandana/Doorag/experiments/experiments.md",
-    "02 Projects/P1111/Bandana/Doorag/experiments",
-    "02 Projects/P1111/Bandana/Doorag/notebook",
-    "02 Projects/P1111/Bandana/Doorag",
     "02 Projects/P1270 Words/Project 1/Project B/Project B.md",
     "04 Resources/Notebook/Templater/20 New Project.md",
     "02 Projects/P1270 Words/Project 1/Project B/experiments/experiments.md",
     "04 Resources/Notebook/Templater/21 New Topic.md",
     "04 Resources/Notebook/Templater/10 New Notebook Page.md",
-    "04 Resources/Notebook/Note Templates/21 Project Template.md",
-    "02 Projects/P1270 Words/Project 1/Project B/experiments",
-    "02 Projects/P1270 Words/Project 1/Project B/notebook",
-    "02 Projects/P1270 Words/Project 1/Project B",
-    "02 Projects/P1111/Scarf/experiments/2024-01-02-Wrapping/2024-01-02-Wrapping.md",
-    "02 Projects/P1111/Bandana/experiments",
-    "01 Home/!Inbox/!Inbox.md",
-    "01 Home/!Inbox/2024-01-02-Wrap.md",
-    "01 Home/!Inbox/2024-01-02-Testing.md",
-    "02 Projects/P1111/Scarf/notebook/2024-01-02-Print.md",
     "01 Home/!Inbox/attachments/Screenshot 2023-12-29 at 16-47-06 r_ObsidianMD - Using dataview.js how can you get myArg from a dv.view('my_script' {myArg 1}).png",
     "02 Projects/I1000/Impressionist/Notebook/attachments/image-removebg-preview(3).png",
     "01 Home/!Inbox/01 Home/!Inbox/2023-12-26-HotKeys/2023-12-26-HotKeys-20231226225601360.png",

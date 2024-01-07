@@ -5,7 +5,7 @@ let recentFiles = dv.pages().file
 					.where(p => p.frontmatter.note_type == "page" || p.frontmatter.note_type == "card")
 					.where(p => (p.mtime).diffNow().as("minutes") > -(3*1400))
 					.sort(p => p.mtime.diffNow(), "asc")
-					.limit(100);
+					.limit(500);
 
 let suggestions1 = recentFiles.name;
 let values1 = recentFiles;

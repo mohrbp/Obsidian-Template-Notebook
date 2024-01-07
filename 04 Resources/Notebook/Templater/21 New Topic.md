@@ -45,7 +45,7 @@ let filePath = await target_Folder + "/" + fileName + "/" + fileName;
 let newFile = await tp.user.buildPageAndLink(tp, selected_Template, filePath, "/", false); 
 
 // Link to Target Topic
-if (target_Folder != "03 Areas") {await tp.user.embedPageToTarget(tp, selected_Topic.name, newFile, "# Notebook", "# Notebook", linkToHeading = true)};
+if (target_Folder != "03 Areas") {await tp.user.embedPageToTarget(tp, selected_Topic.name, newFile, "# Notebook", "## ", linkToHeading = true)};
 
 
 // Apply Frontmatter to new file
@@ -64,7 +64,7 @@ await app.fileManager.processFrontMatter(
 
         // Apply Default frontmatter
 		frontmatter["people"] = null;
-        frontmatter["created"] = tp.date.now("YYYY-MM-DDTHH:mm:ssZ");
+        frontmatter["created"] = tp.date.now("YYYY-MM-DDTHH:mm");
         frontmatter["created_by"] = user; 
         // Apply projectCategory/Template Specific frontmatter
       })

@@ -25,8 +25,7 @@ let filePath = await target_Folder + "/" + fileName + "/" + fileName;
 let newFile = await tp.user.buildPageAndLink(tp, selected_Template, filePath, "/", false); 
 
 // Link to Target project
-await tp.user.embedPageToTarget(tp, selected_project.name, newFile, "# Notebook", "# Notebook", linkToHeading = true);
-
+await tp.user.embedPageToTarget(tp, selected_project.name, newFile, "# Notebook", "## ", "# Notebook");
 
 // Apply Frontmatter to new file
 let new_Tfile = await tp.file.find_tfile(newFile);
@@ -42,7 +41,7 @@ await app.fileManager.processFrontMatter(
 		frontmatter["project"] = String("[[" + new_Tfile.path + "|" + new_Tfile.basename + "]]");
 		/// If the selected project isn't a projectCategory, add the parent project, otherwise add the projectCategory
 		(selected_project.frontmatter.note_type == "projectCategory") ? frontmatter["parent_project"] = String(selected_project.frontmatter.projectCategory) : frontmatter["parent_project"] = String(selected_project.link);
-        frontmatter["created"] = tp.date.now("YYYY-MM-DDTHH:mm:ssZ");
+        frontmatter["created"] = tp.date.now("YYYY-MM-DDTHH:mm");
         frontmatter["created_by"] = user; 
         // Apply projectCategory/Template Specific frontmatter
       })

@@ -1,6 +1,6 @@
 ---
-template_type: All
 note_type: projectCategory template
+template_type: All
 ---
 # Tasks 
 ```dataviewjs

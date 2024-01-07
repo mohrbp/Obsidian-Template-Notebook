@@ -1,10 +1,10 @@
 ---
-note_type: projectCategory
-projectCategory: "[[!Inbox|!Inbox]]"
-people: 
-topics: 
-created: 2023-12-26T21:39:16-06:00
+created: '2023-12-27 03:39:16'
 created_by: BMohr
+note_type: projectCategory
+people: None
+projectCategory: '[[01 Home/!Inbox/!Inbox.md|!Inbox]]'
+topics: None
 ---
 # Tasks 
 ```dataviewjs

@@ -1,16 +1,22 @@
 ---
-note_type: atomic
-pcode: "[[01 Home/!Inbox/!Inbox.md|!Inbox]]"
-project: 
-people: 
-topics: 
-created: 2023-12-26T19:46:16-06:00
-created_by: BMohr
-total_tasks: 0
 completed_tasks: 0
+created: 2023-12-27T01:46:00
+created_by: BMohr
 incomplete_tasks: 0
+note_type: page
+projectCategory: "[[01 Home/!Inbox/!Inbox.md|!Inbox]]"
+people: 
+project: []
+topics: 
+total_tasks: 0
 ---
 # Notes
+
+### PDF Extraction
+[2024-01-02-PDF Extraction](01%20Home/!Inbox/2024-01-02-PDF%20Extraction.md)
+{% if annotation.comment %}{{annotation.comment}}{% endif %}{% endif %}
+> {%- if annotation.imageRelativePath %}![[{{annotation.imageRelativePath}}]]{%- endif %}
+
 `$=dv.current()['total_tasks']`
 
 ### Table of Buttons for Hotkeys
@@ -31,8 +37,6 @@ https://forum.obsidian.md/t/buttons-with-templater-code-in-templater-template/70
 	task.visual = `<span style= "font-size:8pt; color:red;">${task.text.replace(/[📅📆⌛⏳].*$/g, "")}</span>`;
 
 ### Progress bar for Kanban
-bar:: <progress max=100 value=40> </progress> 0%
-
 ### Dataview to reuse code
 - recognizes dv.current()
 ```
@@ -52,10 +56,12 @@ Or use dv.view to load in arguments, which can include front matter
 	- Could just add all parent topics to the new topic on note creation
 		- Moving the note gets tricky, because then do you erase all parent topics? Replace? Only some?, what about things you added prior to moving the note?
 # Tasks
-- [ ] Dv.taskList at the top of notebook files, so you can check notes with completion date (and time?)  ⌛ 2023-12-27 
-- [ ] Daily note of burnt in dataview summary of the day ⌛ 2023-12-27 
-- [ ] Adjustable time limits based on front matter of the projects
+- [ ] Dv.taskList at the top of notebook files, so you can check notes with completion date (and time?) 
+- [ ] Daily note of burnt in dataview summary of the day 
+- [x] Adjustable time limits based on front matter of the projects ✅ 2024-01-03
 - [ ] Notes in Callouts
-- [ ] Re-usable JS code for DV
+- [x] Re-usable JS code for DV ✅ 2024-01-03
 - [ ] People Pages
 - [ ] Topics
+
+bar:: <progress max=100 value=40> </progress> 0%
