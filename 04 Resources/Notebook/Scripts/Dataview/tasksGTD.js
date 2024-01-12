@@ -72,6 +72,7 @@ dv.header(3, "⚠️Overdue⚠️");
 // Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
 dv.table(["Task", "Scheduled","Project Category", "Project", "Note", "Created"],
     overdueTasks
+		.sort(t => DateTime.fromISO(t.scheduled), "asc")
 	    .map(t => [
 		t.visual,
 		t.timingSch.toFormat("DD"),		
@@ -80,7 +81,6 @@ dv.table(["Task", "Scheduled","Project Category", "Project", "Note", "Created"],
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
 		])
-		.sort(t => DateTime.fromISO(t.scheduled))
     )
 }
 
@@ -90,6 +90,7 @@ dv.header(3, "Up Next");
 dv.table(["Task", "Scheduled","Project Category", "Project", "Note", "Created"],
     scheduledTasks
 		.where(t => t.dateSch >= 0 && t.dateSch < (1440 * recentHigh))
+		.sort(t => DateTime.fromISO(t.scheduled), "asc")
 	    .map(t => [
 		t.visual,
 		t.timingSch.toFormat("DD"),		
@@ -98,7 +99,6 @@ dv.table(["Task", "Scheduled","Project Category", "Project", "Note", "Created"],
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
 		])
-		.sort(t => DateTime.fromISO(t.scheduled))
     )
 
 let unscheduledTasks = allTasks
@@ -112,14 +112,15 @@ for (let task of unscheduledTasks) {
 dv.header(3, "Unscheduled (Limit 50)");
 // Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
 dv.table(["Task","Project Category", "Project", "Note", "Created"],
-    unscheduledTasks.map(t => [
+    unscheduledTasks
+	.sort(t => DateTime.fromISO(t.created))
+    .map(t => [
 		t.visual,
 		t.projectCategory,
 		t.project,
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
 		])
-		.sort(t => DateTime.fromISO(t.created))
 		.limit(50)
     )
 
@@ -153,15 +154,16 @@ for (let task of myRecentCompleteTasks) {
 
 dv.header(3, "Recently Completed (Limit 25)");
 // Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
-dv.table(["Task","Project Category", "Project", "Note", "Created"],
-    myRecentCompleteTasks.map(t => [
+dv.table(["Task","Project Category", "Project", "Note", "Created", "Completed"],
+    myRecentCompleteTasks
+	.sort(t => DateTime.fromISO(t.completion), "desc")
+    .map(t => [
 		t.visual,
 		t.projectCategory,
 		t.project,
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
-		])
-		.sort(t => DateTime.fromISO(t.created))
-		.limit(25)
+		t.status		])
+	.limit(25)
     )
 							
