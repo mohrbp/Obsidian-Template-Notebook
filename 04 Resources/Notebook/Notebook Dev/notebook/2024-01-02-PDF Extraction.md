@@ -3,8 +3,9 @@ created: 2024-01-03T03:50
 created_by: BMohr
 note_type: page
 people: 
-project: 
-projectCategory: "[[01 Home/!Inbox/!Inbox.md|!Inbox]]"
+project:
+  - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev|Notebook Dev]]"
+projectCategory: 
 topics:
   - "[[03 Areas/Software/Obsidian/Obsidian|Obsidian]]"
 completed_tasks: 0

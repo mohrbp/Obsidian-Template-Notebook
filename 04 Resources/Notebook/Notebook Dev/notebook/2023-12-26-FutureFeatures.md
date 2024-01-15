@@ -4,16 +4,17 @@ created: 2023-12-27T01:46:00
 created_by: BMohr
 incomplete_tasks: 0
 note_type: page
-projectCategory: "[[01 Home/!Inbox/!Inbox.md|!Inbox]]"
+projectCategory: 
 people: 
-project: []
+project:
+  - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev|Notebook Dev]]"
 topics: 
 total_tasks: 0
 ---
 # Notes
 
 ### PDF Extraction
-[2024-01-02-PDF Extraction](01%20Home/!Inbox/2024-01-02-PDF%20Extraction.md)
+[2024-01-02-PDF Extraction](04%20Resources/Notebook/Notebook%20Dev/notebook/2024-01-02-PDF%20Extraction.md)
 {% if annotation.comment %}{{annotation.comment}}{% endif %}{% endif %}
 > {%- if annotation.imageRelativePath %}![[{{annotation.imageRelativePath}}]]{%- endif %}
 
