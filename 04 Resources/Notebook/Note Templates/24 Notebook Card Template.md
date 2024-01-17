@@ -28,6 +28,7 @@ _%>
 # Tasks
 
 <%*
+  console.log(projectCategory_TFile);
   let newFile = await tp.file.find_tfile(tp.file.path(true))
 setTimeout(() => {
   // Process the frontmatter
@@ -36,7 +37,7 @@ setTimeout(() => {
 		delete frontmatter['template_type'];
 		// Update Template Frontmatter
 		frontmatter["note_type"] = "card";
-		frontmatter["projectCategory"] = "[[" + projectCategory_TFile.path + "|" + projectCategory_TFile.basename + "]]";
+		(projectCategory_TFile == null) ? frontmatter["projectCategory"] = null : frontmatter["projectCategory"] = "[[" + projectCategory_TFile.path + "|" + projectCategory_TFile.basename + "]]";
 		frontmatter["project"] = project;
 		// Update project Frontmatter
         // Apply Default frontmatter

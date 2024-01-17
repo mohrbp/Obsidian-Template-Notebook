@@ -2,10 +2,14 @@ const { DateTime, Duration } = dv.luxon;
 let target = input.target;
 let query = dv.current()[target];
 
-// Assign variables for recency 
-let recentLow = 3;
-let recentMid = 7;
-let recentHigh = 14;
+// Load Utilities
+var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
+
+// Assign variables for recency and limits
+let recentLow = 1;
+let recentMid = 3;
+let recentHigh = 7;
+let limit = 10
 
 const currentTime = dv.date(`today`);
 // console.log(`Current Time = ${currentTime}`);
@@ -19,8 +23,8 @@ const myTasks = dv.pages()
 
 // priorities color
 const red = "<span style='border-left: 3px solid red;'>&nbsp;</span>"
-const orange = "<span style='border-left: 3px solid orange;'>&nbsp;</span>"
-const green = "<span style='border-left: 3px solid rgb(55 166 155);'>&nbsp;</span>"
+const blue = "<span style='border-left: 3px solid rgb(39, 117, 182);'>&nbsp;</span>"
+const green = "<span style='border-left: 3px solid green;'>&nbsp;</span>"
 
 for (let task of myTasks) {
 	if (typeof (task.created) == "undefined") {
@@ -53,12 +57,12 @@ for (let task of scheduledTasks) {
 	task.matchSch = task.text.match(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/)[2];
 	task.timingSch = DateTime.fromISO(task.matchSch);
 	task.dateSch = Math.round(task.timingSch.diff(currentTime, "days").as("minutes"));
-	if (task.dateSch < (1400 * recentLow)){
+	if (task.dateSch < (0)){
 	task.visual = red;
-	} else if ((task.dateSch < (1400 * recentMid)) && (task.dateSch > (1400 * recentLow))) {
-	task.visual = orange;
-	} else if (task.dateSch > (1400 * recentMid)) {
+	} else if ((task.dateSch < (1400 * recentLow)) && (task.dateSch >= (0))) {
 	task.visual = green;
+	} else if ((task.dateSch < (1400 * recentMid)) && (task.dateSch >= (1400 * recentLow))) {
+	task.visual = blue;
 	};
 	task.visual += task.text.replace(/[📅📆⌛⏳].*$/g, "");
 	};
@@ -72,15 +76,15 @@ dv.header(3, "⚠️Overdue⚠️");
 // Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
 dv.table(["Task", "Scheduled","Project Category", "Project", "Note", "Created"],
     overdueTasks
+		.sort(t => DateTime.fromISO(t.scheduled), "asc")
 	    .map(t => [
 		t.visual,
 		t.timingSch.toFormat("DD"),		
-		t.projectCategory,
-		t.project,
+		dataviewUtils.convertLinksToCommaSeparatedList(t.projectCategory),
+		dataviewUtils.convertLinksToCommaSeparatedList(t.project),
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
 		])
-		.sort(t => DateTime.fromISO(t.scheduled))
     )
 }
 
@@ -90,15 +94,15 @@ dv.header(3, "Up Next");
 dv.table(["Task", "Scheduled","Project Category", "Project", "Note", "Created"],
     scheduledTasks
 		.where(t => t.dateSch >= 0 && t.dateSch < (1440 * recentHigh))
+		.sort(t => DateTime.fromISO(t.scheduled), "asc")
 	    .map(t => [
 		t.visual,
 		t.timingSch.toFormat("DD"),		
-		t.projectCategory,
-		t.project,
+		dataviewUtils.convertLinksToCommaSeparatedList(t.projectCategory),
+		dataviewUtils.convertLinksToCommaSeparatedList(t.project),
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
 		])
-		.sort(t => DateTime.fromISO(t.scheduled))
     )
 
 let unscheduledTasks = allTasks
@@ -109,18 +113,19 @@ for (let task of unscheduledTasks) {
 	task.visual += task.text.replace(/[📅📆⌛⏳].*$/g, "");
 };
 							
-dv.header(3, "Unscheduled (Limit 50)");
+dv.header(3, "Unscheduled (Limit " + (2 * limit) +")");
 // Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
 dv.table(["Task","Project Category", "Project", "Note", "Created"],
-    unscheduledTasks.map(t => [
+    unscheduledTasks
+	.sort(t => DateTime.fromISO(t.created))
+    .map(t => [
 		t.visual,
-		t.projectCategory,
-		t.project,
+		dataviewUtils.convertLinksToCommaSeparatedList(t.projectCategory),
+		dataviewUtils.convertLinksToCommaSeparatedList(t.project),
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
 		])
-		.sort(t => DateTime.fromISO(t.created))
-		.limit(50)
+		.limit((limit * 2))
     )
 
 // Recently completed tasks sorted by recent first to limit scope of search on completed tasks
@@ -129,7 +134,9 @@ const myRecentCompleteTasks = dv.pages()
 					.where(p => p.note_type == "page" | p.note_type == "card")
 					.where(p => DateTime.fromISO(p.file.mtime).diffNow().as("minutes") > - (recentLow * 1440))
 					.file.tasks
-						.where(t => t.checked === true);
+						.where(t => t.checked === true)
+						.where(t => typeof(t.completion) != "undefined");
+
 
 for (let task of myRecentCompleteTasks) {
 	task.visual = "";
@@ -151,17 +158,19 @@ for (let task of myRecentCompleteTasks) {
 	task.visual += task.text.replace(/[📅📆⌛⏳].*$/g, "");
 };
 
-dv.header(3, "Recently Completed (Limit 25)");
+dv.header(3, "Recently Completed (Limit "+ (limit) +")");
 // Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
-dv.table(["Task","Project Category", "Project", "Note", "Created"],
-    myRecentCompleteTasks.map(t => [
+dv.table(["Task","Project Category", "Project", "Note", "Created", "Completed"],
+    myRecentCompleteTasks
+	.sort(t => DateTime.fromISO(t.completion), "desc")
+    .map(t => [
 		t.visual,
-		t.projectCategory,
-		t.project,
+		dataviewUtils.convertLinksToCommaSeparatedList(t.projectCategory),
+		dataviewUtils.convertLinksToCommaSeparatedList(t.project),
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
+		t.completion,
 		])
-		.sort(t => DateTime.fromISO(t.created))
-		.limit(25)
+	.limit(limit)
     )
 							
