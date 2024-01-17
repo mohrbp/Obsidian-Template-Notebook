@@ -7,7 +7,7 @@ note_type: page
 projectCategory: 
 people: 
 project:
-  - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev|Notebook Dev]]"
+  - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev.md|Notebook Dev]]"
 topics: 
 total_tasks: 0
 ---
