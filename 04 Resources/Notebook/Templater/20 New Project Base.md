@@ -21,13 +21,13 @@ let selected_Template = await tp.system.suggester(suggestions3,values3);
 let fileName = await tp.system.prompt("Enter Project Name");
 let filePath = await target_Folder + "/" + fileName + "/" + fileName;
 
-// Build new file
+// Build new project file
 let newFile = await tp.user.buildPageAndLink(tp, selected_Template, filePath, "/", false); 
-
-// Link to Target project
+console.log(newFile);
+// Link to Parent project
 await tp.user.embedPageToTarget(tp, selected_project.name, newFile, "# Notebook", "## ", "# Notebook");
 
-// Apply Frontmatter to new file
+// Apply Frontmatter to new project file
 let new_Tfile = await tp.file.find_tfile(newFile);
 await app.fileManager.processFrontMatter(
       new_Tfile,
@@ -37,12 +37,26 @@ await app.fileManager.processFrontMatter(
 		// Update Template Frontmatter
 		frontmatter["note_type"] = String("project");
 		// Update project Frontmatter
-		frontmatter["projectCategory"] = String(selected_project.frontmatter.projectCategory);
+		frontmatter["projectCategory"] = String(selected_project.frontmatter.projectCategory);	
 		frontmatter["project"] = String("[[" + new_Tfile.path + "|" + new_Tfile.basename + "]]");
 		/// If the selected project isn't a projectCategory, add the parent project, otherwise add the projectCategory
 		(selected_project.frontmatter.note_type == "projectCategory") ? frontmatter["parent_project"] = String(selected_project.frontmatter.projectCategory) : frontmatter["parent_project"] = String(selected_project.link);
+
+        // Apply Default frontmatter
+		frontmatter["people"] = null;
+        frontmatter["topics"] = null;
         frontmatter["created"] = tp.date.now("YYYY-MM-DDTHH:mm");
         frontmatter["created_by"] = user; 
         // Apply projectCategory/Template Specific frontmatter
       })
+
+let boardStatus = await tp.system.suggester(["With Board", "Without Board"],["withBoard", "withoutBoard"]);
+let newProjectDV = await dv.page(new_Tfile.path).file;
+console.log(newProjectDV);
+if (boardStatus == "withBoard") {
+await tp.user.newBoard(tp, dv, newProjectDV);
+};
+
 _%>
+
+

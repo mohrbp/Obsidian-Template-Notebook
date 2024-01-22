@@ -10,13 +10,13 @@ created_by: BMohr
 ---
 
 ## To-Do
-- [ ] [[2024-01-17-Update embeded notebooks]]
-- [ ] [[2024-01-17-New Card Refactor]]
 
+- [ ] [2024-01-17-Update embeded notebooks](04%20Resources/Notebook/Notebook%20Dev/experiments/2024-01-17-Update%20embeded%20notebooks/2024-01-17-Update%20embeded%20notebooks.md)
 
 
 ## Doing
 
+- [ ] [2024-01-17-New Card Refactor](04%20Resources/Notebook/Notebook%20Dev/experiments/2024-01-17-New%20Card%20Refactor/2024-01-17-New%20Card%20Refactor.md)
 
 
 ## Done

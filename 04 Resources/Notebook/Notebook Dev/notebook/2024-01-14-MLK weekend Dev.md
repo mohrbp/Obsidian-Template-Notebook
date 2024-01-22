@@ -59,7 +59,7 @@ incomplete_tasks: 0
 # Tasks
 - [ ] Add a Home Button or Hot Key - so annoying 
 - [x] Sync Via GitHub and Continue Dev on Macbook ⏳ 2024-01-14 ✅ 2024-01-14
-- [ ] Update Projects 
+- [x] Update Projects ✅ 2024-01-22
 - [x] Collect utility scripts ✅ 2024-01-17
 - [x] Refactor RecentsFile tables to remove duplication ✅ 2024-01-17
 - [x] Update Task Urgency Colors to be less stressful ✅ 2024-01-17

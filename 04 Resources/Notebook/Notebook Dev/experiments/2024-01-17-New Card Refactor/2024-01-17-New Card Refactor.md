@@ -19,10 +19,19 @@ created: 2024-01-17T12:53:14-06:00
 - Templates for different types of boards
 	- Kanban 
 		- Undated folder notes
+		- Subfolders
+			- notebook
 	- Experiments
 		- Dated Folder note
-	- Task board
+		- Subfolders
+			- data 
+			- analysis
+			- notebook
+		- Could aggregate experimental tasks only in the Project boards and not more widely?
+	- Task board - Future Feature
 		- Dates Folder note
+		- Subfolders
+			- notebook
 		- Aggregated as a task
 		- Need to update the tasks assigner
 			- To find these boards
@@ -43,6 +52,32 @@ created: 2024-01-17T12:53:14-06:00
 - Add a page to card
 	- If they're all folder notes, why not be able to add pages to all of them
 	- not sure they really need a notebook folder, but it could be convenient 
+	- 
+
+### Splitting the old template
+- Working from [22 New Project with Board](04%20Resources/Notebook/Templater/22%20New%20Project%20with%20Board.md)
+	- Deleted the other New project template because it was just not updated.
+	- Added two new card templates for just Kanban and Experiments
+		- Both use the same Board template file
+	- Updated this to [20 New Project Base](04%20Resources/Notebook/Templater/20%20New%20Project%20Base.md)
+	- Created a standalone [newBoard](04%20Resources/Notebook/Scripts/Templater/newBoard.js) script that is called above and in [26 New Board](04%20Resources/Notebook/Templater/26%20New%20Board.md) templater script
+### Updating the creation of new cards
+- Took a while but worked through a new card script that works for all locations
+	- Two types of cards for the two ttpes of boards
+		- Kanban and experiments 
+		- Saving task boards for later
+		- Files
+			- [24 Kanban Card Template](04%20Resources/Notebook/Note%20Templates/24%20Kanban%20Card%20Template.md)
+			- [24 Experiment Card Template](04%20Resources/Notebook/Note%20Templates/24%20Experiment%20Card%20Template.md)
+			- There is still a decent bit of code overlap between these two and could be further reduced. 
+	- References the "board" property in the project file frontmatter
+		- So you will need to retrofit the old boards
+			- But its better long term because you can keep the links updated if things move
+		- Added a new utility built from GPT that returns the path, parent directory or alias of a wikilink 
+		- And added the board_type property to the board files
+- Ran into some naming issues with the creation of the folder note
+	- Selecting the new name worked in the script, but could create some issues downstream
+- Thought I may have timing issues but didn't need to add any Timeouts
 
 ## Identifying problems
 ### Cleaning up the Board Name and Duplication
@@ -61,7 +96,6 @@ created: 2024-01-17T12:53:14-06:00
 		- Add a link to the board to all the project metadata
 			- That will take a while to do retroactively
 	-  
-
 ### Adding to cards
 - Since most cards are folder notes, it makes sense to be able to add new pages to them
 	- The embeds are still fine given that 
@@ -73,7 +107,7 @@ created: 2024-01-17T12:53:14-06:00
 		- Take the default note content
 - Task Board
 	- i.e. aggregate task items from this note into the GTD
-
-
 # Tasks
-- [ ] Add a method to add a page to a recent card ⌛ 2024-01-17 
+- [x] Update adding new boards, board types and Add Card function to link the project file ✅ 2024-01-22
+- [ ] Update existing boards with new methods ⏳ 2024-01-23 
+- [ ] Add a method to add a page to a recent card 

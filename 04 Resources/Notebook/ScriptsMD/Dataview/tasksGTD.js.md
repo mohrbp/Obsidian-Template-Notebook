@@ -1,6 +1,10 @@
+// Import Luxon variables from dv
 const { DateTime, Duration } = dv.luxon;
+
+// Define inputs from dv.view in note
 let target = input.target;
 let query = dv.current()[target];
+let exclude = input.exclude
 
 // Load Utilities
 var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
@@ -106,7 +110,8 @@ dv.table(["Task", "Scheduled","Project Category", "Project", "Note", "Created"],
     )
 
 let unscheduledTasks = allTasks
-							.where(t => typeof(t.scheduled) == "undefined" & typeof(t.due) == "undefined");
+							.where(t => typeof(t.scheduled) == "undefined" & typeof(t.due) == "undefined")
+							.where(t => !String(t.project).includes(exclude));
 							
 for (let task of unscheduledTasks) {
     task.visual = "";
@@ -117,7 +122,7 @@ dv.header(3, "Unscheduled (Limit " + (2 * limit) +")");
 // Task, projectCategory, project, File, Note Type, Created, Scheduled/Due
 dv.table(["Task","Project Category", "Project", "Note", "Created"],
     unscheduledTasks
-	.sort(t => DateTime.fromISO(t.created))
+	.sort(t => DateTime.fromISO(t.created), "desc")
     .map(t => [
 		t.visual,
 		dataviewUtils.convertLinksToCommaSeparatedList(t.projectCategory),

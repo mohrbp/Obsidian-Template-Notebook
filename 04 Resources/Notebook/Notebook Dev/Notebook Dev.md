@@ -5,21 +5,23 @@ created: 2024-01-14
 project:
   - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev.md|Notebook Dev]]"
 ---
-# **Last Git Sync** - 2024-01-16
+# **Last Git Sync** - 2024-01-22
 
 # Tasks
 ```dataviewjs
     dv.view("04 Resources/notebook/Scripts/Dataview/tasksGTD", {"target": dv.current().note_type})
 ```
 # Notebook
+## 2024-01-18-Obsidian Metadata Bulk Edit
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-18-Obsidian Metadata Bulk Edit.md|2024-01-18-Obsidian Metadata Bulk Edit]]
 ## 2024-01-17-Update embeded notebooks
- ![[04 Resources/Notebook/Notebook Dev/experiments/2024-01-17-Update embeded notebooks/2024-01-17-Update embeded notebooks.md|2024-01-17-Update embeded notebooks]]
+ ![[04 Resources/Notebook/Notebook Dev/experiments/2024-01-17-Update embeded notebooks/2024-01-17-Update embeded notebooks|2024-01-17-Update embeded notebooks]]
 ## 2024-01-17-Sets Plugin
  ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-17-Sets Plugin.md|2024-01-17-Sets Plugin]]
 ## 2024-01-17-Scrolling Dataview Tables
  ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-17-Scrolling Dataview Tables.md|2024-01-17-Scrolling Dataview Tables]]
 ## 2024-01-17-New Card Refactor
- ![[04 Resources/Notebook/Notebook Dev/experiments/2024-01-17-New Card Refactor/2024-01-17-New Card Refactor.md|2024-01-17-New Card Refactor]]
+ ![[04 Resources/Notebook/Notebook Dev/experiments/2024-01-17-New Card Refactor/2024-01-17-New Card Refactor|2024-01-17-New Card Refactor]]
 
 ## 2024-01-14-MLK weekend Dev
  ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-14-MLK weekend Dev.md|2024-01-14-MLK weekend Dev]]

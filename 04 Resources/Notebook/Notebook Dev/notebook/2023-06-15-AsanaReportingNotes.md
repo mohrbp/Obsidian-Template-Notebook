@@ -30,7 +30,8 @@ project:
 	- The JSON importer tool appears to use the entire Handlebar Helper Library 
 		- https://github.com/Budibase/handlebars-helpers
 		- Using Contains and Substr
-``` await tp.file.move('General/Exp/' + tp.frontmatter["experiment-type"] + '/' + '{{#if completed_at}}/archive/{{else}}{{/if}}' + tp.frontmatter["date-created"] + "-" + tp.config.target_file.basename + '/' + tp.frontmatter["date-created"] + "-" + tp.config.target_file.basename) 
+```
+await tp.file.move('General/Exp/' + tp.frontmatter["experiment-type"] + '/' + '{{#if completed_at}}/archive/{{else}}{{/if}}' + tp.frontmatter["date-created"] + "-" + tp.config.target_file.basename + '/' + tp.frontmatter["date-created"] + "-" + tp.config.target_file.basename) 
 ```
 #### Dealing with Dataview
 - Burning out the Markdown of the tables
@@ -148,7 +149,7 @@ dv.list(embeds)
 - [x] Redo meeting notes for group and reports ✅ 2023-06-15
 - [x] Make an import template for Asana JSON content ✅ 2023-06-15
 - [x] Templater script to move Asana import files to proper location ✅ 2023-06-23
-- [ ] Test obsidian-metadata to update status
+- [>] [2024-01-18-Obsidian Metadata Bulk Edit](04%20Resources/Notebook/Notebook%20Dev/notebook/2024-01-18-Obsidian%20Metadata%20Bulk%20Edit.md) Test obsidian-metadata to update status
 - [-] Exporting with New Tool
 - [x] Re-organize notes to decrease path length and maximize functional visibility ✅ 2023-06-23
 
