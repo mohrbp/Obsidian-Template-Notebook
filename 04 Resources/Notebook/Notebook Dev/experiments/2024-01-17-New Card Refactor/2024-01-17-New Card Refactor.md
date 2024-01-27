@@ -109,5 +109,5 @@ created: 2024-01-17T12:53:14-06:00
 	- i.e. aggregate task items from this note into the GTD
 # Tasks
 - [x] Update adding new boards, board types and Add Card function to link the project file ✅ 2024-01-22
-- [ ] Update existing boards with new methods ⏳ 2024-01-23 
+- [x] Update existing boards with new methods ⏳ 2024-01-23 ✅ 2024-01-23
 - [ ] Add a method to add a page to a recent card 

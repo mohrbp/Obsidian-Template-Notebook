@@ -12,6 +12,10 @@ project:
     dv.view("04 Resources/notebook/Scripts/Dataview/tasksGTD", {"target": dv.current().note_type})
 ```
 # Notebook
+## 2024-01-27-Script and Template Naming
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-27-Script and Template Naming.md|2024-01-27-Script and Template Naming]]
+## 2024-01-25-Review Eleven ELN document
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-25-Eleven ELN document|2024-01-25-Eleven ELN document]]
 ## 2024-01-18-Obsidian Metadata Bulk Edit
  ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-18-Obsidian Metadata Bulk Edit.md|2024-01-18-Obsidian Metadata Bulk Edit]]
 ## 2024-01-17-Update embeded notebooks

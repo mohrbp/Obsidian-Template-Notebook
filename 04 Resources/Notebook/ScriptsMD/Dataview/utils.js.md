@@ -99,5 +99,53 @@ function extractPathFromWikiLink(wikiLink, fullPath = true, returnLinkText = fal
     return parentDirectory;
   }
 }
-
 exports.extractPathFromWikiLink = extractPathFromWikiLink;
+
+
+function subsetByFolderDepth(paths, depth, includeExtension, extension) {
+  const subset = [];
+  const seenPaths = new Set();
+
+  paths.forEach(path => {
+    const folders = path.split('/');
+    const folderDepth = folders.length - 1;
+
+    if (folderDepth >= depth) {
+      const subsetPath = folders.slice(0, depth + 1).join('/');
+      const hasExtension = subsetPath.endsWith(`.${extension}`);  
+      if (
+        !seenPaths.has(subsetPath) &&
+        ((includeExtension && hasExtension) || (!includeExtension && !hasExtension))
+      ) {
+        seenPaths.add(subsetPath);
+        subset.push(subsetPath);
+      }
+    }
+  });
+
+  return subset;
+}
+
+exports.subsetByFolderDepth = subsetByFolderDepth;
+
+function formatPaths(data, formatType) {
+  if (!Array.isArray(data) || data.length === 0) {
+    return "Invalid input data.";
+  }
+
+  if (formatType !== "tasks" && formatType !== "embeds") {
+    return "Invalid format type. Use `tasks` for a bulleted list and `embeds` for links under level 2 headers.";
+  }
+
+  let formattedData = "";
+
+  if (formatType === "tasks") {
+    formattedData = data.map(item => `- [ ] [${item.split('/').pop().replace(/\.[^/.]+$/, "")}](${item.replace(/\s/g, "%20")})`).join('\n');
+  } else if (formatType === "embeds") {
+    formattedData = data.map(item => `## ${item.split('/').pop().replace(/\.[^/.]+$/, "")}\n![${item.split('/').pop().replace(/\.[^/.]+$/, "")}](${item.replace(/\s/g, "%20")})`).join('\n');
+  }
+
+  return formattedData;
+}
+
+exports.formatPaths = formatPaths;
