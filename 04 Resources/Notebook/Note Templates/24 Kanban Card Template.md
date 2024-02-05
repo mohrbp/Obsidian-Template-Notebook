@@ -25,7 +25,7 @@ let project = projectFileDV.file.frontmatter.project;
 console.log("projectCategory", projectCategory);
 console.log("project", project);
 _%>
-# Notes
+# Notebook
 
 # Tasks
 

@@ -19,6 +19,11 @@ created: 2024-01-17T17:44:41-06:00
 	- formatPaths
 		- Takes an array of file paths and formats them as a list of tasks (for kanban) or as embeddeds with headers (for notebooks)
 
+### Modifications
+- There is not a defined sort order to the output
+	- Its working kinda okay regardless of that
+	- Worth considering if you want to embed only from a folder or a series of tags
+
 ## Problem
 - Each of the projects, etc. with a notebook folder has all of those notes transcluded in the parent folder note
 - This is to serve as a long-read traditional notebook of sorts

@@ -9,7 +9,24 @@ let selected_FilePath = "";
 let target_Folder = "01 Home/!Inbox";
 if (noteDest == "Projects") {
 selected_project = await tp.user.selectProject(tp, dv, false);
+// If there is a board associated with the project
+// Check to see if you want to add the note to the project folder or
+// to the notebook of one of the cards on the board
+if (selected_project.frontmatter.hasOwnProperty("board")) {
+console.log(selected_project.frontmatter.board);
+let projectCards = dv.pages(`"` + selected_project.folder + `"`)
+	.where(p => p.note_type == "card");
+let names = ["Project Notebook", ...projectCards.file.name];
+//console.log(names);
+let folders = [selected_project.folder, ...projectCards.file.folder];
+//console.log(folders);
+let projectFolderTarget = await tp.system.suggester(names, folders);
+target_Folder = projectFolderTarget + "/notebook"
+//console.log(projectFolderTarget)
+//console.log(target_Folder)
+} else {
 target_Folder = selected_project.folder + "/notebook";
+}
 } 
 
 // Find and Select Templates

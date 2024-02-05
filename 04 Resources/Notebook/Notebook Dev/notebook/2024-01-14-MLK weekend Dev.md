@@ -57,7 +57,7 @@ incomplete_tasks: 0
 
 
 # Tasks
-- [ ] Add a Home Button or Hot Key - so annoying 
+- [x] Add a Home Button or Hot Key - so annoying -> just use quick switch to 01 or Home ✅ 2024-01-31
 - [x] Sync Via GitHub and Continue Dev on Macbook ⏳ 2024-01-14 ✅ 2024-01-14
 - [x] Update Projects ✅ 2024-01-22
 - [x] Collect utility scripts ✅ 2024-01-17

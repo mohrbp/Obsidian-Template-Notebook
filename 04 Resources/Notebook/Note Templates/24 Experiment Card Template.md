@@ -26,7 +26,7 @@ await tp.user.embedPageToTarget(tp, projectFile, (newPath + "/" + today + "-" + 
 let projectCategory = projectFileDV.file.frontmatter.projectCategory;
 let project = projectFileDV.file.frontmatter.project;
 _%>
-# Notes
+# Notebook
 
 # Tasks
 

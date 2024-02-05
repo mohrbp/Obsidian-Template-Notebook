@@ -4,6 +4,7 @@ projectCategory:
 created: 2024-01-14
 project:
   - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev.md|Notebook Dev]]"
+board: "[[04 Resources/Notebook/Notebook Dev/kanban/kanban.md|kanban]]"
 ---
 # **Last Git Sync** - 2024-01-22
 
@@ -12,6 +13,14 @@ project:
     dv.view("04 Resources/notebook/Scripts/Dataview/tasksGTD", {"target": dv.current().note_type})
 ```
 # Notebook
+## 2024-02-02-Utilities Refactor
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-02-02-Utilities Refactor.md|2024-02-02-Utilities Refactor]]
+## Task Forwarding
+ ![[04 Resources/Notebook/Notebook Dev/kanban/Task Forwarding/Task Forwarding.md|Task Forwarding]]
+## 2024-01-31-Require doesnt work on Mobile 🤦‍♀️
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-31-Require doesnt work on Mobile 🤦‍♀️.md|2024-01-31-Require doesnt work on Mobile 🤦‍♀️]]
+## 2024-01-31-ELN Review
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-31-ELN Review.md|2024-01-31-ELN Review]]
 ## 2024-01-27-Script and Template Naming
  ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-27-Script and Template Naming.md|2024-01-27-Script and Template Naming]]
 ## 2024-01-25-Review Eleven ELN document
@@ -19,13 +28,13 @@ project:
 ## 2024-01-18-Obsidian Metadata Bulk Edit
  ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-18-Obsidian Metadata Bulk Edit.md|2024-01-18-Obsidian Metadata Bulk Edit]]
 ## 2024-01-17-Update embeded notebooks
- ![[04 Resources/Notebook/Notebook Dev/experiments/2024-01-17-Update embeded notebooks/2024-01-17-Update embeded notebooks|2024-01-17-Update embeded notebooks]]
+ ![[04 Resources/Notebook/Notebook Dev/kanban/2024-01-17-Update embeded notebooks/2024-01-17-Update embeded notebooks|2024-01-17-Update embeded notebooks]]
 ## 2024-01-17-Sets Plugin
  ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-17-Sets Plugin.md|2024-01-17-Sets Plugin]]
 ## 2024-01-17-Scrolling Dataview Tables
  ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-17-Scrolling Dataview Tables.md|2024-01-17-Scrolling Dataview Tables]]
 ## 2024-01-17-New Card Refactor
- ![[04 Resources/Notebook/Notebook Dev/experiments/2024-01-17-New Card Refactor/2024-01-17-New Card Refactor|2024-01-17-New Card Refactor]]
+ ![[04 Resources/Notebook/Notebook Dev/kanban/2024-01-17-New Card Refactor/2024-01-17-New Card Refactor|2024-01-17-New Card Refactor]]
 
 ## 2024-01-14-MLK weekend Dev
  ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-14-MLK weekend Dev.md|2024-01-14-MLK weekend Dev]]

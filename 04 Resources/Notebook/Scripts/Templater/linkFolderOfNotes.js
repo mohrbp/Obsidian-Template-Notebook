@@ -5,7 +5,7 @@ var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook
 
 let links = "";
 let depth = 1;
-var paths = dv.pagePaths(`"02 Projects"`);
+var paths = dv.pagePaths(`""`);
 do {
   selection = await tp.system.suggester(["next folder", "notes", "escape"], ["1", "2", "3"]);
   

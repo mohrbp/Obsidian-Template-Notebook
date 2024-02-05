@@ -79,6 +79,39 @@ created: 2024-01-17T12:53:14-06:00
 	- Selecting the new name worked in the script, but could create some issues downstream
 - Thought I may have timing issues but didn't need to add any Timeouts
 
+### Adding notes to cards
+- Seems easiest to add an option when making a page to check if you want to add to the notebook or list the cards on the board if there is one
+	- Notebook at the top of the list, followed by all of the cards (by date) if there is a board
+
+- Easy enough
+	- Just check if there is a board
+		- Then find all of the notes that are cards in the project folder
+		- Add those card names to an array where the first option is the just the default project folder notebook
+		- One more system suggestor to pick where it goes
+	- Otherwise do what you would normally do
+``` javascript
+if (noteDest == "Projects") {
+selected_project = await tp.user.selectProject(tp, dv, false);
+// If there is a board associated with the project
+// Check to see if you want to add the note to the project folder or
+// to the notebook of one of the cards on the board
+if (selected_project.frontmatter.hasOwnProperty("board")) {
+console.log(selected_project.frontmatter.board);
+let projectCards = dv.pages(`"` + selected_project.folder + `"`)
+	.where(p => p.note_type == "card");
+let names = ["Project Notebook", ...projectCards.file.name];
+//console.log(names);
+let folders = [selected_project.folder, ...projectCards.file.folder];
+//console.log(folders);
+let projectFolderTarget = await tp.system.suggester(names, folders);
+target_Folder = projectFolderTarget + "/notebook"
+//console.log(projectFolderTarget)
+//console.log(target_Folder)
+} else {
+target_Folder = selected_project.folder + "/notebook";
+}
+} 
+```
 ## Identifying problems
 ### Cleaning up the Board Name and Duplication
 - Creation of projects also needs a few QoL updates
@@ -110,4 +143,4 @@ created: 2024-01-17T12:53:14-06:00
 # Tasks
 - [x] Update adding new boards, board types and Add Card function to link the project file ✅ 2024-01-22
 - [x] Update existing boards with new methods ⏳ 2024-01-23 ✅ 2024-01-23
-- [ ] Add a method to add a page to a recent card 
+- [x] Add a method to add a page to a recent card ✅ 2024-02-01

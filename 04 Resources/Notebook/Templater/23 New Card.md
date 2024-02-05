@@ -1,9 +1,10 @@
 <%*
 // Config
 const user = "BMohr";
+const wikiLinkRegex = /\[\[([^|\]]+)(?:\|[^|\]]+)?\]\]/;
 // Initialize dataview plugin variable
 const dv = this.app.plugins.plugins["dataview"].api;
-var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
+//var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
 const today = tp.date.now("YYYY-MM-DD");
 // Select a projectCategory
 selected_project = await tp.user.selectProject(tp, dv, false);
@@ -11,7 +12,7 @@ selected_project = await tp.user.selectProject(tp, dv, false);
 let target_Folder = await selected_project.folder;
 let projectBoard = await selected_project.frontmatter.board;
 console.log("projectBoard", projectBoard);
-let boardPath = await dataviewUtils.extractPathFromWikiLink(projectBoard, true);
+let boardPath = String(projectBoard).match(wikiLinkRegex)[1];
 console.log("boardPath", boardPath);
 let boardFile = await dv.page(`${boardPath}`);
 console.log("boardFile", boardFile);
