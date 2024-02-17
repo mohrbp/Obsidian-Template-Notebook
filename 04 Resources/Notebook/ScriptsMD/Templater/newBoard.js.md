@@ -2,8 +2,8 @@ async function newBoard (tp, dv, selected_project){
 
 // Build Linked Experiment Kanban Board
 // Load Utilities		
-var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
-let user = dataviewUtils.userInfo();
+//var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
+//let user = dataviewUtils.userInfo();
 
 
 // Load the Project File where the Board is being created
@@ -44,7 +44,7 @@ await app.fileManager.processFrontMatter(
 		frontmatter["project"] = "[[" + project_TFile.path + "|" + project_TFile.basename + "]]";
             // Apply Default frontmatter
         	frontmatter["created"] = tp.date.now("YYYY-MM-DDTHH:mm");
-     	  	frontmatter["created_by"] = user; 
+     	  //	frontmatter["created_by"] = user; 
         // Apply projectCategory/Template Specific frontmatter
       })
 

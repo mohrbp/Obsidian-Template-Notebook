@@ -12,17 +12,19 @@ created_by: BMohr
 
 ## To-Do
 
-- [ ] [2024-01-17-Update embeded notebooks](04%20Resources/Notebook/Notebook%20Dev/kanban/2024-01-17-Update%20embeded%20notebooks/2024-01-17-Update%20embeded%20notebooks.md)
 - [ ] [Task Forwarding](04%20Resources/Notebook/Notebook%20Dev/kanban/Task%20Forwarding/Task%20Forwarding.md)
+- [ ] [Update Asana Import](04%20Resources/Notebook/Notebook%20Dev/kanban/Update%20Asana%20Import/Update%20Asana%20Import.md)
+- [ ] [MermaidJs for Gantt](04%20Resources/Notebook/Notebook%20Dev/kanban/MermaidJs%20for%20Gantt/MermaidJs%20for%20Gantt.md)
 
 
 ## Doing
 
-- [ ] [2024-01-17-New Card Refactor](04%20Resources/Notebook/Notebook%20Dev/kanban/2024-01-17-New%20Card%20Refactor/2024-01-17-New%20Card%20Refactor.md)
+- [ ] [2024-01-17-Update embeded notebooks](04%20Resources/Notebook/Notebook%20Dev/kanban/2024-01-17-Update%20embeded%20notebooks/2024-01-17-Update%20embeded%20notebooks.md)
 
 
 ## Done
 
+- [ ] [2024-01-17-New Card Refactor](04%20Resources/Notebook/Notebook%20Dev/kanban/2024-01-17-New%20Card%20Refactor/2024-01-17-New%20Card%20Refactor.md)
 
 
 ## Archive

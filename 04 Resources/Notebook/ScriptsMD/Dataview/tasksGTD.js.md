@@ -13,14 +13,15 @@ var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook
 let recentLow = 1;
 let recentMid = 3;
 let recentHigh = 7;
-let limit = 10
+let limit = 30
 
 const currentTime = dv.date(`today`);
 // console.log(`Current Time = ${currentTime}`);
 const myTasks = dv.pages()
 			.where(p => String(p[target]).indexOf(query) != -1)
 			.where(p => p.note_type == "page" | p.note_type == "card")
-					.file.tasks
+					.file
+					.tasks
 						.where(t => t.checked === false);
 							
 // Format file.tasks based on file frontmatter and other info
@@ -31,6 +32,8 @@ const blue = "<span style='border-left: 3px solid rgb(39, 117, 182);'>&nbsp;</sp
 const green = "<span style='border-left: 3px solid green;'>&nbsp;</span>"
 
 for (let task of myTasks) {
+	if (dv.page(task.path) && dv.page(task.path).file) {
+ 	 // it's safe to access dv.page(task.path).file properties here
 	if (typeof (task.created) == "undefined") {
 	task.created = dv.page(task.path).file.frontmatter.created
 	};
@@ -46,6 +49,7 @@ for (let task of myTasks) {
 	if (dv.page(task.path).file.link) {
 	task.parent = dv.page(task.path).file.link
 	};
+};	
 };
 
 
@@ -111,7 +115,7 @@ dv.table(["Task", "Scheduled","Project Category", "Project", "Note", "Created"],
 
 let unscheduledTasks = allTasks
 							.where(t => typeof(t.scheduled) == "undefined" & typeof(t.due) == "undefined")
-							.where(t => !String(t.project).includes(exclude));
+							//.where(t => !String(t.project).includes(exclude));
 							
 for (let task of unscheduledTasks) {
     task.visual = "";
@@ -145,6 +149,7 @@ const myRecentCompleteTasks = dv.pages()
 
 for (let task of myRecentCompleteTasks) {
 	task.visual = "";
+	if (dv.page(task.path) && dv.page(task.path).file) {		
 	if (typeof (task.created) == "undefined") {
 	task.created = dv.page(task.path).file.frontmatter.created
 	};
@@ -161,6 +166,7 @@ for (let task of myRecentCompleteTasks) {
 	task.parent = dv.page(task.path).file.link
 	};
 	task.visual += task.text.replace(/[📅📆⌛⏳].*$/g, "");
+};
 };
 
 dv.header(3, "Recently Completed (Limit "+ (limit) +")");

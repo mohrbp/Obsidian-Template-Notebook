@@ -61,6 +61,6 @@ dv.table(["Created Date", title, "Note","Project Notebook"],
 		p.file.link,
 		dataviewUtils.convertLinksToCommaSeparatedList(p.project),
     	])
-    	.limit(25)
+    	.limit(250)
     	)
 
