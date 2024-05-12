@@ -6,7 +6,7 @@ template_type: All
 // Template experiment setup 
 // Build experiment Folder Structure
 const dv = this.app.plugins.plugins["dataview"].api;
-var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
+//var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
 
 let folder = await tp.file.folder(true);
 let fileName = await tp.file.title;
@@ -14,7 +14,8 @@ let newPath = folder + "/" + fileName;
 await tp.file.move(newPath + "/" + fileName);
 await this.app.vault.createFolder(newPath + "/notebook");
 
-let projectFile = dataviewUtils.selectParentMarkdownFile(folder);
+//let projectFile = dataviewUtils.selectParentMarkdownFile(folder);
+let projectFile = folder.replace(/\/([^\/]+)\/([^\/]+)\/([^\/]+)$/, '/$1/$2/$2');
 let projectFileDV = dv.page(projectFile);
 // Link to Target project
 await tp.user.embedPageToTarget(tp, projectFile, (newPath + "/" + fileName), "# Notebook", "## ", linkToHeading = false); 

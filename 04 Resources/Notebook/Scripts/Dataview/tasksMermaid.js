@@ -17,7 +17,7 @@ ganttOutput += "axisFormat  %Y-%m-%d\n";
 
 // Load Utilities
 // Ensure you implement or have this utility function in your script
-var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
+//var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
 
 // Fetch tasks from pages with proper attributes
 const tasks = dv.pages()
@@ -49,5 +49,6 @@ tasks.forEach(task => {
 // Close the MermaidJS code block
 ganttOutput += "```";
 
+console.log(ganttOutput);
 // Render the MermaidJS Gantt chart
 dv.paragraph(ganttOutput);

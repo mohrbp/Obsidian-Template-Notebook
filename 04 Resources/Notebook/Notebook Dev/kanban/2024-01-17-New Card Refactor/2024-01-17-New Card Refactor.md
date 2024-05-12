@@ -1,10 +1,12 @@
 ---
 note_type: card
 projectCategory: 
-project: "[[04 Resources/Notebook/Notebook Dev/Notebook Dev.md|Notebook Dev]]"
+project:
+  - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev.md|Notebook Dev]]"
 people: 
 topics: 
 created: 2024-01-17T12:53:14-06:00
+parent_project: "[[04 Resources/Notebook/Notebook Dev/Notebook Dev|Notebook Dev]]"
 ---
 # Notes
 ## Working on solutions 

@@ -4,46 +4,73 @@ projectCategory:
 created: 2024-01-14
 project:
   - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev.md|Notebook Dev]]"
-board: "[[04 Resources/Notebook/Notebook Dev/kanban/kanban.md|kanban]]"
+board: "[[04 Resources/Notebook/Notebook Dev/kanban/kanban|kanban]]"
+parent_project: "[[02 Projects/Work/Work.md|Work]]"
+cssclasses:
+  - cards
+  - cards-cols-1
 ---
-# **Last Git Sync** - 2024-01-22
-
-# Tasks
+# **Last Git Sync - 2024-02-17**
 ```dataviewjs
-    dv.view("04 Resources/notebook/Scripts/Dataview/tasksGTD", {"target": dv.current().note_type})
+dv.view("04 Resources/notebook/Scripts/Dataview/multicolumn", {"target": dv.current().note_type})
+```
+# Dashboard
+```dataviewjs
+    dv.view("04 Resources/notebook/Scripts/Dataview/tasksGTDdev", {"target": dv.current().note_type})
 ```
 # Notebook
+## 2024-05-08-Rebuild New Page
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-05-08-Rebuild New Page.md|2024-05-08-Rebuild New Page]]
+## Daily Notes
+ ![[04 Resources/Notebook/Notebook Dev/kanban/Daily Notes/Daily Notes.md|Daily Notes]]
+## Dashboard
+ ![[04 Resources/Notebook/Notebook Dev/kanban/Dashboard/Dashboard.md|Dashboard]]
+## 2024-04-01-Markdown Slides
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-04-01-Markdown Slides.md|2024-04-01-Markdown Slides]]
+## 2024-04-01-Nested Cards
+ ![[04 Resources/Notebook/Notebook Dev/kanban/Dashboard/notebook/2024-04-01-Nested Cards|2024-04-01-Nested Cards]]
+## 2024-03-28-Notebook Refactoring
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-03-28-Notebook Refactoring.md|2024-03-28-Notebook Refactoring]]
+## 2024-03-27-Project Tracking Thoughts
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-03-27-Project Tracking Thoughts.md|2024-03-27-Project Tracking Thoughts]]
+
+## 2024-03-14-Show Recently Worked on Projects
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-03-14-Show Recently Worked on Projects.md|2024-03-14-Show Recently Worked on Projects]]
+## Notebook Template
+ ![[04 Resources/Notebook/Notebook Dev/kanban/Notebook Template/Notebook Template.md|Notebook Template]]
+## 2024-03-06-Note Archiving
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-03-06-Note Archiving.md|2024-03-06-Note Archiving]]
 ## 2024-02-12-JsonToMarkdown
  ![[04 Resources/Notebook/Notebook Dev/kanban/Update Asana Import/notebook/2024-02-12-JsonToMarkdown|2024-02-12-JsonToMarkdown]]
 ## MermaidJs for Gantt
- ![[04 Resources/Notebook/Notebook Dev/kanban/MermaidJs for Gantt/MermaidJs for Gantt.md|MermaidJs for Gantt]]
+ ![[04 Resources/Notebook/Notebook Dev/kanban/MermaidJs for Gantt/MermaidJs for Gantt|MermaidJs for Gantt]]
 ## Update Asana Import
- ![[04 Resources/Notebook/Notebook Dev/kanban/Update Asana Import/Update Asana Import.md|Update Asana Import]]
+ ![[04 Resources/Notebook/Notebook Dev/kanban/Update Asana Import/Update Asana Import|Update Asana Import]]
 ## 2024-02-02-Utilities Refactor
- ![[04 Resources/Notebook/Notebook Dev/notebook/2024-02-02-Utilities Refactor.md|2024-02-02-Utilities Refactor]]
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-02-02-Utilities Refactor|2024-02-02-Utilities Refactor]]
 ## Task Forwarding
- ![[04 Resources/Notebook/Notebook Dev/kanban/Task Forwarding/Task Forwarding.md|Task Forwarding]]
+ ![[04 Resources/Notebook/Notebook Dev/kanban/Task Forwarding/Task Forwarding|Task Forwarding]]
 ## 2024-01-31-Require doesnt work on Mobile 🤦‍♀️
- ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-31-Require doesnt work on Mobile 🤦‍♀️.md|2024-01-31-Require doesnt work on Mobile 🤦‍♀️]]
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-31-Require doesnt work on Mobile 🤦‍♀️|2024-01-31-Require doesnt work on Mobile 🤦‍♀️]]
 ## 2024-01-31-ELN Review
- ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-31-ELN Review.md|2024-01-31-ELN Review]]
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-31-ELN Review|2024-01-31-ELN Review]]
 ## 2024-01-27-Script and Template Naming
- ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-27-Script and Template Naming.md|2024-01-27-Script and Template Naming]]
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-27-Script and Template Naming|2024-01-27-Script and Template Naming]]
 ## 2024-01-25-Review Eleven ELN document
  ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-25-Eleven ELN document|2024-01-25-Eleven ELN document]]
 ## 2024-01-18-Obsidian Metadata Bulk Edit
- ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-18-Obsidian Metadata Bulk Edit.md|2024-01-18-Obsidian Metadata Bulk Edit]]
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-18-Obsidian Metadata Bulk Edit|2024-01-18-Obsidian Metadata Bulk Edit]]
 ## 2024-01-17-Update embeded notebooks
  ![[04 Resources/Notebook/Notebook Dev/kanban/2024-01-17-Update embeded notebooks/2024-01-17-Update embeded notebooks|2024-01-17-Update embeded notebooks]]
 ## 2024-01-17-Sets Plugin
- ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-17-Sets Plugin.md|2024-01-17-Sets Plugin]]
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-17-Sets Plugin|2024-01-17-Sets Plugin]]
 ## 2024-01-17-Scrolling Dataview Tables
- ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-17-Scrolling Dataview Tables.md|2024-01-17-Scrolling Dataview Tables]]
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-17-Scrolling Dataview Tables|2024-01-17-Scrolling Dataview Tables]]
 ## 2024-01-17-New Card Refactor
  ![[04 Resources/Notebook/Notebook Dev/kanban/2024-01-17-New Card Refactor/2024-01-17-New Card Refactor|2024-01-17-New Card Refactor]]
 
 ## 2024-01-14-MLK weekend Dev
- ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-14-MLK weekend Dev.md|2024-01-14-MLK weekend Dev]]
+ ![[04 Resources/Notebook/Notebook Dev/notebook/2024-01-14-MLK weekend Dev|2024-01-14-MLK weekend Dev]]
 ## 2024-01-02-PDF Extraction
 ![2024-01-02-PDF Extraction](04%20Resources/Notebook/Notebook%20Dev/notebook/2024-01-02-PDF%20Extraction.md)
 

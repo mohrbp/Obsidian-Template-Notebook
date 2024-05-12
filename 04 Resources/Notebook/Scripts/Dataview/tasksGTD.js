@@ -7,7 +7,7 @@ let query = dv.current()[target];
 let exclude = input.exclude
 
 // Load Utilities
-var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
+// var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
 
 // Assign variables for recency and limits
 let recentLow = 1;
@@ -88,8 +88,8 @@ dv.table(["Task", "Scheduled","Project Category", "Project", "Note", "Created"],
 	    .map(t => [
 		t.visual,
 		t.timingSch.toFormat("DD"),		
-		dataviewUtils.convertLinksToCommaSeparatedList(t.projectCategory),
-		dataviewUtils.convertLinksToCommaSeparatedList(t.project),
+		(t.projectCategory),
+		(t.project),
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
 		])
@@ -106,8 +106,8 @@ dv.table(["Task", "Scheduled","Project Category", "Project", "Note", "Created"],
 	    .map(t => [
 		t.visual,
 		t.timingSch.toFormat("DD"),		
-		dataviewUtils.convertLinksToCommaSeparatedList(t.projectCategory),
-		dataviewUtils.convertLinksToCommaSeparatedList(t.project),
+		(t.projectCategory),
+		(t.project),
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
 		])
@@ -129,8 +129,8 @@ dv.table(["Task","Project Category", "Project", "Note", "Created"],
 	.sort(t => DateTime.fromISO(t.created), "desc")
     .map(t => [
 		t.visual,
-		dataviewUtils.convertLinksToCommaSeparatedList(t.projectCategory),
-		dataviewUtils.convertLinksToCommaSeparatedList(t.project),
+		(t.projectCategory),
+		(t.project),
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
 		])
@@ -176,8 +176,8 @@ dv.table(["Task","Project Category", "Project", "Note", "Created", "Completed"],
 	.sort(t => DateTime.fromISO(t.completion), "desc")
     .map(t => [
 		t.visual,
-		dataviewUtils.convertLinksToCommaSeparatedList(t.projectCategory),
-		dataviewUtils.convertLinksToCommaSeparatedList(t.project),
+		(t.projectCategory),
+		(t.project),
 		t.parent,
 		DateTime.fromISO(t.created).toFormat("DD"),
 		t.completion,

@@ -5,7 +5,7 @@ edits:
   - 2023-06-15
   - 2023-06-16
 note_type: page
-incomplete_tasks: 1
+incomplete_tasks: 0
 projectCategory: 
 total_tasks: 7
 project:
@@ -156,5 +156,5 @@ dv.list(embeds)
 
 
 
-Date:: [[01 Home/2023/06-Jun/24/2023-06-15]]
+Date:: [[01 Home/2023/24-Jun11/2023-06-15]]
 #Organization/Obsidian

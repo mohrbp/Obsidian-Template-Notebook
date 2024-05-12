@@ -40,10 +40,10 @@ let selectedTemplate = await tp.system.suggester(suggestionsTemplates,valuesTemp
 let fileName = await selectedCard.name;
 let filePath = await selectedBoard.folder + "/" + fileName + "/" + fileName;
 // Build new file
-let newFile = await tp.user.buildPageAndLink(tp, selectedTemplate, filePath, "/", false); 
+let new_Tfile = await tp.user.buildPageAndLink(tp, selectedTemplate, filePath, "/", false); 
+let newFile = new_Tfile.basename;
 
 // Add the new file to the target board
-let new_Tfile = await tp.file.find_tfile(newFile);
 let newFileName = await new_Tfile.basename;
 console.log(newFileName);
 await tp.user.appendContentToTarget(tp, selectedBoard.path, targetBoardHeader, "- [ ] " + "[[" + newFileName + "]]")

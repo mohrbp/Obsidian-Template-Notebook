@@ -4,13 +4,13 @@ created_by: BMohr
 note_type: page
 people: 
 project:
-  - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev|Notebook Dev]]"
+  - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev.md|Notebook Dev]]"
 projectCategory: 
 topics:
   - "[[03 Areas/Software/Obsidian/Obsidian|Obsidian]]"
 completed_tasks: 0
-incomplete_tasks: 0
-total_tasks:
+incomplete_tasks: 1
+total_tasks: 1
 ---
 ### Purpose
 - What do you want this to do?
@@ -29,7 +29,7 @@ total_tasks:
 ### Resources
 - This template and guide are what I want to look into
 	- https://forum.obsidian.md/t/zotero-integration-import-templates/36310/105
-	- ![](01%20Home/!Inbox/attachments/Pasted%20image%2020240106165805.png)
+	- ![](01%20Home/!Inbox/2024/attachments/Pasted%20image%2020240106165805.png)
 		- This make sense to have comments in bold above highlighted text
 			- Makes it clear what is the highlight
 		- I like the "todo hack" - that could be helpful

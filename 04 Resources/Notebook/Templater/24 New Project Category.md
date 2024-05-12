@@ -18,10 +18,10 @@ let fileName = await tp.system.prompt("Enter Project Category");
 let filePath = await target_Folder + "/" + fileName + "/" + fileName;
 
 // Build new file  
-let newFile = await tp.user.buildPageAndLink(tp, selected_Template, filePath, "/", false);
+let new_Tfile = await tp.user.buildPageAndLink(tp, selected_Template, filePath, "/", false);
+let newFile = new_Tfile.basename;
 
 // Apply Frontmatter to new file  
-let new_Tfile = await tp.file.find_tfile(newFile);  
 await app.fileManager.processFrontMatter(  
 new_Tfile,  
 frontmatter => {  

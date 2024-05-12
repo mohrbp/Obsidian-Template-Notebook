@@ -2,14 +2,14 @@
 completed_tasks: 0
 created: 2023-12-27T01:46:00
 created_by: BMohr
-incomplete_tasks: 0
+incomplete_tasks: 5
 note_type: page
 projectCategory: 
 people: 
 project:
   - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev.md|Notebook Dev]]"
 topics: 
-total_tasks: 0
+total_tasks: 7
 ---
 # Notes
 
@@ -19,14 +19,9 @@ total_tasks: 0
 > {%- if annotation.imageRelativePath %}![[{{annotation.imageRelativePath}}]]{%- endif %}
 
 `$=dv.current()['total_tasks']`
-
+### Buttons in Dataview
+![[04 Resources/Notebook/Notebook Dev/kanban/Task Forwarding/notebook/2023-12-27-Buttons in Dataview.md|2023-12-27-Buttons in Dataview]]
 ### Table of Buttons for Hotkeys
-https://forum.obsidian.md/t/using-metaedit-buttons-templater-nldates-and-dataview-together/35911
-https://www.reddit.com/r/ObsidianMD/comments/rre6wk/button_to_add_or_substract_from_yaml_or_dataview/
-
-```dataviewjs
-    dv.view("04 Resources/Notebook/Buttons/increment", {"target": "total_tasks"})
-```
 
 | ![New Task\|clean no-title no-link](04%20Resources/Notebook/Buttons/New%20Task.md) | ![New Card\|clean no-title no-link](04%20Resources/Notebook/Buttons/New%20Card.md) | ![New Page\|clean no-title no-link](04%20Resources/Notebook/Buttons/New%20Page.md) |
 | ---- | ---- | ---- |
@@ -46,7 +41,7 @@ dv.executeJs(await dv.io.load("04 Resources/Notebook/Scripts/recentlyCreated.js"
 
 Or use dv.view to load in arguments, which can include front matter
 - Do you have an example of this?
-- ![](01%20Home/!Inbox/attachments/Screenshot%202023-12-29%20at%2016-47-06%20r_ObsidianMD%20-%20Using%20dataview.js%20how%20can%20you%20get%20myArg%20from%20a%20dv.view('my_script'%20{myArg%201}).png)
+- ![](01%20Home/!Inbox/2024/attachments/Screenshot%202023-12-29%20at%2016-47-06%20r_ObsidianMD%20-%20Using%20dataview.js%20how%20can%20you%20get%20myArg%20from%20a%20dv.view('my_script'%20{myArg%201}).png)
 
 
 ### Topics

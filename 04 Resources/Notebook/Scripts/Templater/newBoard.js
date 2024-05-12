@@ -27,10 +27,10 @@ cardTemplate = "04 Resources/Notebook/Note Templates/24 Kanban Card Template.md"
 }
 
 
-let newBoard = await tp.user.buildPageAndLink(tp, boardTemplate, boardPath, "/", false); 
+let newBoard_TFile = await tp.user.buildPageAndLink(tp, boardTemplate, boardPath, "/", false); 
+let newBoard = newBoard_TFile.basename;
 
 // Apply Frontmatter to new Board
-let newBoard_TFile = await tp.file.find_tfile(newBoard);
 await app.fileManager.processFrontMatter(
       newBoard_TFile,
       frontmatter => {

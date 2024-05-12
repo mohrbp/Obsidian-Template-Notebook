@@ -67,9 +67,9 @@ await app.fileManager.processFrontMatter(
         frontmatter["topics"] = null;
         frontmatter["created"] = tp.date.now("YYYY-MM-DDTHH:mm");
         frontmatter["created_by"] = user; 
-        frontmatter["total_tasks"] = 0;
-        frontmatter["completed_tasks"] = 0;
-        frontmatter["incomplete_tasks"] = 0;
+    //    frontmatter["total_tasks"] = 0;
+   //     frontmatter["completed_tasks"] = 0;
+    //    frontmatter["incomplete_tasks"] = 0;
         // Apply projectCategory/Template Specific frontmatter
       })
 _%>

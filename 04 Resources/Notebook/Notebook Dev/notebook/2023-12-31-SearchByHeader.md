@@ -6,10 +6,10 @@ incomplete_tasks: 0
 note_type: page
 people: 
 project:
-  - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev|Notebook Dev]]"
+  - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev.md|Notebook Dev]]"
 projectCategory: 
 topics: 
-total_tasks: 0
+total_tasks: 1
 ---
 # Notes
 

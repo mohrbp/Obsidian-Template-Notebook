@@ -7,7 +7,7 @@ people:
 topics: 
 created: 2024-01-14T21:22
 created_by: BMohr
-total_tasks: 0
+total_tasks: 8
 completed_tasks: 0
 incomplete_tasks: 0
 ---

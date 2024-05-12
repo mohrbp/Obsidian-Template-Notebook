@@ -1,7 +1,7 @@
 ```button
 name New Card
 type command
-action Templater: Insert 04 Resources/Notebook/Templater/23 New Card.md
+action Templater: Insert 04 Resources/Notebook/Templater/22 New Card.md
 color blue
 ```
 ^button-newCard

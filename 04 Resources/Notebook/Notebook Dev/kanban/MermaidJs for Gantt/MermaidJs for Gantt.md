@@ -6,8 +6,13 @@ project:
 people: 
 topics: 
 created: 2024-02-09T09:51:39-06:00
+parent_project: "[[04 Resources/Notebook/Notebook Dev/Notebook Dev|Notebook Dev]]"
 ---
 # Notebook
+## 2024-03-18-Mermaid Timeblocks
+ ![[04 Resources/Notebook/Notebook Dev/kanban/MermaidJs for Gantt/notebook/2024-03-18-Mermaid Timeblocks.md|2024-03-18-Mermaid Timeblocks]]
+## 2024-03-04-Mermaid Timelines
+ ![[04 Resources/Notebook/Notebook Dev/kanban/MermaidJs for Gantt/notebook/2024-03-04-Mermaid Timelines.md|2024-03-04-Mermaid Timelines]]
 https://mermaid.js.org/syntax/gantt.html
 
 ## 2024-02-09 MermaidJs

@@ -3,14 +3,14 @@ completed_tasks: 5
 created: 2023-10-07
 incomplete_tasks: 3
 note_type: page
-parent: "[[01 Home/2023/10-Oct/2023-10-07/2023-10-07]]"
+parent: "[[01 Home/2023/40-Oct01/2023-10-07]]"
 people: 
 topics:
   - "[[03 Areas/Software/Obsidian/Obsidian|Obsidian]]"
 total_tasks: 8
 project:
   - "[[04 Resources/Notebook/Notebook Dev/Notebook Dev.md|Notebook Dev]]"
-projectCategory:
+projectCategory: 
 ---
 # Content
 ## Background/Framing
@@ -54,12 +54,12 @@ projectCategory:
 	- Project Task 2
 	- 
 ## Task Management
-[[01 Home/2023/10-Oct/2023-10-02/2023-10-07 TaskManagement#Forwarded from 2023-10-07 UpdatingProjectTracking|2023-10-07 TaskManagement]]
+[[04 Resources/Notebook/Notebook Dev/notebook/2023-10-07 TaskManagement#Forwarded from 2023-10-07 UpdatingProjectTracking|2023-10-07 TaskManagement]]
 # Action Items
-- [>] [[01 Home/2023/10-Oct/2023-10-02/2023-10-07 TaskManagement]] Re-do Project and Project Tasks meetings setup 📅 2023-10-08
+- [>] [[04 Resources/Notebook/Notebook Dev/notebook/2023-10-07 TaskManagement]] Re-do Project and Project Tasks meetings setup 📅 2023-10-08
 - [x] Update Project and Project Task File Dashboards ✅ 2023-10-08
-- [>] [[01 Home/2023/10-Oct/2023-10-07/2023-10-16 DailyGTD]] Add links to tasks in GTD
-- [>] [[01 Home/2023/10-Oct/2023-10-07/2023-10-16 DailyGTD]] Consider what your Daily Project Tracking looks like now
+- [>] [[04 Resources/Notebook/Notebook Dev/notebook/2023-10-16 DailyGTD]] Add links to tasks in GTD
+- [>] [[04 Resources/Notebook/Notebook Dev/notebook/2023-10-16 DailyGTD]] Consider what your Daily Project Tracking looks like now
 - [x] Build out Create Experiment Folder Note script ✅ 2023-10-08
 - [ ] Dataview MOC/List of files in this folder
 - [ ] Create Note By Note Type Script

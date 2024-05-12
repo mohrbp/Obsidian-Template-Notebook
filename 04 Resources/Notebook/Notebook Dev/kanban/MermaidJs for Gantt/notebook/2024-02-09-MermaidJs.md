@@ -252,4 +252,21 @@ This script should now properly escape Gantt section names to be compatible with
 ```dataviewjs
     dv.view("04 Resources/Notebook/Scripts/Dataview/tasksMermaid", {"target": dv.current().note_type, "exclude": "Notebook Dev"})
 ```
+
+```mermaid
+gantt
+dateFormat  YYYY-MM-DD
+axisFormat  %Y-%m-%d
+    section No_Project
+    Finish_Time_blocking_for_Q1_and_Q2_-length--_1h-_-startTime--_16-30-_-_2024-03-18 :done, 2024-03-18, 1d
+    section No_Project
+    Schedule_Set_up_Windows_Code_Environment_-startTime--_15-00-_-length--_60m-_-_2024-03-19 :done, 2024-03-19, 1d
+    section No_Project
+    Attend_Q2_Stewardship_for_Cell-free_platform_-startTime--_11-00-_-length--_30m-_-_2024-03-20 :done, 2024-03-20, 1d
+    section No_Project
+    Schedule_time_to_continue_Enzymology_and_Expression_Workflow_Efforts_-length--_1h-_-startTime--_08-00-_-_2024-03-19 :done, 2024-03-19, 1d
+    section No_Project
+    End_Date_for_P1175_-_2024-03-27 :done, 2024-03-27, 1d
+```
+
 # Tasks

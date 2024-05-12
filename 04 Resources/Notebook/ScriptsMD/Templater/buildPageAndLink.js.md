@@ -5,7 +5,7 @@ async function buildPageAndLink(p_tp, p_strTemplateName, p_strName, p_strFolderP
 	let fFolder = app.vault.getAbstractFileByPath(p_strFolderPath);
 	let fTemplate = await p_tp.file.find_tfile(p_strTemplateName);
 	let strContent = await app.vault.read(fTemplate);
-	await p_tp.file.create_new(strContent, strName, false, fFolder);
-	return strName;
+	let tFile = await p_tp.file.create_new(strContent, strName, false, fFolder);
+	return tFile;
 }
 module.exports = buildPageAndLink;

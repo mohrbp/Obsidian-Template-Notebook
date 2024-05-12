@@ -6,6 +6,7 @@ project:
 people: 
 topics: 
 created: 2024-02-09T09:50:21-06:00
+parent_project: "[[04 Resources/Notebook/Notebook Dev/Notebook Dev|Notebook Dev]]"
 ---
 # Notebook
 

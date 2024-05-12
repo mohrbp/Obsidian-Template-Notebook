@@ -22,13 +22,13 @@ let fileName = await tp.system.prompt("Enter Project Name");
 let filePath = await target_Folder + "/" + fileName + "/" + fileName;
 
 // Build new project file
-let newFile = await tp.user.buildPageAndLink(tp, selected_Template, filePath, "/", false); 
+let new_Tfile = await tp.user.buildPageAndLink(tp, selected_Template, filePath, "/", false); 
+let newFile = new_Tfile.basename;
 console.log(newFile);
 // Link to Parent project
 await tp.user.embedPageToTarget(tp, selected_project.name, newFile, "# Notebook", "## ", "# Notebook");
 
 // Apply Frontmatter to new project file
-let new_Tfile = await tp.file.find_tfile(newFile);
 await app.fileManager.processFrontMatter(
       new_Tfile,
       frontmatter => {
