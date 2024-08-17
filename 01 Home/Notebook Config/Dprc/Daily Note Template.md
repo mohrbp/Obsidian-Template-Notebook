@@ -10,7 +10,7 @@ breakfast:
 lunch_time: 
 lunch: 
 pill_2: 
-bed: ""
+bed: 
 mood: 
 energy_level: 
 affect_level: 

@@ -12,7 +12,7 @@ class noteFilter {
     let page = dv.page(input[0]["path"])
     let pageNoteType = page.noteType
     let noteType = target[0]["display"]
-    // console.log("input", input)
+    console.log("input", input)
     // console.log("noteType", noteType)
 
 
@@ -64,6 +64,10 @@ class noteFilter {
 
         // Load the configuration note
         let configNote = dv.page("/01 Home/Notebook Config/Notebook Config");
+        console.log("configNote", configNote.admin)
+        config["admin"] = configNote.admin
+        config["templateFolder"] = configNote.templateFolder
+        config["excludePaths"] = configNote.excludePaths
 
         let configCategories;
         configCategories = Object.keys(configNote).reduce((filteredConfigCategories, key) => {
@@ -84,6 +88,7 @@ class noteFilter {
         };
 
         // Output config
+        console.log("config", config)
         return config;
     }
 
@@ -113,43 +118,43 @@ class noteFilter {
         }
     }
 
-    createSuggesterInputs (dv, inputData, config,  prefix = null) {
+    createSuggesterInputs (dv, inputData, config,  prefix = null, admin) {
         // Function to create suggester inputs
         let inputSug = [], inputVal = []; 
         for (let cat in inputData) {
 
             let inputCatName = cat;
             let inputValNote = inputCatName;
-            console.log(inputData, cat)
+            console.log(inputData, cat, config )
             let headerNote = {};
+            headerNote[cat] = [];
+            if (prefix && prefix == "Root" && admin == true) {
 
+                inputCatName = prefix + " " + cat;
+                let categoryNote = config[cat].Link.path
+                console.log(inputCatName, categoryNote)
+                let inputCatNote = {
+                    Name: categoryNote.file.name,
+                    Path: categoryNote.file.path,
+                    Page: categoryNote,
+                    Link: config[cat].Link,
+                    noteType: config[cat].Name,
+                    Folder: categoryNote.rootFolder,
+                }
+                headerNote[cat].push(inputCatNote)
+                inputValNote = headerNote;
+
+            } else if (prefix && prefix == "Root" && admin == false) {
+                // inputCatName = prefix + " " + cat;
+
+            } 
 
             if (inputData[cat].length > 0) {
-                    headerNote[cat] = [];
-                    let inputNote = inputData[cat][0];
+                headerNote[cat] = [];
+                let inputNote = inputData[cat][0];
 
-                if (prefix && prefix == "Root") {
-
-                    inputCatName = prefix + " " + cat;
-
-                    let inputCatNotePath = inputNote["noteType"]["path"]
-                    let page = dv.page(inputCatNotePath)
-
-                    let inputCatNote = {
-                        Name: page.file.name,
-                        Path: page.file.path,
-                        Page: page,
-                        Link: inputNote["noteType"],
-                        noteType: inputNote["noteType"],
-                        Folder: page.folder,
-                    }
-                    headerNote[cat].push(inputCatNote)
-                    inputValNote = headerNote;
-
-                } else if (prefix && prefix == "Selected") { 
-
+                if (prefix && prefix == "Selected") { 
                     inputCatName = prefix + " " + cat + " " + inputNote["Name"];
-
                     headerNote[cat].push(inputNote)
                     inputValNote = headerNote;
                     inputData[cat].shift()
@@ -250,12 +255,14 @@ class noteFilter {
                 let parentFilter;
                 if (mode == "RootCategory") {
                     parentCategory = nestedInput[key];
+                    let parentCategoryNote = dv.page(parentCategory["Link"]["path"])
+                    // console.log("parentCategory", parentCategory, parentCategoryNote)
                     parentFilter = {
                         noteType: {
                             includePaths: parentCategory["Link"]["path"]
                         },
                         [parentCategoryName]: {
-                            includePaths: parentCategory["Link"]["path"]
+                            includePaths: parentCategoryNote.rootNote.path
                         }
                     };
                 } else if (nestedInput[key].hasOwnProperty(index)) {

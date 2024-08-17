@@ -4,6 +4,11 @@ noteType:
   - "[[Item Template]]"
 aliases:
   - Item
+folder:
+  - Gear
+  - Items
+dated: false
+folderNote: false
 ---
 # Notes
 # Tasks

@@ -1,22 +1,24 @@
 ---
 aliases:
-  - Character Sheet
+  - Inventory
 noteType:
-  - "[[GameElement Template|GameElements]]"
-  - "[[Note Templates|Template]]"
-  - "[[Character Sheet Template|Character Sheet]]"
+  - "[[Inventory Sheet Template|Inventory]]"
 pageTemplate:
-  - "[[Trait Template|Trait]]"
-  - "[[Track Template|Track]]"
-folder: 05 Wildsea
+  - "[[Item Template|Item]]"
+  - "[[Resource Template|Resource]]"
+folder: 
 templateType:
   - Category
 parentGameElement: "[[GameElement Template]]"
+dated: false
+folderNote: true
 ---
 <%*
 // Template project setup 
 // Build project Folder Structure
-await this.app.vault.createFolder(tp.file.folder(true) + "/notebook");
+await this.app.vault.createFolder(tp.file.folder(true) + "/Resources");
+await this.app.vault.createFolder(tp.file.folder(true) + "/Items");
+await this.app.vault.createFolder(tp.file.folder(true) + "/Gear");
 _%>
 # Notebook
 

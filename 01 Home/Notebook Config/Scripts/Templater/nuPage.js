@@ -2,6 +2,7 @@ async function nuPage(tp, dv) {
     // Load the configuration note and set up defaults based on config
     const {noteFilter} = await cJS();
     let config = noteFilter.loadConfig(dv);
+    let admin = config["admin"];
     let configCategories = config["categories"];
     let exclusionTemplate = "01 Home/Notebook Config/Note Templates/Note Templates.md";
     let fileYear = tp.date.now("YYYY");
@@ -17,11 +18,11 @@ async function nuPage(tp, dv) {
         if (noteDest === "Current") {
             let currentNote = dv.page(tp.file.path(true));
             noteFilter.selectCategories(dv, currentNote, currentCategories, configCategories);
-            ({ inputSug, inputVal } =  noteFilter.createSuggesterInputs(dv, currentCategories, config = configCategories, noteDest));
+            ({ inputSug, inputVal } =  noteFilter.createSuggesterInputs(dv, currentCategories, config = configCategories, noteDest, admin));
 
         } else if (noteDest === "Root") {
             currentCategories = noteFilter.getChildNotes(dv, configCategories, "RootCategory");
-            ({ inputSug, inputVal } = noteFilter.createSuggesterInputs(dv, currentCategories, config = configCategories, noteDest));
+            ({ inputSug, inputVal } = noteFilter.createSuggesterInputs(dv, currentCategories, config = configCategories, noteDest, admin));
 
         }
 
@@ -52,7 +53,7 @@ async function nuPage(tp, dv) {
                     for (let cat in childNotesList) {
                         childNotesList[cat].unshift(nestedInput[cat][0]);
                     }
-                    ({ inputSug, inputVal } = noteFilter.createSuggesterInputs(dv, childNotesList, config = configCategories, prefix = "Selected"));
+                    ({ inputSug, inputVal } = noteFilter.createSuggesterInputs(dv, childNotesList, config = configCategories, prefix = "Selected", admin));
                     let selectedInput = await tp.system.suggester(inputSug, inputVal);
                     level++;
 
@@ -85,19 +86,38 @@ async function nuPage(tp, dv) {
         }
 
 
-        // console.log("parentNote", parentNote)
-        if (flag !== "New Cat"){ 
+        console.log("parentNote", parentNote)
+        if (flag !== "New Cat") { 
+
             // Get new note template from noteType link
-            let nuTemplate = noteFilter.accessCatObject(parentNote, "noteType");
-            let nuTemplateOptions = [nuTemplate[0], ...dv.page(nuTemplate[0].path).pageTemplate];
+            let nuTemplate = noteFilter.accessCatObject(parentNote, "Page")[0]["noteType"];
+            let nuTemplateOptions = [];
+
+            // Check if nuTemplate is an array and process all paths
+            if (Array.isArray(nuTemplate)) {
+                nuTemplate.forEach(template => {
+                    if (admin == true) {
+                        nuTemplateOptions.push(template);
+                    }
+                    let pageTemplates = dv.page(template.path).pageTemplate;
+                    if (pageTemplates) {
+                        nuTemplateOptions.push(...pageTemplates);
+                    }
+                });
+            } else {
+                nuTemplateOptions = [nuTemplate, ...dv.page(nuTemplate.path).pageTemplate];
+            }
+
             let rNuTemplateOptions = nuTemplateOptions.reverse();
             let rNuTemplateNames = rNuTemplateOptions.map(link => link["display"]);
-            // suggester to select from any of the available page templates or create a new category page
+
+            // Suggester to select from any of the available page templates or create a new category page
             fileTemplate = await tp.system.suggester(rNuTemplateNames, rNuTemplateOptions);
-        }  else {
-            fileTemplate = noteFilter.accessCatObject(parentNote, "noteType")[0];
+        } else {
+            fileTemplate = noteFilter.accessCatObject(parentNote, "Link")[0];
         }
-        // console.log("fileTemplate", fileTemplate)
+        console.log("flag", flag)
+        console.log("fileTemplate", fileTemplate)
     }
 
 
@@ -107,25 +127,48 @@ async function nuPage(tp, dv) {
     if (noteDest === "Inbox") {
         targetFolder = `01 Home/Inbox/${fileYear}`;
         fileTemplate = dv.page(exclusionTemplate).defaultTemplate;
+    } 
+
+    let fileTemplateNote = dv.page(fileTemplate.path)
+    if (fileTemplateNote.hasOwnProperty("folder") && Array.isArray(fileTemplateNote["folder"])) {
+        console.log(fileTemplateNote["folder"])
+        let appendPath;
+        if (fileTemplateNote["folder"].length > 1 ) {
+            let pathSug = fileTemplateNote["folder"];
+            appendPath = await tp.system.suggester(fileTemplateNote["folder"].map(path => {
+                const pathComponents = path.split('/');
+                return pathComponents[pathComponents.length - 1];
+            }), fileTemplateNote["folder"])
+        } else {
+            appendPath = fileTemplateNote["folder"][0]
+        }
+        targetFolder = String(noteFilter.accessCatObject(parentNote, "Folder")) + "/" + appendPath;
     } else {
-        targetFolder = String(noteFilter.accessCatObject(parentNote, "Folder"));
+       targetFolder = String(noteFilter.accessCatObject(parentNote, "Folder"));
     }
+
   
-    let templateType = String(dv.page(fileTemplate.path).templateType);
     let fileName = await tp.system.prompt("Enter Note Name");
-    // Check if new noteType is Category for naming
-    let fullName = templateType !== "Category"
+
+    let datedNote = fileTemplateNote.dated
+    let folderNote = fileTemplateNote.folderNote
+
+    let fullName = datedNote == true
         ? `${tp.date.now("YYYY-MM-DD")}-${fileName}`
         : fileName;
 
-    // Everyone gets a folder note
-    let filePath = `${targetFolder}/${fullName}/${fullName}`;
+    let filePath = folderNote == true
+        ? `${targetFolder}/${fullName}/${fullName}`
+        : `${targetFolder}/${fullName}`;
+
+    let templateType = String(fileTemplateNote.templateType);
+    console.log("fileName", fileName, datedNote, folderNote, fullName, filePath)
 
     let abstractFolder = await app.vault.getAbstractFileByPath("/");
     let templateContent = await tp.file.find_tfile(fileTemplate.path);
     let strTemplateContent = await app.vault.read(templateContent);
     let newTFile = await tp.file.create_new(strTemplateContent, filePath, false, abstractFolder);
-
+    console.log("newTFile", newTFile)
     let newDVFile = await dv.page(newTFile.path)
     // console.log("newDVFile", newDVFile)
     // Apply Frontmatter to new file (commented out)
@@ -134,7 +177,7 @@ async function nuPage(tp, dv) {
         frontmatter["noteType"] = "[[" + fileTemplate.path.split(".md")[0] + "|" + fileTemplate.display + "]]";
         frontmatter["created"] = tp.date.now("YYYY-MM-DDTHH:mm:ss[Z]");
         if (noteDest !== "Inbox"){
-            let parentNoteType = accessCatObject(parentNote, "noteType")[0]["display"]
+            let parentNoteType = noteFilter.accessCatObject(parentNote, "noteType")[0]["display"]
             frontmatter[parentNoteType] = "[[" + String(noteFilter.accessCatObject(parentNote, "Path")).split(".md")[0] + "|" + noteFilter.accessCatObject(parentNote, "Name") + "]]";
             if (templateType == "Category") {
                 frontmatter[parentNoteType] = "[[" + newDVFile.file.path.split(".md")[0] + "|" + newDVFile.file.name + "]]";

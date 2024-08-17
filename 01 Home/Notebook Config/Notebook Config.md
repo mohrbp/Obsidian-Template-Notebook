@@ -12,7 +12,13 @@ category_2:
 category_3:
   - "[[GameElement Template|GameElements]]"
 created: 2024-06-28T09:22:10Z
-modified: 2024-07-07T10:42:47Z
+modified: 2024-07-07T14:22:19Z
+admin: false
+templateFolder:
+  - "[[Note Templates]]"
+rootFolder:
+  - "[[Amanitus|Ama]]"
+excludePaths:
 ---
 ## Notebook Config
 

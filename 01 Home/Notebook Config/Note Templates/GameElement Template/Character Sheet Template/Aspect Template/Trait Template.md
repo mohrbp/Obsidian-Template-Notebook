@@ -4,6 +4,12 @@ noteType:
   - "[[Trait Template]]"
 aliases:
   - Trait
+folder:
+  - Evergreen
+  - Mutant
+  - Temporary
 ---
 # Notes
+
+
 # Tasks
