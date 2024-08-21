@@ -140,7 +140,7 @@ class noteFilter {
             }
         }
     }
-    createSuggesterInputsDevII (dv, inputData, config,  prefix = null, admin) {
+    createSuggesterInputs (dv, inputData, config,  prefix = null, admin) {
         // Function to create suggester inputs
         let inputSug = [], inputVal = []; 
         // Object.keys(inputData).forEach((key, index) => {
@@ -196,111 +196,6 @@ class noteFilter {
 
         console.log("inputSug", inputSug, "inputVal", inputVal);
 
-        return { inputSug, inputVal };
-    };
-
-    createSuggesterInputsDev (dv, inputData, config,  prefix = null, admin) {
-        // Function to create suggester inputs
-        let inputSug = [], inputVal = []; 
-        for (let cat in inputData) {
-
-            let inputCatName = cat;
-            let inputValNote = inputCatName;
-            console.log("inputData cat config", inputData, cat, config )
-            let headerNote = {};
-            headerNote[cat] = [];
-            if (prefix && prefix == "Root") {
-
-                inputCatName = cat;
-                let categoryNote = dv.page(config[cat].Link.path)
-                console.log("categoryNote", categoryNote, inputCatName)
-                let inputCatNote = {
-                    Name: categoryNote.file.name,
-                    Path: categoryNote.file.path,
-                    Page: categoryNote,
-                    Link: config[cat].Link,
-                    noteBook: config[cat].Link,
-                    noteType: categoryNote.noteType,
-                    Folder: categoryNote.rootFolder,
-                }
-                headerNote[cat].push(inputCatNote)
-                inputValNote = headerNote;
-
-            }
-
-            if (inputData[cat].length > 0) {
-                let inputNote = inputData[cat][0];
-                if (prefix && prefix == "Selected") { 
-                    inputCatName = prefix + " " + cat + " " + inputNote["Name"];
-                    headerNote[cat].push(inputNote)
-                    inputValNote = headerNote;
-                    inputData[cat].shift()
-                } 
-
-                inputData[cat].forEach(note => {
-                    inputSug.unshift(note["Name"]);
-                    inputVal.unshift({ [cat]: [note] });
-                });
-            }
-
-            inputCatName = inputCatName
-            inputSug.unshift(inputCatName);
-            inputVal.unshift(inputValNote);       
-        }
-        console.log("inputSug", inputSug, "inputVal", inputVal)    
-        return { inputSug, inputVal };
-    };
-    createSuggesterInputs (dv, inputData, config,  prefix = null, admin) {
-        // Function to create suggester inputs
-        let inputSug = [], inputVal = []; 
-        for (let cat in inputData) {
-
-            let inputCatName = cat;
-            let inputValNote = inputCatName;
-            console.log(inputData, cat, config )
-            let headerNote = {};
-            headerNote[cat] = [];
-            if (prefix && prefix == "Root" && admin == true) {
-
-                inputCatName = prefix + " " + cat;
-                let categoryNote = dv.page(config[cat].Link.path)
-                console.log(inputCatName, categoryNote)
-                let inputCatNote = {
-                    Name: categoryNote.file.name,
-                    Path: categoryNote.file.path,
-                    Page: categoryNote,
-                    Link: config[cat].Link,
-                    noteType: config[cat].Link,
-                    Folder: categoryNote.rootFolder,
-                }
-                headerNote[cat].push(inputCatNote)
-                inputValNote = headerNote;
-
-            } else if (prefix && prefix == "Root" && admin == false) {
-                // inputCatName = prefix + " " + cat;
-
-            } 
-
-            if (inputData[cat].length > 0) {
-                let inputNote = inputData[cat][0];
-                if (prefix && prefix == "Selected") { 
-                    inputCatName = prefix + " " + cat + " " + inputNote["Name"];
-                    headerNote[cat].push(inputNote)
-                    inputValNote = headerNote;
-                    inputData[cat].shift()
-                } 
-
-                inputData[cat].forEach(note => {
-                    inputSug.unshift(note["Name"]);
-                    inputVal.unshift({ [cat]: [note] });
-                });
-            }
-
-            inputCatName = "**" + inputCatName + "**"
-            inputSug.unshift(inputCatName);
-            inputVal.unshift(inputValNote);       
-        }
-        console.log("inputSug", inputSug, "inputVal", inputVal)    
         return { inputSug, inputVal };
     };
 
@@ -361,7 +256,7 @@ class noteFilter {
                 // console.log("currentInput", currentInput)
                 queue.shift()
                 // console.log("queue", queue, queue.length)
-                let childNotesList = this.getChildNotes(dv, currentInput, "ChildCategory");
+                let childNotesList = this.getChildNotes(dv, currentInput, "this", true, true);
                 // console.log("childNotesList", childNotesList)
                 if (this.hasChildNotes(childNotesList)) {
                     allChildNotes[cat].push(...childNotesList[cat]);
@@ -375,17 +270,17 @@ class noteFilter {
 
     }
 
-    getChildNotesDev (dv, nestedInput, matchParent = "this", matchNoteBook = false, matchNoteType = null) { 
+    getChildNotes (dv, nestedInput, matchParent = "this", matchNoteBook = false, matchNoteType = null) { 
         let childNotesList = {};
         Object.keys(nestedInput).forEach((key) => {
             // console.log("key", key)
             if (nestedInput.hasOwnProperty(key)) {
-            console.log("nestedInput[key]", nestedInput[key])
+            // console.log("nestedInput[key]", nestedInput[key])
 
                 childNotesList[key] = [];
                 let parentFilter = {};
                 Object.keys(nestedInput[key]).forEach((index) => {
-                console.log("nestedInput[key][index]", nestedInput[key][index])
+                // console.log("nestedInput[key][index]", nestedInput[key][index])
 
                         let parentCollection = nestedInput[key][index];
                         let parentPath = parentCollection["Path"];
@@ -454,7 +349,7 @@ class noteFilter {
         return childNotesList;
     }
 
-    getChildNotes (dv, nestedInput, mode, eX = "00 Home/Notebook Config/Note Templates/Note Templates.md") { 
+    getChildNotes_dprc (dv, nestedInput, mode, eX = "00 Home/Notebook Config/Note Templates/Note Templates.md") { 
         let childNotesList = {};
         Object.keys(nestedInput).forEach((key, index) => {
             if (nestedInput.hasOwnProperty(key)) {

@@ -1,14 +1,12 @@
 ---
 noteBook: "[[Note Templates]]"
-noteType: "[[Track Template|Track Template]]"
+noteType: "[[Journal Page|Journal Page]]"
 adminTemplate: 
 allTemplate: 
 aliases:
-  - Track
-folder:
-  - Tracks
+  - Journal Page
 dated: true
+folder: 
 folderNote: false
 ---
-# Notes
-# Tasks
+# <%*tp.date.now()_%> Log

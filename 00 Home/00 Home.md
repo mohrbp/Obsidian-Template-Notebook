@@ -9,7 +9,7 @@ Projects:
 ---
 # Tasks
 ```dataviewjs
-dv.view("01 Home/Notebook Config/Scripts/Dataview/tasksGTDdev", {"target": dv.current().noteType})
+dv.view("00 Home/Notebook Config/Scripts/Dataview/tasksGTDdev", {"target": dv.current().noteType})
 ```
 # Notes
 ## Recent Notes 

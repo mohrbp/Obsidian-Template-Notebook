@@ -198,11 +198,12 @@ const {noteFilter} = await cJS();
 
 // const dv = this.app.plugins.plugins["dataview"].api
 let target = input.target;
+console.log("target", target)
+
 let query = dv.current()[target[0]["display"]];
 let exclude = input.exclude;
 let limit = 30
 
-// console.log("target", target, query)
 // console.log(customJS)
 let myTasks = noteFilter.loadTasksDev({dv, target, query})
 // console.log("myTasks", myTasks)

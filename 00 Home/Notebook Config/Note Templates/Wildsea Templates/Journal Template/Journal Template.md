@@ -10,3 +10,5 @@ dated: false
 folderNote: true
 folder:
 ---
+# Questions
+- What does your journal look like?
