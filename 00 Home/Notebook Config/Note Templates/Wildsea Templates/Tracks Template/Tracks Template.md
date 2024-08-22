@@ -5,10 +5,9 @@ adminTemplate:
 allTemplate: 
 aliases:
   - Tracks
-folder:
-  - Tracks
 dated: false
 folderNote: true
+folder:
 ---
 # Questions
 - Which Tracks do you want do see?

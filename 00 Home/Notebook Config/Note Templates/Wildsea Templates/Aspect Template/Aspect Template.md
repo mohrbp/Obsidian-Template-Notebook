@@ -16,4 +16,5 @@ Track Sharing:
 ---
 # Questions
 - What Aspect
-- What Improvements have been taken
+- What Aspect improvements have been taken
+- What Traits and Mods have been taken

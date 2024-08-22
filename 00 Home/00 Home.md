@@ -1,15 +1,12 @@
 ---
 aliases:
   - Home
-noteType: []
+noteType: "[[Collection Template]]"
 cssclasses:
-  - cards
-Projects:
-  - "[[Food|Food]]"
 ---
 # Tasks
 ```dataviewjs
-dv.view("00 Home/Notebook Config/Scripts/Dataview/tasksGTDdev", {"target": dv.current().noteType})
+dv.view("00 Home/Notebook Config/Scripts/Dataview/tasksGTD", {"target": dv.current().file.link})
 ```
 # Notes
 ## Recent Notes 

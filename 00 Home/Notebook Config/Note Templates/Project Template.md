@@ -17,6 +17,7 @@ folder:
 await this.app.vault.createFolder(tp.file.folder(true) + "/notebook");
 _%>
 # Project Summary
+
 ``` dataviewjs
-    dv.view("00 Home/Notebook Config/Scripts/Dataview/tasksGTDdev", {})
+    dv.view("00 Home/Notebook Config/Scripts/Dataview/tasksGTD", {"target": dv.current().file.link})
 ```

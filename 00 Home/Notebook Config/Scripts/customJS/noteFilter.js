@@ -1,41 +1,31 @@
 class noteFilter {
 	
-    loadTasksDev(dv, target) {
-    // const {dv, target, query} = args;
-// Usually target is the noteType and query is the result of the the current noteType in the current file
-// so target is "Projects" and query is the current Projects links
-    // console.log("target2", target, query)
-//    let queryLinks = Array.isArray(query) ? query : [query];
+    loadTasks(dv, target) {
+    // Create a usable input for the Get Child Notes func 
+    // console.log("target-func", target);
+    let page = dv.page(target["path"]);
+    let targetNoteBook = page.noteBook;
 
-    // Create a usable input for the Get Child Notes func
-    // let input = query;
-    // let pageNoteType = page.noteType
-        console.log("target-func", target);
-        let page = dv.page(target["path"]);
-        let targetNoteBook = page.noteBook;
+    let targetNoteType = "parent";
 
-        let targetNoteType = "parent";
+    let nestedInput = {}
+    nestedInput[targetNoteType] = []
 
-        let nestedInput = {}
-        nestedInput[targetNoteType] = []
-
-        let inputNote = {
-            Name: page.file.name,
-            Path: page.file.path,
-            Link: target,
-            Page: page,
-            noteBook: targetNoteBook,
-            noteType: page.noteType
-        };
-
-        nestedInput[targetNoteType].push(inputNote);
+    let inputNote = {
+        Name: page.file.name,
+        Path: page.file.path,
+        Link: target,
+        Page: page,
+        noteBook: targetNoteBook,
+        noteType: page.noteType
+    };
+    nestedInput[targetNoteType].push(inputNote);
 
     let allChildNotes = this.getAllChildNotes(dv, nestedInput)
-    console.log("tasks allChildNotes", allChildNotes)
+    // console.log("tasks allChildNotes", allChildNotes)
+
     let taskFilter = {};
-
     for (let cat in allChildNotes) {
-
         taskFilter["noteType"] = {
             excludePaths : page.noteType.path
         }
@@ -43,13 +33,12 @@ class noteFilter {
             includePaths : [page.file.path],
             excludePaths : []
         }
-
         for (let index in allChildNotes[cat]) {
             taskFilter[cat]["includePaths"].push(String(allChildNotes[cat][index]["Path"]))
         }
 
     }
-
+    console.log("taskFilter", taskFilter)
     return dv.pages()
         .filter(p => this.dataFilter([p], taskFilter).length > 0)
         .file
@@ -70,14 +59,14 @@ class noteFilter {
 
         // Load the configuration note
         let configNote = dv.page("/00 Home/Notebook Config/Notebook Config");
-        console.log("configNote",configNote, configNote.admin)
+        // console.log("configNote",configNote, configNote.admin)
         config["admin"] = configNote.admin
         config["templateFolder"] = configNote.templateFolder
         config["excludePaths"] = configNote.excludePaths
         config["user"] = configNote.user
         config["filePath"] = configNote.file.path
 
-        console.log("config 1", config)
+        // console.log("config 1", config)
 
         let configCategories;
         configCategories = Object.keys(configNote).reduce((filteredConfigCategories, key) => {
@@ -98,7 +87,7 @@ class noteFilter {
         };
 
         for (let key in configNote.collections) {
-            console.log(key)
+            // console.log(key)
             let collectionPath = configNote.collections[key];
             let collectionname = collectionPath["display"]
             let collectionPage = dv.page(collectionPath)
@@ -114,7 +103,7 @@ class noteFilter {
             };
             config["collections"][collectionname].push(collectionData)
         };
-        console.log("config 2", config)
+        // console.log("config 2", config)
 
         // Output config
         return config;
@@ -164,7 +153,7 @@ class noteFilter {
             // console.log("inputData[collection]", inputData[collection])
 
                 let collectionNote = dv.page(config[collection][0].Link.path)
-                console.log("collectionNote", collectionNote, inputCollectionName)
+                // console.log("collectionNote", collectionNote, inputCollectionName)
                 let inputCollectionNote = {
                     Name: collectionNote.file.name,
                     Path: collectionNote.file.path,
@@ -199,7 +188,7 @@ class noteFilter {
             inputVal.unshift(inputValNote);       
         };
 
-        console.log("inputSug", inputSug, "inputVal", inputVal);
+        // console.log("inputSug", inputSug, "inputVal", inputVal);
 
         return { inputSug, inputVal };
     };
@@ -293,11 +282,11 @@ class noteFilter {
                 childNotesList[key] = [];
                 let parentFilter = {};
                 Object.keys(nestedInput[key]).forEach((index) => {
-                console.log("nestedInput[key][index]", nestedInput[key][index])
+                // console.log("nestedInput[key][index]", nestedInput[key][index])
 
                         let parentCollection = nestedInput[key][index];
                         let parentPath = parentCollection["Path"];
-                        console.log("parentCollection", parentCollection, parentPath, matchNoteBook, matchNoteType, )
+                        // console.log("parentCollection", parentCollection, parentPath, matchNoteBook, matchNoteType, allTemplates)
                         if (matchParent == "this") {
                             parentFilter["parent"] = {
                                 includePaths: parentPath
@@ -352,7 +341,7 @@ class noteFilter {
                         // console.log("childPages", childPages)
                         if (Array.isArray(childPages) && childPages.length > 0) {
                             childPages.forEach((page) => {
-                                console.log("page", page)
+                                // console.log("page", page)
                                 let childPage = {
                                     Name: page.file.name,
                                     Path: page.file.path,
@@ -369,88 +358,6 @@ class noteFilter {
             }
         })  
         // console.log ("childNotesList", childNotesList)
-        return childNotesList;
-    }
-
-    getChildNotes_dprc (dv, nestedInput, mode, eX = "00 Home/Notebook Config/Note Templates/Note Templates.md") { 
-        let childNotesList = {};
-        Object.keys(nestedInput).forEach((key, index) => {
-            if (nestedInput.hasOwnProperty(key)) {
-                childNotesList[key] = [];
-                let parentCategory;
-                let parentPath;
-                let parentCategoryName = `parent${key}`;
-                let parentFilter;
-
-
-                if (mode == "RootCategory") {
-                    parentCategory = nestedInput[key];
-                    console.log("parentCategory", parentCategory)
-
-                    let parentCategoryNote = dv.page(parentCategory["Link"]["path"])
-                    parentFilter = {
-                        noteBook: {
-                            includePaths: parentCategory["Link"]["path"]
-                        },
-                        [parentCategoryName]: {
-                            includePaths: parentCategoryNote.rootNote.path
-                        }
-                    };
-                } else if (nestedInput[key].hasOwnProperty(index)) {
-                    if (mode == "ChildCategory") {
-                        // console.log("mode", mode)
-                        parentCategory = nestedInput[key][index];
-                        parentPath = parentCategory["Path"];
-                        console.log("parentCategory", parentCategory, parentPath)
-                        parentFilter = {
-                            noteBook: {
-                                includePaths: parentCategory["noteBook"]["path"],
-                            },
-                            noteType: {
-                                excludePaths: eX
-                            },
-                            [parentCategoryName]: {
-                                includePaths: parentPath
-                            }
-                        };
-                        console.log("parentFilter", parentFilter)
-
-                    } else if (mode == "ChildPages") {
-                        parentCategory = nestedInput[key][index];
-                        parentPath = parentCategory["Path"];
-                        let excludeTypes = [eX];
-                        excludeTypes.push(parentCategory["noteBook"]["path"]);
-                        parentFilter = {
-                            noteBook: {
-                                excludePaths: excludeTypes
-                            },
-                            [key]: {
-                                includePaths: parentPath
-                            }
-                        };
-                    }
-                }
-               // console.log("parentFilter", parentFilter)
-                let childPages = dv.pages().filter(p => this.dataFilter([p], parentFilter).length > 0);
-                // console.log("childPages", childPages)
-                if (Array.isArray(childPages) && childPages.length > 0) {
-                    childPages.forEach((page) => {
-                        console.log("page", page)
-                        let childPage = {
-                            Name: page.file.name,
-                            Path: page.file.path,
-                            Link: page[key],
-                            Page: page,
-                            noteBook: (mode == "RootCategory") ? nestedInput[key]["Link"] : parentCategory["noteBook"],
-                            noteType: page.noteType,
-                            Folder: page.file.folder
-                        }
-                        childNotesList[key].unshift(childPage)
-                    })
-                }
-            }
-        })
-    //  console.log("childNotesList-func", childNotesList)
         return childNotesList;
     }
 
