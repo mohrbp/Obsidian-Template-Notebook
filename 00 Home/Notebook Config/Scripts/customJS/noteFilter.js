@@ -1,38 +1,43 @@
 class noteFilter {
 	
-    loadTasksDev(args) {
-    const {dv, target, query} = args;
+    loadTasksDev(dv, target) {
+    // const {dv, target, query} = args;
 // Usually target is the noteType and query is the result of the the current noteType in the current file
 // so target is "Projects" and query is the current Projects links
     // console.log("target2", target, query)
 //    let queryLinks = Array.isArray(query) ? query : [query];
 
     // Create a usable input for the Get Child Notes func
-    let input = query;
-    let page = dv.page(input[0]["path"])
-    let pageNoteType = page.noteType
-    let noteType = target[0]["display"]
-    console.log("input", input)
-    // console.log("noteType", noteType)
+    // let input = query;
+    // let pageNoteType = page.noteType
+        console.log("target-func", target);
+        let page = dv.page(target["path"]);
+        let targetNoteBook = page.noteBook;
 
+        let targetNoteType = "parent";
 
-    let nestedInput = {[noteType] : []}
-    let inputNote = {
-        Name : page.file.name,
-        Path : page.file.path,
-        Link : input,
-        Page : page,
-        noteType : target[0],
-        Folder : page.file.folder
-    }
-    nestedInput[noteType].push(inputNote);
+        let nestedInput = {}
+        nestedInput[targetNoteType] = []
+
+        let inputNote = {
+            Name: page.file.name,
+            Path: page.file.path,
+            Link: target,
+            Page: page,
+            noteBook: targetNoteBook,
+            noteType: page.noteType
+        };
+
+        nestedInput[targetNoteType].push(inputNote);
+
     let allChildNotes = this.getAllChildNotes(dv, nestedInput)
+    console.log("tasks allChildNotes", allChildNotes)
     let taskFilter = {};
 
     for (let cat in allChildNotes) {
 
         taskFilter["noteType"] = {
-            excludePaths : pageNoteType[0]["path"]
+            excludePaths : page.noteType.path
         }
         taskFilter[cat] = {
             includePaths : [page.file.path],
@@ -246,18 +251,26 @@ class noteFilter {
         let allChildNotes = {};
         // console.log("input-func", input, "args", args)
         for (let cat in input) {
-            // console.log(input[cat]);
+            console.log(input[cat]);
             allChildNotes[cat] = []
             let queue = input[cat];
-            // console.log("queue", queue, queue.length)
+            console.log("queue", queue, queue.length)
             while (queue.length > 0) {
                 let currentInput = {[cat] : []}
                 currentInput[cat].push(queue[0])
-                // console.log("currentInput", currentInput)
+                console.log("currentInput", currentInput)
                 queue.shift()
-                // console.log("queue", queue, queue.length)
-                let childNotesList = this.getChildNotes(dv, currentInput, "this", true, true);
-                // console.log("childNotesList", childNotesList)
+                console.log("queue", queue, queue.length)
+                let root = this.accessCatObject(currentInput, "noteType")[0]["path"].toLowerCase()
+                let childNotesList;
+                if (root.includes("collection")) {
+                    console.log("root note")
+                    childNotesList = this.getChildNotes(dv, currentInput, "this", true, false);
+                } else {
+                    console.log("other note")
+                    childNotesList = this.getChildNotes(dv, currentInput, "this", true, null, true);
+                }
+                console.log("childNotesList", childNotesList)
                 if (this.hasChildNotes(childNotesList)) {
                     allChildNotes[cat].push(...childNotesList[cat]);
                     queue.push(...childNotesList[cat])
@@ -270,21 +283,21 @@ class noteFilter {
 
     }
 
-    getChildNotes (dv, nestedInput, matchParent = "this", matchNoteBook = false, matchNoteType = null) { 
+    getChildNotes (dv, nestedInput, matchParent = "this", matchNoteBook = false, matchNoteType = null, allTemplates = false) { 
         let childNotesList = {};
         Object.keys(nestedInput).forEach((key) => {
-            // console.log("key", key)
+            console.log("key", key)
             if (nestedInput.hasOwnProperty(key)) {
             // console.log("nestedInput[key]", nestedInput[key])
 
                 childNotesList[key] = [];
                 let parentFilter = {};
                 Object.keys(nestedInput[key]).forEach((index) => {
-                // console.log("nestedInput[key][index]", nestedInput[key][index])
+                console.log("nestedInput[key][index]", nestedInput[key][index])
 
                         let parentCollection = nestedInput[key][index];
                         let parentPath = parentCollection["Path"];
-                        // console.log("parentCollection", parentCollection, parentPath)
+                        console.log("parentCollection", parentCollection, parentPath, matchNoteBook, matchNoteType, )
                         if (matchParent == "this") {
                             parentFilter["parent"] = {
                                 includePaths: parentPath
@@ -310,13 +323,23 @@ class noteFilter {
                         } else if (matchNoteType == null) {
                             let noteTypePath = parentCollection["noteType"]["path"]
                             let noteTypeFile = dv.page(noteTypePath)
-                            // console.log("templates", noteTypeFile.adminTemplate)
+                            console.log("templates", noteTypeFile)
                             let noteTypePaths = []
+
                             if (noteTypeFile.adminTemplate) { 
                                 noteTypeFile.adminTemplate.forEach((template) => {
-                                    // console.log(template, template.path)
+                                    console.log("admin", template, template.path)
                                     noteTypePaths.push(template.path)
                                 })
+                            }
+
+                            if (allTemplates == true) {
+                                if (noteTypeFile.allTemplate) {
+                                     noteTypeFile.allTemplate.forEach((template) => {
+                                        console.log("all", template, template.path)
+                                        noteTypePaths.push(template.path)
+                                    })
+                                 }
                             }
 
                             parentFilter["noteType"] = {

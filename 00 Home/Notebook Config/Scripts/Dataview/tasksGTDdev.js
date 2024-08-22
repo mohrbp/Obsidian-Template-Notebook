@@ -90,11 +90,12 @@ function arrangeTasksForGTD(tasks, currentTime) {
   //                  "\n timeUntilScheduled = ", task.timeUntilScheduled);
         }
 }
-    console.log("Task Counts:", taskCounts);
+    // console.log("Task Counts:", taskCounts);
 }
 
 // Function to display Scheduled tasks in a table
-function displayScheduledTasksInTable(title, tasks, limit) {
+function displayScheduledTasksInTable(dv, title, tasks, limit) {
+    console.log(title, tasks, limit)
     // Map table variables
     dv.header(3, title);
     dv.table(
@@ -115,7 +116,7 @@ function displayScheduledTasksInTable(title, tasks, limit) {
 }
 
 // Function to display Unscheduled tasks in a table
-function displayUnscheduledTasksInTable(title, tasks, limit) {
+function displayUnscheduledTasksInTable(dv, title, tasks, limit) {
     // Map table variables
     dv.header(3, title);
     dv.table(
@@ -135,7 +136,7 @@ function displayUnscheduledTasksInTable(title, tasks, limit) {
 }
 
 // Function to display Completed tasks in a table
-function displayCompletedTasksInTable(title, tasks, limit) {
+function displayCompletedTasksInTable(dv, title, tasks, limit) {
     // Map table variables 
     dv.header(3, title);
     dv.table(
@@ -192,21 +193,21 @@ if (isMobileDevice()) {
 } else {
     console.log("This is not a mobile device");
 }
+const dv = this.app.plugins.plugins["dataview"].api
 
 const { DateTime } = dv.luxon;
 const {noteFilter} = await cJS();
 
-// const dv = this.app.plugins.plugins["dataview"].api
 let target = input.target;
 console.log("target", target)
 
-let query = dv.current()[target[0]["display"]];
-let exclude = input.exclude;
+// let query = dv.current()[target[0]["display"]];
+// let exclude = input.exclude;
 let limit = 30
 
 // console.log(customJS)
-let myTasks = noteFilter.loadTasksDev({dv, target, query})
-// console.log("myTasks", myTasks)
+let myTasks = noteFilter.loadTasksDev(dv, target)
+console.log("myTasks", myTasks)
 
 for (let task of myTasks) {
     addFrontmatterToTask(task);
@@ -220,31 +221,40 @@ let scheduledTasks = allTasks
                         .where(t => t.checked === false)
                         .where(t => typeof(t.scheduledDate) !== "undefined");
 
+console.log("scheduledTasks", scheduledTasks) 
 
 let overdueTasks = scheduledTasks
                         .where(t => t.timeUntilScheduled < 0);
-                        
+                       
 if(overdueTasks.length > 0 ){
-displayScheduledTasksInTable("⚠️Overdue⚠️", 
-                            overdueTasks, 
-                            limit);
+    displayScheduledTasksInTable(dv, "⚠️Overdue⚠️", 
+                                overdueTasks, 
+                                limit);
 };
+
+console.log("overdueTasks", overdueTasks) 
 
 let futureTasks = scheduledTasks
                     .filter(t => t.hasOwnProperty("timing"))
                     .filter(t => t.timing !== "overdue");
 
-displayScheduledTasksInTable("Up Next", 
-                            futureTasks, 
-                            limit);
+if (futureTasks.length > 0){
+    console.log("futureTasks", futureTasks) 
+
+    displayScheduledTasksInTable(dv, "Up Next", 
+                                futureTasks, 
+                                limit);
+}
+console.log("futureTasks", futureTasks) 
 
 let unscheduledTasks = allTasks
                         .where(t => t.checked === false)
                         .where(t => typeof(t.scheduledDate) === "undefined");
 
-displayUnscheduledTasksInTable("Unscheduled", 
+displayUnscheduledTasksInTable(dv, "Unscheduled", 
                             unscheduledTasks, 
                             limit);
+console.log("scheduledTasks", scheduledTasks) 
 
 let myRecentCompleteTasks = allTasks
                         .where(t => t.checked === true)
@@ -252,7 +262,7 @@ let myRecentCompleteTasks = allTasks
 
 //dv.taskList(myRecentCompleteTasks);
 
-displayCompletedTasksInTable("Recently Completed (Limit " + limit + ")",
+displayCompletedTasksInTable(dv, "Recently Completed (Limit " + limit + ")",
                               myRecentCompleteTasks,
                               limit);
 

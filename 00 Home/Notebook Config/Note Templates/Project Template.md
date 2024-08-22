@@ -16,3 +16,7 @@ folder:
 // Build project Folder Structure
 await this.app.vault.createFolder(tp.file.folder(true) + "/notebook");
 _%>
+# Project Summary
+``` dataviewjs
+    dv.view("00 Home/Notebook Config/Scripts/Dataview/tasksGTDdev", {})
+```

@@ -56,8 +56,10 @@ async function nuPage(tp, dv) {
             let childNotesList
             console.log(level)
             if (root.includes("collection")) {
+                console.log("root note")
                 childNotesList = noteFilter.getChildNotes(dv, collection, "this", true, false);
             } else {
+                console.log("other note")
                 childNotesList = noteFilter.getChildNotes(dv, collection, "this", true, null);
             }
             // console.log("childNotesList 1", childNotesList);
