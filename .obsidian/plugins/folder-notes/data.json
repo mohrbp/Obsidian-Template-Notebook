@@ -6,10 +6,24 @@
   "templatePath": "",
   "autoCreate": false,
   "enableCollapsing": false,
-  "excludeFolders": [],
+  "excludeFolders": [
+    {
+      "type": "folder",
+      "path": "02 Projects/P1270 Sumitomo/Isoprene IVPP Assay/Protocols/2023 Sumitomo Workflow/Sumitomo Materials/G2BI-10",
+      "subFolders": true,
+      "disableSync": true,
+      "disableAutoCreate": true,
+      "disableFolderNote": false,
+      "enableCollapsing": false,
+      "position": 0,
+      "excludeFromFolderOverview": false,
+      "string": ""
+    }
+  ],
+  "whitelistFolders": [],
   "showDeleteConfirmation": true,
   "underlineFolder": true,
-  "allowWhitespaceCollapsing": false,
+  "stopWhitespaceCollapsing": true,
   "underlineFolderInPath": true,
   "openFolderNoteOnClickInPath": true,
   "openInNewTab": false,
@@ -37,7 +51,8 @@
     "showEmptyFolders": false,
     "onlyIncludeSubfolders": false,
     "storeFolderCondition": true,
-    "showFolderNotes": false
+    "showFolderNotes": false,
+    "disableCollapseIcon": true
   },
   "useSubmenus": true,
   "syncMove": true,
@@ -46,7 +61,7 @@
     "explorer": true,
     "path": true
   },
-  "settingsTab": "general",
+  "settingsTab": "file_explorer",
   "supportedFileTypes": [
     "md",
     "canvas"
@@ -55,5 +70,36 @@
   "boldNameInPath": false,
   "cursiveName": false,
   "cursiveNameInPath": false,
-  "disableOpenFolderNoteOnClick": false
+  "disableOpenFolderNoteOnClick": false,
+  "openByClick": true,
+  "openWithCtrl": false,
+  "openWithAlt": false,
+  "excludeFolderDefaultSettings": {
+    "type": "folder",
+    "path": "",
+    "subFolders": true,
+    "disableSync": true,
+    "disableAutoCreate": true,
+    "disableFolderNote": false,
+    "enableCollapsing": false,
+    "position": 0,
+    "excludeFromFolderOverview": false,
+    "string": ""
+  },
+  "excludePatternDefaultSettings": {
+    "type": "pattern",
+    "path": "",
+    "subFolders": true,
+    "disableSync": true,
+    "disableAutoCreate": true,
+    "disableFolderNote": false,
+    "enableCollapsing": false,
+    "position": 0,
+    "excludeFromFolderOverview": false,
+    "string": ""
+  },
+  "hideCollapsingIcon": false,
+  "tabManagerEnabled": true,
+  "ignoreAttachmentFolder": true,
+  "deleteFilesAction": "trash"
 }

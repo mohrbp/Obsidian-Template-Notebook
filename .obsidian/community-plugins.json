@@ -1,11 +1,13 @@
 [
   "dataview",
-  "obsidian-kanban",
+  "obsidian-minimal-settings",
   "obsidian-outliner",
+  "obsidian-style-settings",
   "templater-obsidian",
   "folder-notes",
-  "obsidian-style-settings",
+  "obsidian-linter",
+  "customjs",
   "attachment-management",
-  "buttons",
-  "metaedit"
+  "calendar",
+  "pomodoro-timer"
 ]

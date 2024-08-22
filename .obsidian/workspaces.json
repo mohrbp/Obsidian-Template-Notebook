@@ -1,0 +1,185 @@
+{
+  "workspaces": {
+    "4 Panel Home": {
+      "main": {
+        "id": "f881263f1e8d47fd",
+        "type": "split",
+        "children": [
+          {
+            "id": "3d4cfff92d1489a4",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "4a083821c5917271",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "00 Home/00 Home.md",
+                    "mode": "source",
+                    "source": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "direction": "vertical"
+      },
+      "left": {
+        "id": "3c5d27e206d0b8ed",
+        "type": "split",
+        "children": [
+          {
+            "id": "7de26e1b1288b07a",
+            "type": "tabs",
+            "dimension": 60.67251461988304,
+            "children": [
+              {
+                "id": "6831f7f0a05ddd74",
+                "type": "leaf",
+                "state": {
+                  "type": "file-explorer",
+                  "state": {
+                    "sortOrder": "alphabetical"
+                  }
+                }
+              },
+              {
+                "id": "400b6b79a7c09250",
+                "type": "leaf",
+                "state": {
+                  "type": "search",
+                  "state": {
+                    "query": "path:\"05 Wildsea/Amanitus/Inventory/\" ",
+                    "matchingCase": false,
+                    "explainSearch": false,
+                    "collapseAll": false,
+                    "extraContext": false,
+                    "sortOrder": "alphabetical"
+                  }
+                }
+              },
+              {
+                "id": "aa4e828fbb1545df",
+                "type": "leaf",
+                "state": {
+                  "type": "bookmarks",
+                  "state": {}
+                }
+              }
+            ]
+          },
+          {
+            "id": "fa609bc162a3449d",
+            "type": "tabs",
+            "dimension": 39.327485380116954,
+            "children": [
+              {
+                "id": "44210c8f4afe8645",
+                "type": "leaf",
+                "state": {
+                  "type": "backlink",
+                  "state": {
+                    "file": "00 Home/00 Home.md",
+                    "collapseAll": true,
+                    "extraContext": false,
+                    "sortOrder": "alphabetical",
+                    "showSearch": false,
+                    "searchQuery": "",
+                    "backlinkCollapsed": false,
+                    "unlinkedCollapsed": true
+                  }
+                }
+              },
+              {
+                "id": "52994704f891a912",
+                "type": "leaf",
+                "state": {
+                  "type": "outgoing-link",
+                  "state": {
+                    "file": "00 Home/00 Home.md",
+                    "linksCollapsed": false,
+                    "unlinkedCollapsed": true
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "direction": "horizontal",
+        "width": 269.50390243530273
+      },
+      "right": {
+        "id": "ba0d238e076b38ed",
+        "type": "split",
+        "children": [
+          {
+            "id": "390470ae3b09d7b9",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "cd813c420b7ec2ab",
+                "type": "leaf",
+                "state": {
+                  "type": "file-properties",
+                  "state": {
+                    "file": "00 Home/00 Home.md"
+                  }
+                }
+              },
+              {
+                "id": "8a29197ab034f018",
+                "type": "leaf",
+                "state": {
+                  "type": "calendar",
+                  "state": {}
+                }
+              }
+            ],
+            "currentTab": 1
+          },
+          {
+            "id": "844435420d9ac6a0",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "48c059ee29a956ae",
+                "type": "leaf",
+                "state": {
+                  "type": "outline",
+                  "state": {
+                    "file": "00 Home/00 Home.md"
+                  }
+                }
+              },
+              {
+                "id": "0205e8a1c7d725c5",
+                "type": "leaf",
+                "state": {
+                  "type": "timer-view",
+                  "state": {}
+                }
+              }
+            ]
+          }
+        ],
+        "direction": "horizontal",
+        "width": 262.5
+      },
+      "left-ribbon": {
+        "hiddenItems": {
+          "switcher:Open quick switcher": false,
+          "daily-notes:Open today's daily note": false,
+          "command-palette:Open command palette": false,
+          "templater-obsidian:Templater": false,
+          "pomodoro-timer:Toggle timer panel": false,
+          "workspaces:Manage workspace layouts": false
+        }
+      },
+      "active": "4a083821c5917271",
+      "mtime": "2024-08-22T09:03:11-05:00"
+    }
+  },
+  "active": "4 Panel Home"
+}

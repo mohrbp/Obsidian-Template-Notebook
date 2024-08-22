@@ -27,7 +27,7 @@ __export(main_exports, {
   default: () => AttachmentManagementPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian10 = require("obsidian");
+var import_obsidian11 = require("obsidian");
 
 // src/settings/settings.ts
 var import_obsidian3 = require("obsidian");
@@ -42,16 +42,6 @@ var SETTINGS_VARIABLES_MD5 = "${md5}";
 var SETTINGS_ROOT_OBSFOLDER = "obsFolder";
 var SETTINGS_ROOT_INFOLDER = "inFolderBelow";
 var SETTINGS_ROOT_NEXTTONOTE = "nextToNote";
-
-// src/log.ts
-var DEBUG = false;
-if (DEBUG)
-  console.log("DEBUG is enabled");
-function debugLog(...args) {
-  if (DEBUG) {
-    console.log(new Date().toISOString().slice(11, 23), ...args);
-  }
-}
 
 // src/model/extensionOverride.ts
 var import_obsidian2 = require("obsidian");
@@ -544,6 +534,16 @@ function generateErrorExtensionMessage(type) {
   }
 }
 
+// src/lib/log.ts
+var DEBUG = false;
+if (DEBUG)
+  console.log("DEBUG is enabled");
+function debugLog(...args) {
+  if (DEBUG) {
+    console.log(new Date().toISOString().slice(11, 23), ...args);
+  }
+}
+
 // src/model/extensionOverride.ts
 function getExtensionOverrideSetting(extension, settings) {
   if (settings.extensionOverride === void 0 || settings.extensionOverride.length === 0) {
@@ -551,7 +551,11 @@ function getExtensionOverrideSetting(extension, settings) {
   }
   for (let i = 0; i < settings.extensionOverride.length; i++) {
     if (matchExtension(extension, settings.extensionOverride[i].extension)) {
-      debugLog("getExtensionOverrideSetting - ", settings.extensionOverride[i].extension, settings.extensionOverride[i]);
+      debugLog(
+        "getExtensionOverrideSetting - ",
+        settings.extensionOverride[i].extension,
+        settings.extensionOverride[i]
+      );
       return { extSetting: settings.extensionOverride[i] };
     }
   }
@@ -582,7 +586,7 @@ var OverrideExtensionModal = class extends import_obsidian2.Modal {
     contentEl.createEl("h3", {
       text: `Extension settings for ${this.settings.extension}`
     });
-    new import_obsidian2.Setting(contentEl).setName("Root path to save new attachments").setDesc("Select root path for all new attachments").addDropdown(
+    new import_obsidian2.Setting(contentEl).setName("Root path to save attachment").setDesc("Select root path of attachment").addDropdown(
       (text) => text.addOption(`${SETTINGS_ROOT_OBSFOLDER}`, "Copy Obsidian settings").addOption(`${SETTINGS_ROOT_INFOLDER}`, "In the folder specified below").addOption(`${SETTINGS_ROOT_NEXTTONOTE}`, "Next to note in folder specified below").setValue(this.settings.saveAttE).onChange(async (value) => {
         this.settings.saveAttE = value;
         this.displaySw(contentEl);
@@ -597,14 +601,14 @@ var OverrideExtensionModal = class extends import_obsidian2.Modal {
       );
     }
     new import_obsidian2.Setting(contentEl).setName("Attachment path").setDesc(
-      `Path of new attachment in root folder, available variables ${SETTINGS_VARIABLES_NOTEPATH}, ${SETTINGS_VARIABLES_NOTENAME} and ${SETTINGS_VARIABLES_NOTEPARENT}`
+      `Path of attachment in root folder, available variables ${SETTINGS_VARIABLES_NOTEPATH}, ${SETTINGS_VARIABLES_NOTENAME} and ${SETTINGS_VARIABLES_NOTEPARENT}`
     ).addText(
       (text) => text.setPlaceholder(DEFAULT_SETTINGS.attachPath.attachmentPath).setValue(this.settings.attachmentPath).onChange(async (value) => {
         this.settings.attachmentPath = value;
       })
     );
     new import_obsidian2.Setting(contentEl).setName("Attachment format").setDesc(
-      `Define how to name the attachment file, available variables ${SETTINGS_VARIABLES_DATES} and ${SETTINGS_VARIABLES_NOTENAME}`
+      `Define how to name the attachment file, available variables ${SETTINGS_VARIABLES_DATES}, ${SETTINGS_VARIABLES_NOTENAME}, ${SETTINGS_VARIABLES_MD5} and ${SETTINGS_VARIABLES_ORIGINALNAME}.`
     ).addText(
       (text) => text.setPlaceholder(DEFAULT_SETTINGS.attachPath.attachFormat).setValue(this.settings.attachFormat).onChange(async (value) => {
         this.settings.attachFormat = value;
@@ -638,7 +642,9 @@ var DEFAULT_SETTINGS = {
   excludedPaths: "",
   excludePathsArray: [],
   excludeSubpaths: false,
-  overridePath: {}
+  originalNameStorage: [],
+  overridePath: {},
+  disableNotification: false
 };
 var SettingTab = class extends import_obsidian3.PluginSettingTab {
   constructor(app2, plugin) {
@@ -668,7 +674,7 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    new import_obsidian3.Setting(containerEl).setName("Root path to save new attachments").setDesc("Select root path for all new attachments").addDropdown(
+    new import_obsidian3.Setting(containerEl).setName("Root path to save attachment").setDesc("Select root path of attachment").addDropdown(
       (text) => text.addOption(`${SETTINGS_ROOT_OBSFOLDER}`, "Copy Obsidian settings").addOption(`${SETTINGS_ROOT_INFOLDER}`, "In the folder specified below").addOption(`${SETTINGS_ROOT_NEXTTONOTE}`, "Next to note in folder specified below").setValue(this.plugin.settings.attachPath.saveAttE).onChange(async (value) => {
         this.plugin.settings.attachPath.saveAttE = value;
         this.displaySw(containerEl);
@@ -683,7 +689,7 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
       })
     );
     new import_obsidian3.Setting(containerEl).setName("Attachment path").setDesc(
-      `Path of new attachment in root folder, available variables ${SETTINGS_VARIABLES_NOTEPATH}, ${SETTINGS_VARIABLES_NOTENAME}, ${SETTINGS_VARIABLES_NOTEPARENT}`
+      `Path of attachment in root folder, available variables ${SETTINGS_VARIABLES_NOTEPATH}, ${SETTINGS_VARIABLES_NOTENAME}, ${SETTINGS_VARIABLES_NOTEPARENT}`
     ).addText(
       (text) => text.setPlaceholder(DEFAULT_SETTINGS.attachPath.attachmentPath).setValue(this.plugin.settings.attachPath.attachmentPath).onChange(async (value) => {
         debugLog("setting - attachment path:" + value);
@@ -692,7 +698,7 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
       })
     );
     new import_obsidian3.Setting(containerEl).setName("Attachment format").setDesc(
-      `Define how to name the attachment file, available variables ${SETTINGS_VARIABLES_DATES}, ${SETTINGS_VARIABLES_NOTENAME} and ${SETTINGS_VARIABLES_ORIGINALNAME}.`
+      `Define how to name the attachment file, available variables ${SETTINGS_VARIABLES_DATES}, ${SETTINGS_VARIABLES_NOTENAME}, ${SETTINGS_VARIABLES_MD5} and ${SETTINGS_VARIABLES_ORIGINALNAME}.`
     ).addText(
       (text) => text.setPlaceholder(DEFAULT_SETTINGS.attachPath.attachFormat).setValue(this.plugin.settings.attachPath.attachFormat).onChange(async (value) => {
         debugLog("setting - attachment format:" + value);
@@ -762,7 +768,10 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
           });
         }).addButton((btn) => {
           btn.setIcon("check").setTooltip("Save extension override").onClick(async () => {
-            const wrongIndex = validateExtensionEntry(this.plugin.settings.attachPath, this.plugin.settings);
+            const wrongIndex = validateExtensionEntry(
+              this.plugin.settings.attachPath,
+              this.plugin.settings
+            );
             if (wrongIndex.length > 0) {
               for (const i of wrongIndex) {
                 const resIndex = i.index < 0 ? 0 : i.index;
@@ -796,7 +805,9 @@ var SettingTab = class extends import_obsidian3.PluginSettingTab {
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian3.Setting(containerEl).setName("Exclude subpaths").setDesc("Turn on this option if you want to also exclude all subfolders of the folder paths provided above.").addToggle(
+    new import_obsidian3.Setting(containerEl).setName("Exclude subpaths").setDesc(
+      "Turn on this option if you want to also exclude all subfolders of the folder paths provided above."
+    ).addToggle(
       (toggle) => toggle.setValue(this.plugin.settings.excludeSubpaths).onChange(async (value) => {
         debugLog("setting - excluded subpaths:" + value);
         this.plugin.settings.excludeSubpaths = value;
@@ -834,7 +845,7 @@ var OverrideModal = class extends import_obsidian4.Modal {
     contentEl.createEl("h3", {
       text: "Overriding Settings"
     });
-    new import_obsidian4.Setting(contentEl).setName("Root path to save new attachments").setDesc("Select root path for all new attachments").addDropdown(
+    new import_obsidian4.Setting(contentEl).setName("Root path to save attachment").setDesc("Select root path of attachment").addDropdown(
       (text) => text.addOption(`${SETTINGS_ROOT_OBSFOLDER}`, "Copy Obsidian settings").addOption(`${SETTINGS_ROOT_INFOLDER}`, "In the folder specified below").addOption(`${SETTINGS_ROOT_NEXTTONOTE}`, "Next to note in folder specified below").setValue(this.setting.saveAttE).onChange(async (value) => {
         this.setting.saveAttE = value;
         this.displaySw(contentEl);
@@ -847,14 +858,16 @@ var OverrideModal = class extends import_obsidian4.Modal {
       })
     );
     new import_obsidian4.Setting(contentEl).setName("Attachment path").setDesc(
-      `Path of new attachment in root folder, available variables ${SETTINGS_VARIABLES_NOTEPATH}, ${SETTINGS_VARIABLES_NOTENAME} and ${SETTINGS_VARIABLES_NOTEPARENT}`
+      `Path of attachment in root folder, available variables ${SETTINGS_VARIABLES_NOTEPATH}, ${SETTINGS_VARIABLES_NOTENAME} and ${SETTINGS_VARIABLES_NOTEPARENT}`
     ).addText(
       (text) => text.setPlaceholder(DEFAULT_SETTINGS.attachPath.attachmentPath).setValue(this.setting.attachmentPath).onChange(async (value) => {
         debugLog("override - attachment path:" + value);
         this.setting.attachmentPath = value;
       })
     );
-    new import_obsidian4.Setting(contentEl).setName("Attachment format").setDesc(`Define how to name the attachment file, available variables ${SETTINGS_VARIABLES_DATES} and ${SETTINGS_VARIABLES_NOTENAME}`).addText(
+    new import_obsidian4.Setting(contentEl).setName("Attachment format").setDesc(
+      `Define how to name the attachment file, available variables ${SETTINGS_VARIABLES_DATES}, ${SETTINGS_VARIABLES_NOTENAME}, ${SETTINGS_VARIABLES_MD5} and ${SETTINGS_VARIABLES_ORIGINALNAME}.`
+    ).addText(
       (text) => text.setPlaceholder(DEFAULT_SETTINGS.attachPath.attachFormat).setValue(this.setting.attachFormat).onChange(async (value) => {
         debugLog("override - attachment format:" + value);
         this.setting.attachFormat = value;
@@ -872,7 +885,6 @@ var OverrideModal = class extends import_obsidian4.Modal {
           attachmentPath: this.setting.attachmentPath,
           attachFormat: this.setting.attachFormat
         });
-        console.log(this.setting.extensionOverride);
         this.onOpen();
       });
     });
@@ -929,8 +941,11 @@ var OverrideModal = class extends import_obsidian4.Modal {
   }
 };
 
-// src/commons.ts
-var import_obsidian5 = require("obsidian");
+// src/model/confirm.ts
+var import_obsidian9 = require("obsidian");
+
+// src/arrange.ts
+var import_obsidian8 = require("obsidian");
 
 // src/lib/path.ts
 var path = {
@@ -979,46 +994,8 @@ var path = {
   }
 };
 
-// src/commons.ts
-function getActiveFile(app2) {
-  const view = getActiveView(app2);
-  if (view == null) {
-    return void 0;
-  } else if (view.file == null) {
-    return void 0;
-  } else {
-    return view.file;
-  }
-}
-function getActiveView(app2) {
-  return app2.workspace.getActiveViewOfType(import_obsidian5.TextFileView);
-}
-function getRootPath(notePath, setting) {
-  let root;
-  const obsmediadir = app.vault.getConfig("attachmentFolderPath");
-  switch (setting.saveAttE) {
-    case `${SETTINGS_ROOT_INFOLDER}`:
-      root = path.join(setting.attachmentRoot);
-      break;
-    case `${SETTINGS_ROOT_NEXTTONOTE}`:
-      root = path.join(notePath, setting.attachmentRoot.replace("./", ""));
-      break;
-    default:
-      if (obsmediadir === "/") {
-        root = obsmediadir;
-      } else if (obsmediadir === "./") {
-        root = path.join(notePath);
-      } else if (obsmediadir.match(/\.\/.+/g) !== null) {
-        root = path.join(notePath, obsmediadir.replace("./", ""));
-      } else {
-        root = obsmediadir;
-      }
-  }
-  return root === "/" ? root : (0, import_obsidian5.normalizePath)(root);
-}
-
 // src/override.ts
-var import_obsidian6 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 function getOverrideSetting(settings, file, oldPath = "") {
   if (Object.keys(settings.overridePath).length === 0) {
     return { settingPath: "", setting: settings.attachPath };
@@ -1026,8 +1003,8 @@ function getOverrideSetting(settings, file, oldPath = "") {
   const candidates = {};
   let fileType;
   let filePath;
-  fileType = file instanceof import_obsidian6.TFile;
-  fileType = !(file instanceof import_obsidian6.TFolder);
+  fileType = file instanceof import_obsidian5.TFile;
+  fileType = !(file instanceof import_obsidian5.TFolder);
   if (oldPath === "") {
     filePath = file.path;
   } else {
@@ -1123,7 +1100,6 @@ function updateOverrideSetting(settings, file, oldPath) {
 function deleteOverrideSetting(settings, file) {
   const keys = Object.keys(settings.overridePath);
   for (const key of keys) {
-    debugLog("deleteOverrideSetting - key:", key, file.path);
     if (file.path === key) {
       delete settings.overridePath[key];
       return true;
@@ -1131,9 +1107,6 @@ function deleteOverrideSetting(settings, file) {
   }
   return false;
 }
-
-// src/arrange.ts
-var import_obsidian8 = require("obsidian");
 
 // src/lib/linkDetector.ts
 var getAllLinkMatchesInFile = async (mdFile, app2, fileText) => {
@@ -1239,9 +1212,11 @@ function escapeRegExp(s) {
 async function deduplicateNewName(newName, file) {
   const dir = file.path;
   const listed = await this.app.vault.adapter.list(dir);
-  debugLog("sibling files", listed);
+  debugLog("deduplicateNewName - sibling files", listed);
   const newNameExt = path.extname(newName), newNameStem = newName.slice(0, newName.length - newNameExt.length - 1), newNameStemEscaped = escapeRegExp(newNameStem), delimiter = "-", delimiterEscaped = escapeRegExp(delimiter);
-  const dupNameRegex = new RegExp(`^(?<name>${newNameStemEscaped})${delimiterEscaped}(?<number>\\d+)\\.${newNameExt}$`);
+  const dupNameRegex = new RegExp(
+    `^(?<name>${newNameStemEscaped})${delimiterEscaped}(?<number>\\d{1,3})\\.${newNameExt}$`
+  );
   debugLog("dupNameRegex", dupNameRegex);
   const dupNameNumbers = [];
   let isNewNameExist = false;
@@ -1267,8 +1242,65 @@ async function deduplicateNewName(newName, file) {
   };
 }
 
-// src/metadata.ts
+// src/settings/metadata.ts
 var import_obsidian7 = require("obsidian");
+
+// src/commons.ts
+var import_obsidian6 = require("obsidian");
+function getActiveFile(app2) {
+  const view = getActiveView(app2);
+  if (view == null) {
+    return void 0;
+  } else if (view.file == null) {
+    return void 0;
+  } else {
+    return view.file;
+  }
+}
+function getActiveView(app2) {
+  return app2.workspace.getActiveViewOfType(import_obsidian6.TextFileView);
+}
+function getRootPath(notePath, setting) {
+  let root;
+  const obsmediadir = app.vault.getConfig("attachmentFolderPath");
+  switch (setting.saveAttE) {
+    case `${SETTINGS_ROOT_INFOLDER}`:
+      root = path.join(setting.attachmentRoot);
+      break;
+    case `${SETTINGS_ROOT_NEXTTONOTE}`:
+      root = path.join(notePath, setting.attachmentRoot.replace("./", ""));
+      break;
+    default:
+      if (obsmediadir === "/") {
+        root = obsmediadir;
+      } else if (obsmediadir === "./") {
+        root = path.join(notePath);
+      } else if (obsmediadir.match(/\.\/.+/g) !== null) {
+        root = path.join(notePath, obsmediadir.replace("./", ""));
+      } else {
+        root = obsmediadir;
+      }
+  }
+  return root === "/" ? root : (0, import_obsidian6.normalizePath)(root);
+}
+async function checkEmptyFolder(adapter, path2) {
+  const exist = await adapter.exists(path2, true);
+  if (!exist) {
+    return true;
+  }
+  const data = await adapter.list(path2);
+  if (data.files.length > 0) {
+    return false;
+  }
+  if (data.folders.length > 0) {
+    for (let i = 0; i < data.folders.length; i++) {
+      return checkEmptyFolder(adapter, data.folders[i]);
+    }
+  }
+  return true;
+}
+
+// src/settings/metadata.ts
 var Metadata = class {
   constructor(path2, name, basename, extension, parentPath, parentName, attachmentFile) {
     /** parent path of file */
@@ -1371,12 +1403,47 @@ function isExcluded(path2, settings) {
   return false;
 }
 
+// src/lib/originalStorage.ts
+function containOriginalNameVariable(setting, ext) {
+  const { extSetting } = getExtensionOverrideSetting(ext, setting);
+  if (extSetting !== void 0 && extSetting.attachFormat.contains(SETTINGS_VARIABLES_ORIGINALNAME) || setting.attachFormat.contains(SETTINGS_VARIABLES_ORIGINALNAME)) {
+    return true;
+  }
+  return false;
+}
+function saveOriginalName(settings, setting, ext, data) {
+  if (settings.originalNameStorage === void 0) {
+    settings.originalNameStorage = [];
+  }
+  if (containOriginalNameVariable(setting, ext)) {
+    settings.originalNameStorage.filter((n) => n.md5 == data.md5).forEach((n) => settings.originalNameStorage.remove(n));
+    settings.originalNameStorage.push(data);
+  }
+}
+function loadOriginalName(settings, setting, ext, md5) {
+  if (containOriginalNameVariable(setting, ext)) {
+    const first = settings.originalNameStorage.find((data) => data.md5 === md5);
+    const last = settings.originalNameStorage.reverse().find((data) => data.md5 === md5);
+    if (first === void 0 || last == void 0) {
+      return void 0;
+    }
+    if (first.md5 === last.md5 && first.n === last.n) {
+      return last;
+    } else if (first.md5 === last.md5 && first.n !== last.n) {
+      settings.originalNameStorage.remove(first);
+      return last;
+    }
+  }
+  return void 0;
+}
+
 // src/arrange.ts
 var bannerRegex = /!\[\[(.*?)\]\]/i;
 var ArrangeHandler = class {
-  constructor(settings, app2) {
+  constructor(settings, app2, plugin) {
     this.settings = settings;
     this.app = app2;
+    this.plugin = plugin;
   }
   /**
    * Rearranges attachments that are linked by markdown or canvas.
@@ -1384,8 +1451,10 @@ var ArrangeHandler = class {
    *
    * @param {"active" | "links" | "file"} type - The type of attachments to rearrange.
    * @param {TFile} file - The file to which the attachments are linked (optional), if the type was "file", thi should be provided.
+   * @param {string} oldPath - The old path of the file (optional), used for rename event.
    */
   async rearrangeAttachment(type, file, oldPath) {
+    var _a;
     if (!this.settings.autoRenameAttachment) {
       debugLog("rearrangeAttachment - autoRenameAttachment not enable");
       return;
@@ -1419,15 +1488,27 @@ var ArrangeHandler = class {
         }
         const metadata = getMetadata(obNote, linkFile);
         const attachPath = metadata.getAttachmentPath(setting, this.settings.dateFormat);
-        const attachName = await metadata.getAttachFileName(
-          setting,
-          this.settings.dateFormat,
-          "",
-          this.app.vault.adapter,
-          path.basename(link, path.extname(link))
-        );
-        if (!this.needToRename(setting, attachPath, attachName, metadata.basename, link)) {
-          debugLog("rearrangeAttachment - no need to rename:", link);
+        const md5 = await MD5(this.app.vault.adapter, linkFile);
+        const originalName = loadOriginalName(this.settings, setting, linkFile.extension, md5);
+        debugLog("rearrangeAttachment - original name:", originalName);
+        let attachName = "";
+        if (containOriginalNameVariable(setting, linkFile.extension)) {
+          attachName = await metadata.getAttachFileName(
+            setting,
+            this.settings.dateFormat,
+            (_a = originalName == null ? void 0 : originalName.n) != null ? _a : "",
+            this.app.vault.adapter,
+            path.basename(link, path.extname(link))
+          );
+        } else {
+          attachName = await metadata.getAttachFileName(
+            setting,
+            this.settings.dateFormat,
+            path.basename(link, path.extname(link)),
+            this.app.vault.adapter
+          );
+        }
+        if (attachPath == path.dirname(link) && attachName === path.basename(link, path.extname(link))) {
           continue;
         }
         if (!await this.app.vault.adapter.exists(attachPath)) {
@@ -1440,8 +1521,7 @@ var ArrangeHandler = class {
         }
         const { name } = await deduplicateNewName(attachName + "." + path.extname(link), attachPathFile);
         debugLog("rearrangeAttachment - deduplicated name:", name);
-        const dest = path.join(attachPath, name);
-        await this.app.fileManager.renameFile(linkFile, dest);
+        await this.app.fileManager.renameFile(linkFile, path.join(attachPath, name));
       }
     }
   }
@@ -1512,12 +1592,14 @@ var ArrangeHandler = class {
     if (resolvedLinks) {
       for (const [mdFile, links] of Object.entries(resolvedLinks)) {
         const attachmentsSet = /* @__PURE__ */ new Set();
-        for (const [filePath] of Object.entries(links)) {
-          if (isAttachment(settings, filePath)) {
-            this.addToSet(attachmentsSet, filePath);
+        if (links) {
+          for (const [filePath] of Object.entries(links)) {
+            if (isAttachment(settings, filePath)) {
+              this.addToSet(attachmentsSet, filePath);
+            }
           }
+          this.addToRecord(attachmentsRecord, mdFile, attachmentsSet);
         }
-        this.addToRecord(attachmentsRecord, mdFile, attachmentsSet);
       }
     }
     for (let i = 0; i < allFiles.length; i++) {
@@ -1629,286 +1711,351 @@ var ArrangeHandler = class {
   }
 };
 
+// src/model/confirm.ts
+var ConfirmModal = class extends import_obsidian9.Modal {
+  constructor(plugin) {
+    super(plugin.app);
+    this.plugin = plugin;
+  }
+  onOpen() {
+    const { contentEl } = this;
+    contentEl.empty();
+    contentEl.createEl("h3", {
+      text: "Tips"
+    });
+    contentEl.createSpan("", (el) => {
+      el.innerText = "This operation is irreversible and experimental. Please backup your vault first!";
+    });
+    new import_obsidian9.Setting(contentEl).addButton((btn) => {
+      btn.setButtonText("Cancel").setCta().onClick(() => {
+        this.close();
+      });
+    }).addButton(
+      (btn) => btn.setButtonText("Continue").onClick(async () => {
+        new ArrangeHandler(this.plugin.settings, this.plugin.app, this.plugin).rearrangeAttachment("links").finally(() => {
+          new import_obsidian9.Notice("Arrange completed");
+          this.close();
+        });
+      })
+    );
+  }
+  onClose() {
+    const { contentEl } = this;
+    contentEl.empty();
+  }
+};
+
 // src/create.ts
-var import_obsidian9 = require("obsidian");
+var import_obsidian10 = require("obsidian");
 var CreateHandler = class {
-  constructor(app2, settings) {
-    this.app = app2;
-    if (settings === void 0) {
-      this.settings = DEFAULT_SETTINGS;
-    } else {
-      this.settings = settings;
-    }
+  constructor(plugin, settings) {
+    this.plugin = plugin;
+    this.app = this.plugin.app;
+    this.settings = settings;
   }
   /**
    * Post-processing of created attachment file (for paste and drop event).
-   * @param file - the file to process
+   * @param attach - the attachment file to process
    * @returns - none
    */
-  async processAttach(file) {
-    var _a;
-    const activeFile = getActiveFile(this.app);
-    if (activeFile === void 0) {
-      new import_obsidian9.Notice("Error: no active file found.");
+  processAttach(attach, source) {
+    if (source.parent && isExcluded(source.parent.path, this.settings)) {
+      debugLog("processAttach - not a file or exclude path:", source.path);
+      new import_obsidian10.Notice(`${source.path} was excluded, skipped`);
       return;
     }
-    debugLog("processAttach - parent:", (_a = activeFile.parent) == null ? void 0 : _a.path);
-    if (activeFile.parent && isExcluded(activeFile.parent.path, this.settings)) {
-      debugLog("processAttach - not a file or exclude path:", activeFile.path);
-      new import_obsidian9.Notice(`${activeFile.path} was excluded, skipped`);
+    const { setting } = getOverrideSetting(this.settings, source);
+    const { extSetting } = getExtensionOverrideSetting(attach.extension, setting);
+    debugLog("processAttach - file.extension:", attach.extension);
+    if (extSetting === void 0 && !isImage(attach.extension) && !isPastedImage(attach)) {
+      debugLog("renameFiles - no handle extension:", attach.extension);
       return;
     }
-    const { setting } = getOverrideSetting(this.settings, activeFile);
-    const { extSetting } = getExtensionOverrideSetting(file.extension, setting);
-    debugLog("processAttach - file.extension:", file.extension);
-    if (extSetting === void 0 && !isImage(file.extension) && !isPastedImage(file)) {
-      debugLog("renameFiles - no handle extension:", file.extension);
-      return;
-    }
-    debugLog("processAttach - active file path", activeFile.path);
-    const metadata = getMetadata(activeFile.path, file);
+    const metadata = getMetadata(source.path, attach);
     debugLog("processAttach - metadata:", metadata);
     const attachPath = metadata.getAttachmentPath(setting, this.settings.dateFormat);
-    const attachName = await metadata.getAttachFileName(
-      setting,
-      this.settings.dateFormat,
-      file.basename,
-      this.app.vault.adapter
-    ) + "." + file.extension;
-    if (!await this.app.vault.adapter.exists(attachPath, true)) {
-      await this.app.vault.adapter.mkdir(attachPath);
-      debugLog("processAttach - create path:", attachPath);
-    }
-    const attachPathFile = this.app.vault.getAbstractFileByPath(attachPath);
-    const { name } = await deduplicateNewName(attachName, attachPathFile);
-    debugLog("processAttach - new path of file:", path.join(attachPath, name));
-    await this.renameCreateFile(file, attachPath, name, activeFile, true);
+    metadata.getAttachFileName(setting, this.settings.dateFormat, attach.basename, this.app.vault.adapter).then((attachName) => {
+      attachName = attachName + "." + attach.extension;
+      this.app.vault.adapter.mkdir(attachPath).finally(() => {
+        debugLog("processAttach - create path:", attachPath);
+        const attachPathFolder = this.app.vault.getAbstractFileByPath(attachPath);
+        deduplicateNewName(attachName, attachPathFolder).then(({ name }) => {
+          debugLog("processAttach - new path of file:", path.join(attachPath, name));
+          this.renameCreateFile(attach, attachPath, name, source);
+        });
+      });
+    });
   }
   /**
    * Rename the file specified by `@param file`, and update the link of the file if specified updateLink
-   * @param file - file to rename
+   * @param attach - file to rename
    * @param attachPath - where to the renamed file will be move to
    * @param attachName - name of the renamed file
-   * @param activeFile - associated active file
-   * @param updateLink - whether to replace the link of renamed file
+   * @param source - associated active file
    * @returns - none
    */
-  async renameCreateFile(file, attachPath, attachName, activeFile, updateLink) {
-    const dst = (0, import_obsidian9.normalizePath)(path.join(attachPath, attachName));
-    debugLog("renameFile - ", file.path, " to ", dst);
-    const oldLinkText = this.app.fileManager.generateMarkdownLink(file, activeFile.path);
-    const oldPath = file.path;
-    const oldName = file.name;
-    await this.app.vault.adapter.rename(file.path, dst);
-    new import_obsidian9.Notice(`Renamed ${oldName} to ${attachName}.`);
-    if (!updateLink) {
-      return;
-    }
-    const newLinkText = this.app.fileManager.generateMarkdownLink(file, activeFile.path);
-    debugLog("renameFile - replace text:", oldLinkText, newLinkText);
-    const view = getActiveView(this.app);
-    if (view === null) {
-      new import_obsidian9.Notice(`Failed to update link in ${activeFile.path}: no active view`);
-      return;
-    }
-    const content = view.getViewData();
-    let val = "";
-    switch (activeFile.extension) {
-      case "md":
-        val = content.replace(oldLinkText, newLinkText);
-        break;
-      case "canvas":
-        val = content.replace(`/(files*:s*")${oldPath}(")/g`, `$1${dst}$2`);
-        break;
-    }
-    view.setViewData(val, false);
-    new import_obsidian9.Notice(`Updated 1 link in ${activeFile.path}`);
+  renameCreateFile(attach, attachPath, attachName, source) {
+    const dst = (0, import_obsidian10.normalizePath)(path.join(attachPath, attachName));
+    debugLog("renameFile - ", attach.path, " to ", dst);
+    const original = attach.basename;
+    const name = attach.name;
+    this.app.fileManager.renameFile(attach, dst).then(() => {
+      new import_obsidian10.Notice(`Renamed ${name} to ${attachName}.`);
+    }).finally(() => {
+      const { setting } = getOverrideSetting(this.settings, source);
+      MD5(this.app.vault.adapter, attach).then((md5) => {
+        saveOriginalName(this.settings, setting, attach.extension, {
+          n: original,
+          md5
+        });
+        this.plugin.saveData(this.settings);
+      });
+    });
   }
 };
 
 // src/main.ts
-var AttachmentManagementPlugin = class extends import_obsidian10.Plugin {
+var AttachmentManagementPlugin = class extends import_obsidian11.Plugin {
+  constructor() {
+    super(...arguments);
+    this.createdQueue = [];
+  }
   async onload() {
     await this.loadSettings();
     console.log(`Plugin loading: ${this.manifest.name} v.${this.manifest.version}`);
-    this.addCommand({
-      id: "attachment-management-rearrange-all-links",
-      name: "Rearrange all linked attachments",
-      callback: () => {
-        new ArrangeHandler(this.settings, this.app).rearrangeAttachment("links");
-        new import_obsidian10.Notice("Arrange completed");
-      }
-    });
-    this.addCommand({
-      id: "attachment-management-rearrange-active-links",
-      name: "Rearrange linked attachments",
-      callback: () => {
-        new ArrangeHandler(this.settings, this.app).rearrangeAttachment("active");
-        new import_obsidian10.Notice("Arrange completed");
-      }
-    });
-    this.addCommand({
-      id: "override-setting",
-      name: "Overriding setting",
-      checkCallback: (checking) => {
-        const file = getActiveFile(this.app);
-        if (file) {
-          if (isAttachment(this.settings, file)) {
-            new import_obsidian10.Notice(`${file.path} is an attachment, skipped`);
-            return true;
-          }
-          if (!checking) {
-            if (file.parent && isExcluded(file.parent.path, this.settings)) {
-              new import_obsidian10.Notice(`${file.path} was excluded, skipped`);
-              return true;
-            }
-            const { setting } = getOverrideSetting(this.settings, file);
-            const fileSetting = Object.assign({}, setting);
-            this.overrideConfiguration(file, fileSetting);
-          }
-          return true;
+    this.app.workspace.onLayoutReady(() => {
+      this.addCommand({
+        id: "attachment-management-rearrange-all-links",
+        name: "Rearrange all linked attachments",
+        callback: async () => {
+          new ConfirmModal(this).open();
         }
-        return false;
-      }
-    });
-    this.addCommand({
-      id: "reset-override-setting",
-      name: "Reset override setting",
-      checkCallback: (checking) => {
-        const file = getActiveFile(this.app);
-        if (file) {
-          if (isAttachment(this.settings, file)) {
-            new import_obsidian10.Notice(`${file.path} is an attachment, skipped`);
-            return true;
-          }
-          if (!checking) {
-            if (file.parent && isExcluded(file.parent.path, this.settings)) {
-              new import_obsidian10.Notice(`${file.path} was excluded, skipped`);
-              return true;
-            }
-            delete this.settings.overridePath[file.path];
-            this.saveSettings();
-            new import_obsidian10.Notice(`Reset attachment setting of ${file.path}`);
-          }
-          return true;
-        }
-        return false;
-      }
-    });
-    this.registerEvent(
-      this.app.workspace.on("file-menu", async (menu, file) => {
-        if (file.parent && isExcluded(file.parent.path, this.settings) || isAttachment(this.settings, file)) {
-          return;
-        }
-        menu.addItem((item) => {
-          item.setTitle("Overriding attachment setting").setIcon("image-plus").onClick(async () => {
-            const { setting } = getOverrideSetting(this.settings, file);
-            const fileSetting = Object.assign({}, setting);
-            await this.overrideConfiguration(file, fileSetting);
+      });
+      this.addCommand({
+        id: "attachment-management-rearrange-active-links",
+        name: "Rearrange linked attachments",
+        callback: async () => {
+          new ArrangeHandler(this.settings, this.app, this).rearrangeAttachment("active").finally(() => {
+            new import_obsidian11.Notice("Arrange completed");
           });
-        });
-      })
-    );
-    this.registerEvent(
-      // not working while drop file to text view
-      this.app.vault.on("create", async (file) => {
-        debugLog("on create event - file:", file.path);
-        if (!(file instanceof import_obsidian10.TFile)) {
-          return;
         }
-        this.app.workspace.onLayoutReady(async () => {
+      });
+      this.addCommand({
+        id: "override-setting",
+        name: "Overriding setting",
+        checkCallback: (checking) => {
+          const file = getActiveFile(this.app);
+          if (file) {
+            if (isAttachment(this.settings, file)) {
+              new import_obsidian11.Notice(`${file.path} is an attachment, skipped`);
+              return true;
+            }
+            if (!checking) {
+              if (file.parent && isExcluded(file.parent.path, this.settings)) {
+                new import_obsidian11.Notice(`${file.path} was excluded, skipped`);
+                return true;
+              }
+              const { setting } = getOverrideSetting(this.settings, file);
+              const fileSetting = Object.assign({}, setting);
+              this.overrideConfiguration(file, fileSetting);
+            }
+            return true;
+          }
+          return false;
+        }
+      });
+      this.addCommand({
+        id: "reset-override-setting",
+        name: "Reset override setting",
+        checkCallback: (checking) => {
+          const file = getActiveFile(this.app);
+          if (file) {
+            if (isAttachment(this.settings, file)) {
+              new import_obsidian11.Notice(`${file.path} is an attachment, skipped`);
+              return true;
+            }
+            if (!checking) {
+              if (file.parent && isExcluded(file.parent.path, this.settings)) {
+                new import_obsidian11.Notice(`${file.path} was excluded, skipped`);
+                return true;
+              }
+              delete this.settings.overridePath[file.path];
+              this.saveSettings();
+              this.loadSettings();
+              new import_obsidian11.Notice(`Reset attachment setting of ${file.path}`);
+            }
+            return true;
+          }
+          return false;
+        }
+      });
+      this.addCommand({
+        id: "attachment-management-clear-unused-originalname-storage",
+        name: "Clear unused original name storage",
+        callback: async () => {
+          const attachments = await new ArrangeHandler(this.settings, this.app, this).getAttachmentsInVault(
+            this.settings,
+            "links"
+          );
+          const storages = [];
+          for (const attachs of Object.values(attachments)) {
+            for (const attach of attachs) {
+              const link = decodeURI(attach);
+              const linkFile = this.app.vault.getAbstractFileByPath(link);
+              if (linkFile !== null && linkFile instanceof import_obsidian11.TFile) {
+                const md5 = await MD5(this.app.vault.adapter, linkFile);
+                const ret = this.settings.originalNameStorage.find((data) => data.md5 === md5);
+                if (ret) {
+                  storages.filter((n) => n.md5 == md5).forEach((n) => storages.remove(n));
+                  storages.push(ret);
+                }
+              }
+            }
+          }
+          debugLog("clearUnusedOriginalNameStorage - storage:", storages);
+          this.settings.originalNameStorage = storages;
+          await this.saveSettings();
+          this.loadSettings();
+        }
+      });
+      this.registerEvent(
+        this.app.workspace.on("file-menu", async (menu, file) => {
+          if (file.parent && isExcluded(file.parent.path, this.settings) || isAttachment(this.settings, file)) {
+            return;
+          }
+          menu.addItem((item) => {
+            item.setTitle("Overriding attachment setting").setIcon("image-plus").onClick(async () => {
+              const { setting } = getOverrideSetting(this.settings, file);
+              const fileSetting = Object.assign({}, setting);
+              await this.overrideConfiguration(file, fileSetting);
+            });
+          });
+        })
+      );
+      this.registerEvent(
+        this.app.vault.on("create", async (file) => {
+          debugLog("on create event - file:", file.path);
+          if (!(file instanceof import_obsidian11.TFile)) {
+            return;
+          }
           const curentTime = new Date().getTime();
           const timeGapMs = curentTime - file.stat.mtime;
           const timeGapCs = curentTime - file.stat.ctime;
-          if (timeGapMs > 1e3 || timeGapCs > 1e3) {
+          if (timeGapMs > 1e3 || timeGapCs > 1e3 || isMarkdownFile(file.extension) || isCanvasFile(file.extension)) {
             return;
           }
-          if (isMarkdownFile(file.extension) || isCanvasFile(file.extension)) {
-            return;
-          }
-          const processor = new CreateHandler(this.app, this.settings);
           if (matchExtension(file.extension, this.settings.excludeExtensionPattern)) {
             debugLog("create - excluded file by extension", file);
             return;
           }
-          debugLog("create - image", file);
-          await processor.processAttach(file);
-        });
-      })
-    );
-    this.registerEvent(
-      // when trigger a rename event on folder, for each file/folder in this renamed folder (include itself) will trigger this event
-      this.app.vault.on("rename", async (file, oldPath) => {
-        debugLog("on rename event - new path and old path:", file.path, oldPath);
-        const { setting } = getRenameOverrideSetting(this.settings, file, oldPath);
-        debugLog("rename - using settings:", setting);
-        if (setting.type === "FOLDER" /* FOLDER */ || setting.type === "FILE" /* FILE */) {
-          updateOverrideSetting(this.settings, file, oldPath);
-          await this.saveSettings();
-          await this.loadSettings();
-        }
-        debugLog("rename - updated settings:", setting);
-        if (!this.settings.autoRenameAttachment) {
-          debugLog("rename - auto rename not enabled:", this.settings.autoRenameAttachment);
-          return;
-        }
-        if (file instanceof import_obsidian10.TFile) {
-          if (file.parent && isExcluded(file.parent.path, this.settings)) {
-            debugLog("rename - exclude path:", file.parent.path);
-            new import_obsidian10.Notice(`${file.path} was excluded, skipped`);
+          this.createdQueue.push(file);
+        })
+      );
+      this.registerEvent(
+        this.app.vault.on("modify", (file) => {
+          debugLog("on modify event - create queue:", this.createdQueue);
+          if (this.createdQueue.length < 1 || !(file instanceof import_obsidian11.TFile)) {
             return;
           }
-          if (isAttachment(this.settings, file)) {
-            debugLog("rename - not processing rename on attachment:", file.path);
+          debugLog("on modify event - file:", file.path);
+          this.app.vault.adapter.process(file.path, (data) => {
+            const f = this.createdQueue.first();
+            if (f != void 0) {
+              this.app.vault.adapter.exists(f.path, true).then((exist) => {
+                if (exist) {
+                  const processor = new CreateHandler(this, this.settings);
+                  const link = this.app.fileManager.generateMarkdownLink(f, file.path);
+                  if (file.extension == "md" && data.indexOf(link) != -1 || file.extension == "canvas" && data.indexOf(f.path) != -1) {
+                    this.createdQueue.remove(f);
+                    processor.processAttach(f, file);
+                  }
+                } else {
+                  debugLog("on modify event - file does not exist:", f.path);
+                  this.createdQueue.remove(f);
+                }
+              });
+            }
+            return data;
+          });
+        })
+      );
+      this.registerEvent(
+        // when trigger a rename event on folder, for each file/folder in this renamed folder (include itself) will trigger this event
+        this.app.vault.on("rename", async (file, oldPath) => {
+          debugLog("on rename event - new path and old path:", file.path, oldPath);
+          const { setting } = getRenameOverrideSetting(this.settings, file, oldPath);
+          debugLog("rename - using settings:", setting);
+          if (setting.type === "FOLDER" /* FOLDER */ || setting.type === "FILE" /* FILE */) {
+            updateOverrideSetting(this.settings, file, oldPath);
+            await this.saveSettings();
+            await this.loadSettings();
+          }
+          debugLog("rename - updated settings:", setting);
+          if (!this.settings.autoRenameAttachment) {
+            debugLog("rename - auto rename not enabled:", this.settings.autoRenameAttachment);
             return;
           }
-          await new ArrangeHandler(this.settings, this.app).rearrangeAttachment("file", file, oldPath);
-          if (!await this.app.vault.adapter.exists(oldPath, true)) {
+          if (file instanceof import_obsidian11.TFile) {
+            if (file.parent && isExcluded(file.parent.path, this.settings)) {
+              debugLog("rename - exclude path:", file.parent.path);
+              new import_obsidian11.Notice(`${file.path} was excluded, skipped`);
+              return;
+            }
+            if (isAttachment(this.settings, file)) {
+              debugLog("rename - not processing rename on attachment:", file.path);
+              return;
+            }
+            await new ArrangeHandler(this.settings, this.app, this).rearrangeAttachment("file", file, oldPath);
+            await this.saveSettings();
+            const oldMetadata = getMetadata(oldPath);
+            const oldAttachPath = oldMetadata.getAttachmentPath(setting, this.settings.dateFormat);
+            this.app.vault.adapter.exists(oldAttachPath).then((exists) => {
+              if (exists) {
+                checkEmptyFolder(this.app.vault.adapter, oldAttachPath).then((empty) => {
+                  if (empty) {
+                    this.app.vault.adapter.rmdir(oldAttachPath, true);
+                  }
+                });
+              }
+            });
+          } else if (file instanceof import_obsidian11.TFolder) {
             return;
           }
-          const oldMetadata = getMetadata(oldPath);
-          debugLog("onRename - old metadata:", oldMetadata);
-          const oldAttachPath = oldMetadata.getAttachmentPath(setting, this.settings.dateFormat);
-          debugLog("onRename - old attachment path:", oldAttachPath);
-          const old = await this.app.vault.adapter.list(oldAttachPath);
-          if (old.files.length === 0 && old.folders.length === 0) {
-            await this.app.vault.adapter.rmdir(oldAttachPath, true);
+        })
+      );
+      this.registerEvent(
+        this.app.vault.on("delete", async (file) => {
+          debugLog("on delete event - file path:", file.path);
+          if (file.parent && isExcluded(file.parent.path, this.settings) || isAttachment(this.settings, file)) {
+            debugLog("delete - exclude path or the file is an attachment:", file.path);
+            return;
           }
-        } else if (file instanceof import_obsidian10.TFolder) {
-          return;
-        }
-      })
-    );
-    this.registerEvent(
-      this.app.vault.on("delete", async (file) => {
-        debugLog("on delete event - file path:", file.path);
-        if (file.parent && isExcluded(file.parent.path, this.settings) || isAttachment(this.settings, file)) {
-          debugLog("rename - exclude path or the file is an attachment:", file.path);
-          return;
-        }
-        if (deleteOverrideSetting(this.settings, file)) {
-          await this.saveSettings();
-          await this.loadSettings();
-          new import_obsidian10.Notice("Removed override setting of " + file.path);
-        }
-      })
-    );
-    this.addSettingTab(new SettingTab(this.app, this));
+          if (deleteOverrideSetting(this.settings, file)) {
+            await this.saveSettings();
+            new import_obsidian11.Notice("Removed override setting of " + file.path);
+          }
+          if (file instanceof import_obsidian11.TFile) {
+            const oldMetadata = getMetadata(file.path);
+            const { setting } = getOverrideSetting(this.settings, file);
+            const oldAttachPath = oldMetadata.getAttachmentPath(setting, this.settings.dateFormat);
+            this.app.vault.adapter.exists(oldAttachPath, true).then((exists) => {
+              if (exists) {
+                checkEmptyFolder(this.app.vault.adapter, oldAttachPath).then((empty) => {
+                  if (empty) {
+                    this.app.vault.adapter.rmdir(oldAttachPath, true);
+                  }
+                });
+              }
+            });
+          }
+        })
+      );
+      this.addSettingTab(new SettingTab(this.app, this));
+    });
   }
   async overrideConfiguration(file, setting) {
     new OverrideModal(this, file, setting).open();
     await this.loadSettings();
-  }
-  backupConfigs() {
-    this.originalObsAttachPath = this.app.vault.getConfig("attachmentFolderPath");
-  }
-  restoreConfigs() {
-    this.app.vault.setConfig("attachmentFolderPath", this.originalObsAttachPath);
-  }
-  updateAttachmentFolderConfig(path2) {
-    this.app.vault.setConfig("attachmentFolderPath", path2);
-  }
-  onunload() {
   }
   async loadSettings() {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());

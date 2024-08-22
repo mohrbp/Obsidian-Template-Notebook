@@ -1,0 +1,19 @@
+{
+  "workLen": 25,
+  "breakLen": 5,
+  "autostart": false,
+  "useStatusBarTimer": true,
+  "notificationSound": true,
+  "customSound": "",
+  "showTaskProgress": true,
+  "enableTaskTracking": false,
+  "logFile": "FILE",
+  "logFocused": false,
+  "logPath": "",
+  "logLevel": "ALL",
+  "logTemplate": "<%*\nawait tp.user.pomodoroLog(tp, log)\n%>",
+  "logFormat": "CUSTOM",
+  "useSystemNotification": true,
+  "taskFormat": "DATAVIEW",
+  "lowFps": false
+}

@@ -1,6 +1,6 @@
 {
   "command_timeout": 5,
-  "templates_folder": "04 Resources/Notebook/Templater",
+  "templates_folder": "00 Home/Notebook Config/Templater Commands",
   "templates_pairs": [
     [
       "",
@@ -11,7 +11,7 @@
   "auto_jump_to_cursor": false,
   "enable_system_commands": false,
   "shell_path": "",
-  "user_scripts_folder": "04 Resources/Notebook/Scripts/Templater",
+  "user_scripts_folder": "00 Home/Notebook Config/Scripts/Templater",
   "enable_folder_templates": true,
   "folder_templates": [
     {
@@ -22,14 +22,11 @@
   "syntax_highlighting": true,
   "syntax_highlighting_mobile": false,
   "enabled_templates_hotkeys": [
-    "04 Resources/Notebook/Templater/05 Task Assigner.md",
-    "04 Resources/Notebook/Templater/10 New Notebook Page.md",
-    "04 Resources/Notebook/Templater/22 New Project with Board.md",
-    "04 Resources/Notebook/Templater/23 New Card.md",
-    "04 Resources/Notebook/Templater/24 New Project Category.md"
+    "00 Home/Notebook Config/Templater Commands/New Note.md",
+    "00 Home/Notebook Config/Templater Commands/Annotate Task.md"
   ],
   "startup_templates": [
     ""
   ],
-  "enable_ribbon_icon": true
+  "enable_ribbon_icon": false
 }

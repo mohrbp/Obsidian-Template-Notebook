@@ -1,16 +1,95 @@
 {
   "attachPath": {
     "attachmentRoot": "",
-    "saveAttE": "nextToNote",
-    "attachmentPath": "attachments",
-    "attachFormat": "${originalname}",
-    "type": "GLOBAL"
+    "saveAttE": "obsFolder",
+    "attachmentPath": "",
+    "attachFormat": "${date}-${originalname}",
+    "type": "GLOBAL",
+    "extensionOverride": []
   },
-  "dateFormat": "YYYYMMDDHHmmssSSS",
-  "excludeExtensionPattern": "",
+  "dateFormat": "YYYY-MM-DDTHHmmssSSS",
+  "excludeExtensionPattern": "pdf",
   "autoRenameAttachment": true,
-  "excludedPaths": "",
-  "excludePathsArray": [],
-  "excludeSubpaths": false,
-  "overridePath": {}
+  "excludedPaths": "05 Archive",
+  "excludePathsArray": [
+    "05 Archive"
+  ],
+  "excludeSubpaths": true,
+  "originalNameStorage": [
+    {
+      "n": "Kinetics_340",
+      "md5": "6F635025E244E6BF3545CA6BCD20306E"
+    },
+    {
+      "n": "Slopes",
+      "md5": "EB7EFBCBCFBFAFB37E259496A02163A3"
+    },
+    {
+      "n": "SlopeRatio",
+      "md5": "85E2B1084561008A469264B9E5385933"
+    },
+    {
+      "n": "Screenshot_20240612-181246",
+      "md5": "9D31CBFC10FA7C01ECE2B76A42CBCE1D"
+    },
+    {
+      "n": "Pasted image 20240606150829",
+      "md5": "DEA92DFDA4940A50C58C95CDF1A95230"
+    },
+    {
+      "n": "Pasted image 20240606094247",
+      "md5": "B02495D600B8FBD560839A792802D9AE"
+    },
+    {
+      "n": "Pasted image 20240606093848",
+      "md5": "4AA216C6BA5DEC7F33A8EBCD0452B56A"
+    },
+    {
+      "n": "Pasted image 20240605124054",
+      "md5": "5A20B16970ADE6F07D1ADD980D2B7FB6"
+    },
+    {
+      "n": "Pasted image 20240605123634",
+      "md5": "4A818592FEE8475DD891DF5F48DCB3C1"
+    },
+    {
+      "n": "Pasted image 20240605123613",
+      "md5": "44E01CE0A9A1345D3B56C59AF89055BA"
+    },
+    {
+      "n": "Pasted image 20240605123830",
+      "md5": "396FE03CF248F264A491972C60048D7A"
+    },
+    {
+      "n": "Pasted image 20240605123840",
+      "md5": "73116CF4E7A8EC81F5E9E0F68E67FBE0"
+    },
+    {
+      "n": "Pasted image 20240605124159",
+      "md5": "60097B3C1D346FD9663411F5EDEE221C"
+    },
+    {
+      "n": "Pasted image 20240612153904",
+      "md5": "CD69C26B5808DEAC229FD683B8946FD7"
+    },
+    {
+      "n": "Screenshot_20240612-181246",
+      "md5": "1A5927177E79BFC8BE500CCE4E7474E4"
+    },
+    {
+      "n": "Screenshot_20240612-181236",
+      "md5": "020766000A448FE45E3987FE437B1296"
+    }
+  ],
+  "overridePath": {
+    "02 Projects/P1248 Peacock/DAHP/notebook/2023-03-21-DAHPS-Tyrosinase-Controls/t3754pis.pdf": {
+      "attachmentRoot": "",
+      "saveAttE": "nextToNote",
+      "attachmentPath": "",
+      "attachFormat": "${date}-${originalname}",
+      "type": "FILE",
+      "extensionOverride": []
+    }
+  },
+  "disableNotification": false
 }

@@ -1,8 +1,9 @@
 {
-  "readableLineLength": false,
-  "alwaysUpdateLinks": true,
-  "newLinkFormat": "absolute",
-  "useMarkdownLinks": true,
   "showUnsupportedFiles": true,
+  "alwaysUpdateLinks": true,
+  "promptDelete": false,
+  "showRibbon": false,
+  "showInlineTitle": true,
+  "propertiesInDocument": "hidden",
   "attachmentFolderPath": "./"
 }

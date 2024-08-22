@@ -1,10 +1,12 @@
 {
-  "accentColor": "",
-  "baseFontSize": 10,
-  "cssTheme": "",
-  "theme": "obsidian",
+  "cssTheme": "Minimal",
+  "interfaceFontFamily": "Atkinson Hyperlegible",
+  "textFontFamily": "Atkinson Hyperlegible",
+  "monospaceFontFamily": "Atkinson Hyperlegible",
   "enabledCssSnippets": [
-    "clean_embeds",
+    "MCL Multi Column",
     "embed-adjustments"
-  ]
+  ],
+  "showViewHeader": true,
+  "accentColor": ""
 }

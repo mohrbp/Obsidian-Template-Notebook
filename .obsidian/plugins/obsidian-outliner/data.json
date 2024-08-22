@@ -1,12 +1,12 @@
 {
-  "styleLists": true,
+  "styleLists": false,
   "debug": false,
-  "stickCursor": "bullet-and-checkbox",
+  "stickCursor": true,
   "betterEnter": true,
   "betterTab": true,
-  "selectAll": true,
+  "selectAll": false,
   "listLines": false,
-  "listLineAction": "toggle-folding",
-  "dnd": true,
-  "previousRelease": "4.8.0"
+  "listLineAction": "none",
+  "dnd": false,
+  "previousRelease": "4.7.1"
 }

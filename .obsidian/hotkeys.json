@@ -1,14 +1,60 @@
 {
-  "file-explorer:new-file": [],
-  "templater-obsidian:04 Resources/Notebook/Templater/07 Task Assigner.md": [
+  "editor:cycle-list-checklist": [
     {
       "modifiers": [
         "Mod"
       ],
-      "key": "T"
+      "key": "Enter"
     }
   ],
-  "workspace:new-tab": [],
+  "quickadd:choice:9aca94a3-bc88-49e2-9b8d-c06f5aae021e": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "F"
+    }
+  ],
+  "templater-obsidian:Notebooks/Templates/Templater/Triage-Task.md": [],
+  "quick-explorer:browse-vault": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "Q"
+    }
+  ],
+  "darlal-switcher-plus:switcher-plus:open": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "O"
+    }
+  ],
+  "switcher:open": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "O"
+    }
+  ],
+  "templater-obsidian:01_Notes/Templates/Templater/Forward Selection.md": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "F"
+    }
+  ],
+  "editor:delete-paragraph": [],
+  "file-explorer:new-file-in-new-pane": [],
+  "nldates-obsidian:nlp-picker": [],
+  "editor:open-link-in-new-leaf": [],
+  "editor:open-link-in-new-split": [],
+  "editor:open-link-in-new-window": [],
+  "templater-obsidian:create-new-note-from-template": [],
   "templater-obsidian:04 Resources/Notebook/Templater/10 New Notebook Page.md": [
     {
       "modifiers": [
@@ -25,10 +71,200 @@
       "key": "T"
     }
   ],
-  "templater-obsidian:replace-in-file-templater": [
+  "obsidian-auto-link-title:enhance-url-with-title": [],
+  "workspace:new-tab": [],
+  "file-explorer:new-file": [],
+  "templater-obsidian:04 Resources/Notebook/Templater/06 Task Forward.md": [
     {
       "modifiers": [
         "Mod"
+      ],
+      "key": "F"
+    }
+  ],
+  "templater-obsidian:04 Resources/Notebook/Templater/11 New Page.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "N"
+    }
+  ],
+  "templater-obsidian:04 Resources/Notebook/Templater/32 Refactor Note.md": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "R"
+    }
+  ],
+  "templater-obsidian:04 Resources/Notebook/Templater/33 Move Note.md": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "M"
+    }
+  ],
+  "media-extended:copy-screenshot": [
+    {
+      "modifiers": [
+        "Alt",
+        "Shift"
+      ],
+      "key": "S"
+    }
+  ],
+  "media-extended:rewind-5s": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "ArrowLeft"
+    }
+  ],
+  "media-extended:rewind-30s": [
+    {
+      "modifiers": [
+        "Alt",
+        "Shift"
+      ],
+      "key": "ArrowLeft"
+    }
+  ],
+  "media-extended:forward-5s": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "ArrowRight"
+    }
+  ],
+  "media-extended:take-timestamp": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "S"
+    }
+  ],
+  "media-extended:forward-30s": [
+    {
+      "modifiers": [
+        "Alt",
+        "Shift"
+      ],
+      "key": "ArrowRight"
+    }
+  ],
+  "media-extended:toggle-play": [
+    {
+      "modifiers": [
+        "Alt",
+        "Shift"
+      ],
+      "key": "Enter"
+    }
+  ],
+  "media-extended:set-speed-1x": [
+    {
+      "modifiers": [
+        "Alt",
+        "Shift"
+      ],
+      "key": "ArrowDown"
+    }
+  ],
+  "media-extended:set-speed-1.5x": [
+    {
+      "modifiers": [
+        "Alt",
+        "Shift"
+      ],
+      "key": "ArrowUp"
+    }
+  ],
+  "media-extended:decrease-speed-granular": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "ArrowDown"
+    }
+  ],
+  "media-extended:increase-speed-granular": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "ArrowUp"
+    }
+  ],
+  "app:toggle-left-sidebar": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "L"
+    }
+  ],
+  "templater-obsidian:04 Resources/Notebook/Templater/27 New Project Revised.md": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "P"
+    }
+  ],
+  "templater-obsidian:01 Home/Notebook Config/Templater/11 New Page.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "N"
+    }
+  ],
+  "templater-obsidian:01 Home/Notebook Config/Templater Commands/New Note.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "N"
+    }
+  ],
+  "templater-obsidian:00 Home/Notebook Config/Templater Commands/New Note.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "N"
+    }
+  ],
+  "templater-obsidian:00 Home/Notebook Config/Templater Commands/Date Picker.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "T"
+    }
+  ],
+  "templater-obsidian:00 Home/Notebook Config/Templater Commands/Annotate Task.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "T"
+    }
+  ],
+  "app:toggle-right-sidebar": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
       ],
       "key": "R"
     }
