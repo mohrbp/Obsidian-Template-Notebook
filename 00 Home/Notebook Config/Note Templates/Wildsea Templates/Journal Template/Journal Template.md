@@ -12,3 +12,4 @@ folder:
 ---
 # Questions
 - What does your journal look like?
+- How long ago was the first entry in your journal? What did it say?

@@ -10,7 +10,6 @@ dv.view("00 Home/Notebook Config/Scripts/Dataview/tasksGTD", {"target": dv.curre
 ```
 # Notes
 ## Recent Notes 
-
 ```dataviewjs
     dv.view("01 Home/Notebook Config/Scripts/Dataview/recents", {"target": dv.current().note_type, "change": "modifiedNotes", "recent": 100})
 ```

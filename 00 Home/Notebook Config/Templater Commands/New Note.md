@@ -1,5 +1,5 @@
 <%*
 // Initialize dataview plugin variable
 const dv = this.app.plugins.plugins["dataview"].api;
-await tp.user.nuPage(tp, dv)
+await tp.user.newPage(tp, dv)
 _%>

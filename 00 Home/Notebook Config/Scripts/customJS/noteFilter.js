@@ -1,371 +1,293 @@
 class noteFilter {
-	
+
+    createNoteObject(dv, path) {
+        const page = dv.page(path);
+
+        return {
+            name: page.file.name,
+            path: page.file.path,
+            link: page.file.link,
+            page: page,
+            noteBook: page.noteBook,
+            noteType: page.noteType,
+            folder: page.file.folder
+        };
+    }
+
+
     loadTasks(dv, target) {
-    // Create a usable input for the Get Child Notes func 
-    // console.log("target-func", target);
-    let page = dv.page(target["path"]);
-    let targetNoteBook = page.noteBook;
+        let targetNote = this.createNoteObject(dv, target.path);
+        let nestedInput = {
+            parent: [targetNote]
+        };
 
-    let targetNoteType = "parent";
+        let allChildNotes = this.getAllChildNotes(dv, nestedInput);
+        let taskFilter = this.createTaskFilter(targetNote, allChildNotes);
 
-    let nestedInput = {}
-    nestedInput[targetNoteType] = []
-
-    let inputNote = {
-        Name: page.file.name,
-        Path: page.file.path,
-        Link: target,
-        Page: page,
-        noteBook: targetNoteBook,
-        noteType: page.noteType
-    };
-    nestedInput[targetNoteType].push(inputNote);
-
-    let allChildNotes = this.getAllChildNotes(dv, nestedInput)
-    // console.log("tasks allChildNotes", allChildNotes)
-
-    let taskFilter = {};
-    for (let cat in allChildNotes) {
-        taskFilter["noteType"] = {
-            excludePaths : page.noteType.path
-        }
-        taskFilter[cat] = {
-            includePaths : [page.file.path],
-            excludePaths : []
-        }
-        for (let index in allChildNotes[cat]) {
-            taskFilter[cat]["includePaths"].push(String(allChildNotes[cat][index]["Path"]))
-        }
-
-    }
-    console.log("taskFilter", taskFilter)
-    return dv.pages()
-        .filter(p => this.dataFilter([p], taskFilter).length > 0)
-        .file
-        .tasks
-        // // Tasks only in the Tasks Header
-        .where(t => t.link.subpath == "Tasks")
-        // // Only Parent Tasks, No Subtasks
-        // // Subtasks can still be accessed through parent
-        .where(t => !t.hasOwnProperty("parent"));
+        return dv.pages()
+            .filter(p => this.dataFilter([p], taskFilter).length > 0)
+            .file
+            .tasks
+            .where(t => t.link.subpath == "Tasks")
+            .where(t => !t.hasOwnProperty("parent"));
     }
 
-    loadConfig (dv) {
+    createTaskFilter(targetNote, allChildNotes) {
+        let taskFilter = { noteType: { excludePaths: targetNote.noteType.path }};
+        
+        for (let cat in allChildNotes) {
+            taskFilter[cat] = {
+                includePaths: [targetNote.path],
+                excludePaths: []
+            };
+            for (let index in allChildNotes[cat]) {
+                taskFilter[cat].includePaths.push(String(allChildNotes[cat][index].path));
+            }
+        }
+        
+        return taskFilter;
+    }
+
+    convertLinksToCommaSeparatedList(text) {
+        // Function to Format Links for Tasks Table
+        // Regular expression to match Markdown links
+        const markdownRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+        // Regular expression to match Wiki links
+        const wikiRegex = /\[\[([^\]]+)\]\]/g;
+
+        // Array to store all links
+        const linksArray = [];
+
+        // Find Markdown links and add to the array
+        let markdownMatch;
+        while ((markdownMatch = markdownRegex.exec(text)) !== null) {
+        const linkText = markdownMatch[1];
+        const linkUrl = markdownMatch[2];
+        linksArray.push(`[${linkText}](${linkUrl})`);
+        }
+
+        // Find Wiki links and add to the array
+        let wikiMatch;
+        while ((wikiMatch = wikiRegex.exec(text)) !== null) {
+        const wikiLink = wikiMatch[1];
+        linksArray.push(`[[${wikiLink}]]`);
+        }
+        // Join the links with commas and return the result
+        return linksArray.join(', ');
+    }
+
+
+    loadConfig(dv) {
+        const configNote = dv.page("/00 Home/Notebook Config/Notebook Config");
 
         let config = {
-            categories : {},
-            collections: {}
+            admin: configNote.admin,
+            templateFolder: configNote.templateFolder,
+            excludePaths: configNote.excludePaths,
+            user: configNote.user,
+            filePath: configNote.file.path,
+            collections: this.loadCollections(dv, configNote.collections)
         };
 
-        // Load the configuration note
-        let configNote = dv.page("/00 Home/Notebook Config/Notebook Config");
-        // console.log("configNote",configNote, configNote.admin)
-        config["admin"] = configNote.admin
-        config["templateFolder"] = configNote.templateFolder
-        config["excludePaths"] = configNote.excludePaths
-        config["user"] = configNote.user
-        config["filePath"] = configNote.file.path
-
-        // console.log("config 1", config)
-
-        let configCategories;
-        configCategories = Object.keys(configNote).reduce((filteredConfigCategories, key) => {
-            if (key.startsWith("category")) {
-                filteredConfigCategories[key] = configNote[key];
-            }
-            return filteredConfigCategories;
-        }, {});
-
-        for (let key in configCategories) {
-            let catName = configCategories[key][0]["display"];
-            config["categories"][catName] = {
-                Name: catName,
-                catNumber: key,
-                Link: configCategories[key][0]
-                // Add other properties here if needed
-            };
-        };
-
-        for (let key in configNote.collections) {
-            // console.log(key)
-            let collectionPath = configNote.collections[key];
-            let collectionname = collectionPath["display"]
-            let collectionPage = dv.page(collectionPath)
-            config["collections"][collectionname] = []
-            let collectionData = {
-                Name: collectionname,
-                Link: collectionPath,
-                Path: collectionPath["path"],
-                noteBook: collectionPage.noteBook,
-                noteType: collectionPage.noteType,
-                Folder: collectionPage.file.folder,
-                catNumber: key,
-            };
-            config["collections"][collectionname].push(collectionData)
-        };
-        // console.log("config 2", config)
-
-        // Output config
         return config;
     }
 
-    accessCatObject (data, element) {
-        let catElements = [];
-        Object.keys(data).forEach(category => {
+    loadCollections(dv, collections) {
+        return Object.keys(collections).reduce((acc, key) => {
+            const collectionPath = collections[key];
+            acc[collectionPath.display] = [ this.createNoteObject(dv, collectionPath.path) ];
+            return acc;
+        }, {});
+    }
+
+    accessCollectionAttribute(data, element) {
+        return Object.keys(data).reduce((catElements, category) => {
             data[category].forEach(item => {
                 catElements.push(item[element]);
             });
-        });
-        return catElements;
+            return catElements;
+        }, []);
     }
 
-    selectCategories (dv, sourceCategories, targetCategories, configCategories) {
-        for (let key in sourceCategories) {
-            if (configCategories.hasOwnProperty(key)) {
-                // console.log("sourceCategories[key]", sourceCategories[key])
-                targetCategories[key] = sourceCategories[key].map(category => ({
-                    Name: dv.page(category["path"]).file.name,
-                    Link: category,
-                    Page: dv.page(category["path"]),
-                    Path: category["path"],
-                    noteBook: configCategories[key]["Link"],
-                    Folder: dv.page(category["path"]).file.folder
-                }));
-            }
-        }
-    }
-    createSuggesterInputs (dv, inputData, config,  prefix = null, admin) {
-        // Function to create suggester inputs
-        let inputSug = [], inputVal = []; 
-        // Object.keys(inputData).forEach((key, index) => {
-        // if (inputData.hasOwnProperty(key)) {
-        //     childNotesList[key] = [];
-        //     let parentFilter;
-        //     if (inputData[key].hasOwnProperty(index)) {
+    createSuggesterInputs(dv, inputData, config, prefix = null, admin) {
+        let inputSug = [], inputVal = [];
+
         for (let collection in inputData) {
-
             let inputCollectionName = collection;
-            let inputValNote = inputCollectionName;
-            // console.log("inputData collection config", inputData, collection, config )
-            let headerNote = {};
-            headerNote[collection] = [];
-            if (prefix && prefix == "Root") {
-            // console.log("inputData[collection]", inputData[collection])
+            let inputValNote = collection;
+            let headerNote = { [collection]: [] };
 
-                let collectionNote = dv.page(config[collection][0].Link.path)
-                // console.log("collectionNote", collectionNote, inputCollectionName)
-                let inputCollectionNote = {
-                    Name: collectionNote.file.name,
-                    Path: collectionNote.file.path,
-                    Page: collectionNote,
-                    Link: collectionNote.file.link,
-                    noteBook: collectionNote.noteBook,
-                    noteType: collectionNote.noteType,
-                    Folder: collectionNote.file.folder,
-                }
-                headerNote[collection].push(inputCollectionNote)
+            if (prefix === "Root") {
+                let collectionNote = this.createNoteObject(dv, config[collection][0].link.path);
+                headerNote[collection].push(collectionNote);
                 inputValNote = headerNote;
-
             }
 
             if (inputData[collection].length > 0) {
                 let inputNote = inputData[collection][0];
-                if (prefix && prefix == "Selected") { 
-                    inputCollectionName = prefix + " " + collection + " " + inputNote["Name"];
-                    headerNote[collection].push(inputNote)
+                if (prefix === "Selected") {
+                    inputCollectionName = `${prefix} ${collection} ${inputNote.name}`;
+                    headerNote[collection].push(inputNote);
                     inputValNote = headerNote;
-                    inputData[collection].shift()
+                    inputData[collection].shift();
                 } 
 
                 inputData[collection].forEach(note => {
-                    inputSug.unshift(note["Name"]);
+                    inputSug.unshift(note.name);
                     inputVal.unshift({ [collection]: [note] });
                 });
             }
 
-            inputCollectionName = inputCollectionName
             inputSug.unshift(inputCollectionName);
-            inputVal.unshift(inputValNote);       
-        };
-
-        // console.log("inputSug", inputSug, "inputVal", inputVal);
+            inputVal.unshift(inputValNote);
+        }
 
         return { inputSug, inputVal };
-    };
+    }
 
     dataFilter(data, filterCriteria) {
-        // console.log("Data", data)
         return data.filter(page => {
-            // Check each filter criteria
-            // console.log("page", page)
             for (let key in filterCriteria) {
                 if (filterCriteria.hasOwnProperty(key)) {
                     let criteria = filterCriteria[key];
-                    // console.log("key", key)
-                    // Include Paths
+                    
                     if (criteria.includePaths && criteria.includePaths.length > 0) {
                         if (!page[key]) return false;
                         let paths = Array.isArray(page[key]) ? page[key].map(p => p.path) : [page[key].path];
-                       // console.log("Path", paths, criteria);
-                        if (!paths.some(path => criteria.includePaths.includes(path))) {
-                           // console.log("false")
-                            return false};
+                        if (!paths.some(path => criteria.includePaths.includes(path))) return false;
                     }
 
-                    // Exclude Paths
                     if (criteria.excludePaths && criteria.excludePaths.length > 0) {
-                        if (!page[key]) return false; // Change to false to ensure exclusion is properly checked
+                        if (!page[key]) return false;
                         let paths = Array.isArray(page[key]) ? page[key].map(nt => nt.path) : [page[key].path];
                         if (paths.some(path => criteria.excludePaths.includes(path))) return false;
                     }
-                    
-                    // Additional Criteria (Example: Check if a property exists and is not null)
-                    if (criteria.required && !page[key]) {
-                        return false;
-                    }
 
-                    // Add more conditions as needed
+                    if (criteria.required && !page[key]) return false;
                 }
             }
-            return true; // Only return true if all criteria pass
-        }).map(page => {
-            // Modify elements based on filterCriteria (if needed)
-            // For example, you could add or edit properties of each page here
-            return page;
+            return true;
         });
     }
 
-    getAllChildNotes (dv, input) {
-        let level = 0;
+    getAllChildNotes(dv, input) {
         let allChildNotes = {};
-        // console.log("input-func", input, "args", args)
+
         for (let cat in input) {
-            console.log(input[cat]);
-            allChildNotes[cat] = []
+            allChildNotes[cat] = [];
             let queue = input[cat];
-            console.log("queue", queue, queue.length)
+
             while (queue.length > 0) {
-                let currentInput = {[cat] : []}
-                currentInput[cat].push(queue[0])
-                console.log("currentInput", currentInput)
-                queue.shift()
-                console.log("queue", queue, queue.length)
-                let root = this.accessCatObject(currentInput, "noteType")[0]["path"].toLowerCase()
-                let childNotesList;
-                if (root.includes("collection")) {
-                    console.log("root note")
-                    childNotesList = this.getChildNotes(dv, currentInput, "this", true, false);
-                } else {
-                    console.log("other note")
-                    childNotesList = this.getChildNotes(dv, currentInput, "this", true, null, true);
-                }
-                console.log("childNotesList", childNotesList)
+                let currentInput = { [cat]: [queue.shift()] };
+                let root = this.accessCollectionAttribute(currentInput, "noteType")[0].path.toLowerCase();
+                let childNotesList = root.includes("collection") ?
+                    this.getChildNotes(dv, currentInput, "this", true, false) :
+                    this.getChildNotes(dv, currentInput, "this", true, null, true);
+
                 if (this.hasChildNotes(childNotesList)) {
                     allChildNotes[cat].push(...childNotesList[cat]);
-                    queue.push(...childNotesList[cat])
-                    // console.log("queue", queue, queue.length)
+                    queue.push(...childNotesList[cat]);
                 }
             }
         }
-        // console.log("allChildNotes", allChildNotes)   
-        return(allChildNotes)
 
+        return allChildNotes;
     }
 
-    getChildNotes (dv, nestedInput, matchParent = "this", matchNoteBook = false, matchNoteType = null, allTemplates = false) { 
+    getChildNotes(dv, nestedInput, matchParent = "this", matchNoteBook = false, matchNoteType = null, allTemplates = false) {
         let childNotesList = {};
-        Object.keys(nestedInput).forEach((key) => {
-            console.log("key", key)
-            if (nestedInput.hasOwnProperty(key)) {
-            // console.log("nestedInput[key]", nestedInput[key])
 
-                childNotesList[key] = [];
-                let parentFilter = {};
-                Object.keys(nestedInput[key]).forEach((index) => {
-                // console.log("nestedInput[key][index]", nestedInput[key][index])
+        Object.keys(nestedInput).forEach(cat => {
+            childNotesList[cat] = [];
 
-                        let parentCollection = nestedInput[key][index];
-                        let parentPath = parentCollection["Path"];
-                        // console.log("parentCollection", parentCollection, parentPath, matchNoteBook, matchNoteType, allTemplates)
-                        if (matchParent == "this") {
-                            parentFilter["parent"] = {
-                                includePaths: parentPath
-                            } 
-                        } else if (matchParent == "noteBook") {
-                            parentFilter["parent"] = {
-                                includePaths: parentCollection["noteBook"]["path"]
-                            }  
-                        }   
-                        if (matchNoteBook == true) {
-                            parentFilter["noteBook"] = {
-                                includePaths: parentCollection["noteBook"]["path"],
-                            }
-                        };
-                        if (matchNoteType == true) {
-                            parentFilter["noteType"] = {
-                                includePaths: parentCollection["noteType"]["path"],
-                            }
-                        } else if (matchNoteType == false) {
-                            parentFilter["noteType"] = {
-                                excludePaths: parentCollection["noteType"]["path"],
-                            }
-                        } else if (matchNoteType == null) {
-                            let noteTypePath = parentCollection["noteType"]["path"]
-                            let noteTypeFile = dv.page(noteTypePath)
-                            console.log("templates", noteTypeFile)
-                            let noteTypePaths = []
+            nestedInput[cat].forEach(parentCollection => {
+                let parentFilter = this.buildParentFilter(dv, parentCollection, matchParent, matchNoteBook, matchNoteType, allTemplates);
+                let childPages = dv.pages().filter(p => this.dataFilter([p], parentFilter).length > 0);
 
-                            if (noteTypeFile.adminTemplate) { 
-                                noteTypeFile.adminTemplate.forEach((template) => {
-                                    console.log("admin", template, template.path)
-                                    noteTypePaths.push(template.path)
-                                })
-                            }
+                childPages.forEach(page => {
+                    childNotesList[cat].unshift(this.createNoteObject(dv, page.file.path));
+                });
+            });
+        });
 
-                            if (allTemplates == true) {
-                                if (noteTypeFile.allTemplate) {
-                                     noteTypeFile.allTemplate.forEach((template) => {
-                                        console.log("all", template, template.path)
-                                        noteTypePaths.push(template.path)
-                                    })
-                                 }
-                            }
-
-                            parentFilter["noteType"] = {
-                                includePaths: noteTypePaths,
-                            }
-                        }
-                        console.log("parentFilter Dev", parentFilter)
-                    
-                        let childPages = dv.pages().filter(p => this.dataFilter([p], parentFilter).length > 0);
-                        // console.log("childPages", childPages)
-                        if (Array.isArray(childPages) && childPages.length > 0) {
-                            childPages.forEach((page) => {
-                                // console.log("page", page)
-                                let childPage = {
-                                    Name: page.file.name,
-                                    Path: page.file.path,
-                                    Link: page.file.link,
-                                    Page: page,
-                                    noteBook: parentCollection["noteBook"],
-                                    noteType: page.noteType,
-                                    Folder: page.file.folder
-                                }
-                                childNotesList[key].unshift(childPage)
-                        })
-                    }
-                })
-            }
-        })  
-        // console.log ("childNotesList", childNotesList)
         return childNotesList;
     }
 
-    hasChildNotes (nestedInput) {
-        for (let key in nestedInput) {
-            if (nestedInput.hasOwnProperty(key)) {
-                for (let index in nestedInput[key]) {
-                    if (nestedInput[key].hasOwnProperty(index) && Object.keys(nestedInput[key][index]).length > 0) {
+    buildParentFilter(dv, parentCollection, matchParent, matchNoteBook, matchNoteType, allTemplates) {
+        let parentFilter = {};
+
+        if (matchParent === "this") {
+            parentFilter.parent = { includePaths: parentCollection.path };
+        } else if (matchParent === "noteBook") {
+            parentFilter.parent = { includePaths: parentCollection.noteBook.path };
+        }
+
+        if (matchNoteBook) {
+            parentFilter.noteBook = { includePaths: parentCollection.noteBook.path };
+        }
+
+        if (matchNoteType !== null) {
+            parentFilter.noteType = { [matchNoteType ? "includePaths" : "excludePaths"]: parentCollection.noteType.path };
+        } else {
+            let noteTypePaths = [];
+            let noteTypeFile = dv.page(parentCollection.noteType.path);
+
+            if (noteTypeFile.adminTemplate) {
+                noteTypeFile.adminTemplate.forEach(template => noteTypePaths.push(template.path));
+            }
+
+            if (allTemplates && noteTypeFile.allTemplate) {
+                noteTypeFile.allTemplate.forEach(template => noteTypePaths.push(template.path));
+            }
+
+            parentFilter.noteType = { includePaths: noteTypePaths };
+        }
+        return parentFilter;
+    }
+
+    hasChildNotes(nestedInput) {
+        return Object.keys(nestedInput).some(key => 
+            nestedInput[key].some(item => Object.keys(item).length > 0)
+        );
+    }
+
+    getInputSuggestions(dv, noteDest, config) {
+    if (noteDest === "Root") {
+        const currentCollections = this.getChildNotes(dv, config.collections, "this", true, false);
+        return this.createSuggesterInputs(dv, currentCollections, config.collections, noteDest, config.admin);
+    }
+    return { inputSug: [], inputVal: [] };
+    }
+
+    async determineDestinationNotebook(tp, dv, collection, config) {
+        while (true) {
+            const root = this.accessCollectionAttribute(collection, "noteType")[0].path.toLowerCase();
+            let childNotesList = this.getChildNotes(dv, collection, "this", true, root.includes("collection") ? false : null);
+
+            if (this.hasChildNotes(childNotesList)) {
+                for (let cat in childNotesList) {
+                    childNotesList[cat].unshift(collection[cat][0]);
+                }
+
+                const { inputSug, inputVal } = this.createSuggesterInputs(dv, childNotesList, config.collections, "Selected", config.admin);
+                const selectedNotebook = await tp.system.suggester(inputSug, inputVal, true, "Select a Notebook");
+
+                if (this.isSameAsDestination(collection, selectedNotebook)) {
+                    return selectedNotebook;
+                }
+                collection = selectedNotebook;
+            } else {
+                return collection;
+            }
+        };
+    }
+
+    isSameAsDestination(collection, selectedNotebook) {
+        for (let key in selectedNotebook) {
+            if (selectedNotebook.hasOwnProperty(key)) {
+                for (let index in selectedNotebook[key]) {
+                    if (selectedNotebook[key][index].path === collection[key][index].path) {
                         return true;
                     }
                 }
@@ -374,4 +296,91 @@ class noteFilter {
         return false;
     }
 
-}  
+    getTemplateSuggestions(dv, destinationNoteBook) {
+        const destNoteTypePath = this.accessCollectionAttribute(destinationNoteBook, "noteType")[0].path.toLowerCase();
+        const NoteBookPath = this.accessCollectionAttribute(destinationNoteBook, "path")[0];
+        let templates = [];
+
+        if (destNoteTypePath.includes("collection")) {
+            templates = this.extractTemplates(dv.page(NoteBookPath).rootTemplate);
+        } else {
+            const noteTypePage = dv.page(destNoteTypePath);
+            if (noteTypePage.allTemplate) {
+                templates = templates.concat(this.extractTemplates(noteTypePage.allTemplate));
+            }
+            if (noteTypePage.adminTemplate) {
+                templates = templates.concat(this.extractTemplates(noteTypePage.adminTemplate));
+            }
+        }
+        return templates;
+    }
+
+    extractTemplates(templates) {
+        if (!templates) return [];
+        return Array.isArray(templates) ? templates : [templates];
+    }
+
+    async getTargetFolderAndTemplate(tp, dv, noteDest, fileYear, fileTemplate, config, destinationNoteBook) {
+        console.log(noteDest)
+        if (noteDest === "Inbox") {
+            const noteTemplate = dv.page(config.templateFolder[0].path);
+            const fileTemplateNote = dv.page(noteTemplate.inboxTemplate.path);
+            console.log(fileTemplateNote)
+            return {
+                targetFolder: `00 Home/Inbox/${fileYear}`,
+                fileTemplateNote: fileTemplateNote
+            };
+        }
+
+        const fileTemplateNote = await dv.page(fileTemplate.path);
+        let targetFolder;
+
+        if (fileTemplateNote.hasOwnProperty("folder") && Array.isArray(fileTemplateNote.folder)) {
+            const appendPath = fileTemplateNote.folder.length > 1
+                ? await tp.system.suggester(fileTemplateNote.folder.map(this.getLastFolderComponent), fileTemplateNote.folder)
+                : fileTemplateNote.folder[0];
+            targetFolder = `${this.accessCollectionAttribute(destinationNoteBook, "folder")}/${appendPath}`;
+        } else {
+            targetFolder = this.accessCollectionAttribute(destinationNoteBook, "folder");
+        }
+
+        return { targetFolder, fileTemplateNote };
+    }
+
+    getLastFolderComponent(path) {
+        const pathComponents = path.split('/');
+        return pathComponents[pathComponents.length - 1];
+    }
+
+    buildFilePath(tp, fileTemplateNote, targetFolder, fileName, today) {
+        const fullName = fileTemplateNote.dated ? `${today}-${fileName}` : fileName;
+        return fileTemplateNote.folderNote ? `${targetFolder}/${fullName}/${fullName}` : `${targetFolder}/${fullName}`;
+    }
+
+    async createNewFile(tp, fileTemplateNote, filePath) {
+        const templateContent = await tp.file.find_tfile(fileTemplateNote.file.path);
+        const strTemplateContent = await app.vault.read(templateContent);
+        const abstractFolder = await app.vault.getAbstractFileByPath("/");
+        return tp.file.create_new(strTemplateContent, filePath, false, abstractFolder);
+    }
+
+    async applyFrontmatter(newTFile, destinationNoteBook, fileTemplateNote, config, noteDest, now) {
+        await app.fileManager.processFrontMatter(newTFile, frontmatter => {
+            // Removing template frontmatter
+            const keysToRemove = ["aliases", "dated", "folderNote", "folder", "modified"];
+            keysToRemove.forEach(key => delete frontmatter[key]);
+
+            // Adding new frontmatter based on creation
+            frontmatter["noteType"] = `[[${fileTemplateNote.file.path.split(".md")[0]}|${fileTemplateNote.aliases[0]}]]`;
+            frontmatter["created"] = now;
+            frontmatter["user"] = `[[${config.filePath.split(".md")[0]}|${config.user}]]`;
+
+            // Adding Category Specific frontmatter
+            if (noteDest !== "Inbox") {
+                frontmatter["parent"] = `[[${this.accessCollectionAttribute(destinationNoteBook, "path")[0].split(".md")[0]}|${this.accessCollectionAttribute(destinationNoteBook, "name")[0]}]]`;
+                frontmatter["noteBook"] = `[[${this.accessCollectionAttribute(destinationNoteBook, "noteBook")[0].path.split(".md")[0]}|${this.accessCollectionAttribute(destinationNoteBook, "noteBook")[0].display}]]`;
+            }
+        });
+    }
+}
+
