@@ -1,8 +1,8 @@
 ---
 noteBook: "[[Note Templates]]"
 noteType: "[[Harm Template|Harm]]"
-adminTemplate: 
-allTemplate: 
+branchTemplate: 
+leafTemplate: 
 aliases:
   - Harm
 folder:

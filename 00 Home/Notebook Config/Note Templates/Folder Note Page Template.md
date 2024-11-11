@@ -1,8 +1,8 @@
 ---
 noteBook: "[[Note Templates]]"
 noteType: "[[Folder Note Page Template|Folder Note]]"
-adminTemplate: 
-allTemplate: 
+branchTemplate: 
+leafTemplate: 
 aliases:
   - Folder Note
 dated: true

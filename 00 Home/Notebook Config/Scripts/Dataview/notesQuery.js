@@ -8,7 +8,6 @@ let nestedInput = {
 
 let allChildNotes = noteFilter.getAllChildNotes(dv, nestedInput);
 
-
 let taskFilter = input.include == true ? {noteType: { includePaths: targetNote.noteType.path }} : 
 {noteType: { excludePaths: targetNote.noteType.path }}
 

@@ -1,8 +1,8 @@
 ---
 noteBook: "[[Note Templates]]"
 noteType: "[[Item Template|Item Template]]"
-adminTemplate: 
-allTemplate: 
+branchTemplate: 
+leafTemplate: 
 aliases:
   - Item
 folder:

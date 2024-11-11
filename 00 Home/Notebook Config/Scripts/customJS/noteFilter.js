@@ -233,16 +233,17 @@ class noteFilter {
             let noteTypePaths = [];
             let noteTypeFile = dv.page(parentCollection.noteType.path);
 
-            if (noteTypeFile.adminTemplate) {
-                noteTypeFile.adminTemplate.forEach(template => noteTypePaths.push(template.path));
+            if (noteTypeFile.branchTemplate) {
+                noteTypeFile.branchTemplate.forEach(template => noteTypePaths.push(template.path));
             }
 
-            if (allTemplates && noteTypeFile.allTemplate) {
-                noteTypeFile.allTemplate.forEach(template => noteTypePaths.push(template.path));
+            if (allTemplates && noteTypeFile.leafTemplates) {
+                noteTypeFile.leafTemplates.forEach(template => noteTypePaths.push(template.path));
             }
 
             parentFilter.noteType = { includePaths: noteTypePaths };
         }
+        console.log(parentFilter)
         return parentFilter;
     }
 
@@ -305,11 +306,12 @@ class noteFilter {
             templates = this.extractTemplates(dv.page(NoteBookPath).rootTemplate);
         } else {
             const noteTypePage = dv.page(destNoteTypePath);
-            if (noteTypePage.allTemplate) {
-                templates = templates.concat(this.extractTemplates(noteTypePage.allTemplate));
+            console.log("noteTypePage", noteTypePage)
+            if (noteTypePage.leafTemplate) {
+                templates = templates.concat(this.extractTemplates(noteTypePage.leafTemplate));
             }
-            if (noteTypePage.adminTemplate) {
-                templates = templates.concat(this.extractTemplates(noteTypePage.adminTemplate));
+            if (noteTypePage.branchTemplate) {
+                templates = templates.concat(this.extractTemplates(noteTypePage.branchTemplate));
             }
         }
         return templates;

@@ -1,8 +1,8 @@
 ---
 noteBook: "[[Note Templates]]"
 noteType: "[[Inventory Sheet Template|Inventory Template]]"
-adminTemplate: 
-allTemplate:
+branchTemplate: 
+leafTemplate:
   - "[[Item Template|Item]]"
   - "[[Resource Template|Resource]]"
 aliases:

@@ -1,9 +1,9 @@
 ---
 noteBook: "[[Note Templates]]"
 noteType: "[[Aspect Template|Aspect Template]]"
-adminTemplate:
+branchTemplate:
   - "[[Trait Template|Trait]]"
-allTemplate:
+leafTemplate:
   - "[[Harm Template|Harm]]"
 aliases:
   - Aspect

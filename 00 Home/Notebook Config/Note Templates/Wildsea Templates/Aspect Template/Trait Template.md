@@ -1,8 +1,8 @@
 ---
 noteBook: "[[Note Templates]]"
 noteType: "[[Trait Template|Trait]]"
-adminTemplate: 
-allTemplate: 
+branchTemplate: 
+leafTemplate: 
 aliases:
   - Trait
 folder:

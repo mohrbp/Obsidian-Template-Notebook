@@ -23,6 +23,8 @@ skill_veils_sway: 0
 aspect_teeth_track: 0
 aspect_tides_track: 0
 aspect_veils_track: 0
+Inventory: "[[Inventory]]"
+Tracks: "[[Tracks]]"
 ---
 
 // Initialize dataview plugin variable
@@ -153,4 +155,15 @@ dv.table(["Aspect", "Skill",
  //       skillSummary[skill].links.join(', ') // Join links if there are multiple
     ])
 );
+```
+
+# Inventory
+## Items
+``` dataviewjs
+    dv.view("00 Home/Notebook Config/Scripts/Dataview/notesQuery", {"target": dv.current().Inventory, "include": "true"})
+```
+
+# Tracks
+``` dataviewjs
+    dv.view("00 Home/Notebook Config/Scripts/Dataview/notesQuery", {"target": dv.current().Tracks, "include": "true"})
 ```

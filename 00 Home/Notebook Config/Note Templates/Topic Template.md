@@ -1,8 +1,8 @@
 ---
 noteBook: "[[Note Templates]]"
 noteType: "[[Topic Template|Topics]]"
-adminTemplate: 
-allTemplate:
+branchTemplate: 
+leafTemplate:
   - "[[Notebook Page Template|Note Page]]"
   - "[[Topic Template|Topics]]"
 aliases:

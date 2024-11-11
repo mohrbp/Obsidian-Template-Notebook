@@ -1,16 +1,15 @@
 ---
 noteBook: "[[Note Templates]]"
 noteType: "[[Project Template|Project Note]]"
-adminTemplate:
-  - "[[Project Template|Project Note]]"
-allTemplate:
-  - "[[Notebook Page Template|Note Page]]"
-  - "[[Folder Note Page Template|Folder Note]]"
+branchTemplate: ["[[Project Template|Project Note]]"]
+leafTemplate: ["[[Notebook Page Template|Note Page]]", "[[Folder Note Page Template|Folder Note]]"]
 aliases:
   - Projects
 dated: false
 folderNote: true
 folder:
+created: 2024-09-01T22:28:53Z
+modified: 2024-09-02T16:27:30Z
 ---
 <%*
 // Build project Folder Structure
