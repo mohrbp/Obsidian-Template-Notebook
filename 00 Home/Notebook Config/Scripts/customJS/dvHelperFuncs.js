@@ -7,7 +7,7 @@ class dvHelperFuncs {
         };
 
         let allChildNotes = noteFilter.getAllChildNotes(dv, nestedInput);
-        let taskFilter = this.createTaskFilter(targetNote, allChildNotes);
+        let taskFilter = this.createTaskFilter(targetNote, allChildNotes, include = false);
 
         return dv.pages()
             .filter(p => noteFilter.dataFilter([p], taskFilter).length > 0)
