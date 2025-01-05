@@ -1,4 +1,5 @@
 const { DateTime, Duration } = dv.luxon;
+const { dvHelperFuncs } = await cJS();
 
 // Select the related notes to targets
 let target = input.target;
@@ -7,37 +8,6 @@ let query = dv.current()[target];
 // Assign variables for recency 
 let recent = input.recent
 let recentLow = recent;
-
-// Load Utilities
-//var dataviewUtils = require(app.vault.adapter.basePath + "/04 Resources/Notebook/Scripts/Dataview/utils.js");
-function convertLinksToCommaSeparatedList(text) {
-  // Regular expression to match Markdown links
-  const markdownRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-
-  // Regular expression to match Wiki links
-  const wikiRegex = /\[\[([^\]]+)\]\]/g;
-
-  // Array to store all links
-  const linksArray = [];
-
-  // Find Markdown links and add to the array
-  let markdownMatch;
-  while ((markdownMatch = markdownRegex.exec(text)) !== null) {
-    const linkText = markdownMatch[1];
-    const linkUrl = markdownMatch[2];
-    linksArray.push(`[${linkText}](${linkUrl})`);
-  }
-
-  // Find Wiki links and add to the array
-  let wikiMatch;
-  while ((wikiMatch = wikiRegex.exec(text)) !== null) {
-    const wikiLink = wikiMatch[1];
-    linksArray.push(`[[${wikiLink}]]`);
-  }
-
-  // Join the links with commas and return the result
-  return linksArray.join(', ');
-}
 
 // Select the type of change to aggregate
 let change = input.change;
@@ -87,7 +57,7 @@ dv.table(["Created Date", title, "Note","Project Notebook"],
 		DateTime.fromISO(p.created).toFormat("ccc DD"),
 		p[change],
 		p.file.link,
-		convertLinksToCommaSeparatedList(p.project),
+		dvHelperFuncs.convertLinksToCommaSeparatedList(p.project),
     	])
     	.limit(25)
     	)

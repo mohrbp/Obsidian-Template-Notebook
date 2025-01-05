@@ -1,8 +1,8 @@
 ---
 noteType: "[[Journal Template|Journal Template]]"
 noteBook: "[[Note Templates]]"
-adminTemplate: 
-allTemplate:
+branchTemplate: 
+leafTemplate:
   - "[[Journal Page|Journal Page]]"
 aliases:
   - Journal

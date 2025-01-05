@@ -1,12 +1,12 @@
 ---
 noteType: "[[Character Sheet]]"
 noteBook: "[[Note Templates]]"
-adminTemplate:
+branchTemplate:
   - "[[Inventory Sheet Template|Inventory]]"
   - "[[Aspect Template|Aspects]]"
   - "[[Journal Template|Journal]]"
   - "[[Tracks Template|Tracks]]"
-allTemplate: 
+leafTemplate: 
 folderNote: true
 skill_teeth_command: 0
 skill_teeth_flourish: 0

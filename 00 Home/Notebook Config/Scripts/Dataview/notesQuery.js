@@ -1,5 +1,7 @@
 const { DateTime, Duration } = dv.luxon;
 const { noteFilter } = await cJS();
+const { dvHelperFuncs } = await cJS();
+
 let target = input.target;
 let targetNote = noteFilter.createNoteObject(dv, target.path);
 let nestedInput = {
@@ -8,18 +10,7 @@ let nestedInput = {
 
 let allChildNotes = noteFilter.getAllChildNotes(dv, nestedInput);
 
-let taskFilter = input.include == true ? {noteType: { includePaths: targetNote.noteType.path }} : 
-{noteType: { excludePaths: targetNote.noteType.path }}
-
-for (let cat in allChildNotes) {
-    taskFilter[cat] = {
-        includePaths: [targetNote.path],
-        excludePaths: []
-    };
-    for (let index in allChildNotes[cat]) {
-        taskFilter[cat].includePaths.push(String(allChildNotes[cat][index].path));
-    }
-}
+let taskFilter = dvHelperFuncs.createTaskFilter(targetNote, allChildNotes, include = true)
 
 let notes = dv.pages()
     .filter(p => noteFilter.dataFilter([p], taskFilter).length > 0)
@@ -32,7 +23,8 @@ dv.table(["Name", "Created Date", "noteType", "Parent"],
 		p.file.link,
 		p.created,
 		p.noteType,
-		noteFilter.convertLinksToCommaSeparatedList(p.parent),
+        p.file.folder,
+		dvHelperFuncs.convertLinksToCommaSeparatedList(p.parent),
     	])
     //	.limit(25)
     	)
