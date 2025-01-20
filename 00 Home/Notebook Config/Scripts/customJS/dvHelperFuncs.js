@@ -201,4 +201,69 @@ class dvHelperFuncs {
         );
     }
 
+    /**
+     * Create an Obsidian URI for modifying frontmatter of a specific note.
+     * @param {string} vaultName - The name of the Obsidian vault.
+     * @param {string} notePath - The relative path to the note within the vault.
+     * @param {Array<string>} frontmatterKeyPath - The key path in the frontmatter to modify.
+     * @param {any} value - The value to set for the specified frontmatter key.
+     * @returns {string} The Obsidian URI for the frontmatter modification.
+     */
+    createObsidianUri(vaultName, notePath, frontmatterKeyPath, value) {
+        const encodedVault = encodeURIComponent(vaultName);
+        const encodedPath = encodeURIComponent(notePath);
+        const encodedKeyPath = encodeURIComponent(JSON.stringify(frontmatterKeyPath));
+        const encodedData = encodeURIComponent(JSON.stringify(value));
+
+        return `obsidian://advanced-uri?vault=${encodedVault}&filepath=${encodedPath}&frontmatterkey=${encodedKeyPath}&data=${encodedData}`;
+    }
+
+
+    /**
+     * Display a table of tasks with dynamic links for Obsidian URI actions.
+     * @param {object} dv - The Dataview API instance.
+     * @param {string} title - The title of the table.
+     * @param {array} tasks - The array of tasks to display.
+     * @param {number} limit - The maximum number of tasks to display.
+     */
+    displayTasksWithUriTable(dv, title, tasks, limit) {
+        // Map table variables
+        dv.header(3, title);
+        // Ensure tasks is a plain array
+        const taskArray = Array.from(tasks);
+
+        const vaultName = "My Notes"; // Replace with your vault's name
+
+        return dv.table(
+            ["Task", "Note Link", "Modify Frontmatter"],
+            tasks.slice(0, limit).map(task => {
+                const notePath = task.path;
+                const frontmatterKeyPath = ["target_uri"];
+                const value = "safd";
+
+                const uri = this.createObsidianUri(vaultName, notePath, frontmatterKeyPath, value);
+
+                return [
+                    task.visual,
+                    `[[${notePath}]]`,
+                    `[Set Target URI](${uri})`
+                ];
+            })
+        );
+    }
+
+    /**
+     * Example Usage
+     let unscheduledTasks = Array.from(
+            allTasks
+                .where(t => t.checked === false)
+                .where(t => typeof t.scheduledDate === "undefined")
+            );
+
+        dvHelperFuncs.displayTasksWithUriTable(dv, 
+            "Unscheduled Tasks with URI Actions", 
+            unscheduledTasks, 
+            limit
+        );
+    */
 }
