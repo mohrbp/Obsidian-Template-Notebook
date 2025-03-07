@@ -64,6 +64,11 @@ dvHelperFuncs.displayUnscheduledTasksInTable(dv, DateTime,
                             unscheduledTasks, 
                             limit);
 
+// dvHelperFuncs.displayTasksWithUriTable(dv,
+//                             "Unscheduled", 
+//                             unscheduledTasks, 
+//                             limit)
+
 let myRecentCompleteTasks = allTasks
                         .where(t => t.checked === true)
                         .where(t => typeof(t.completedDate) !== "undefined");

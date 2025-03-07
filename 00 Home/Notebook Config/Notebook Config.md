@@ -1,7 +1,9 @@
 ---
 noteType: "[[Notebook Config]]"
-user: Ben Mohr
+user: Emily Mohr
 aliases:
+  - Emily Mohr
+  - Emily M.
   - Ben Mohr
   - Ben M.
 created: 2024-06-28T09:22:10Z

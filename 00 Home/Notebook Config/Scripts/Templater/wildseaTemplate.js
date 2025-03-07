@@ -1,32 +1,16 @@
 async function wildseaTemplate(tp, dv){
 
-  // Build project Folder Structure
-// await this.app.vault.createFolder(tp.file.folder(true) + "/Aspects");
-// await this.app.vault.createFolder(tp.file.folder(true) + "/Aspects/Teeth");
-// await this.app.vault.createFolder(tp.file.folder(true) + "/Aspects/Tides");
-// await this.app.vault.createFolder(tp.file.folder(true) + "/Aspects/Veils");
-
-//await this.app.vault.createFolder(tp.file.folder(true) + "/Aspects/Mutation");
-//await this.app.vault.createFolder(tp.file.folder(true) + "/Inventory");
-//await this.app.vault.createFolder(tp.file.folder(true) + "/Inventory/Gear");
-//await this.app.vault.createFolder(tp.file.folder(true) + "/Inventory/Items");
-//await this.app.vault.createFolder(tp.file.folder(true) + "/Inventory/Resources");
-//await this.app.vault.createFolder(tp.file.folder(true) + "/Inventory/Resources/Salvage");
-//await this.app.vault.createFolder(tp.file.folder(true) + "/Inventory/Resources/Specimen");
-//await this.app.vault.createFolder(tp.file.folder(true) + "/Inventory/Resources/Whispers");
-//await this.app.vault.createFolder(tp.file.folder(true) + "/Inventory/Trash");
-//await this.app.vault.createFolder(tp.file.folder(true) + "/Journal");
-//await this.app.vault.createFolder(tp.file.folder(true) + "/Tracks");
-
 let newCharacterPath = await tp.file.path(true);
 let newCharacterName = await tp.file.title;
 let newCharacterFolder = await tp.file.folder(true);
+let newCharacterTFile = await tp.find_tfile(newCharacterPath)
 let characterTemplateNote =  await dv.page(newCharacterPath);
 console.log(newCharacterPath, newCharacterName, newCharacterFolder, characterTemplateNote, tp.file.find_tfile(newCharacterPath))
-let subTemplates = await characterTemplateNote.adminTemplate;
+let subTemplates = await characterTemplateNote.branchTemplate;
 let newTFiles = [];
 let templateTFile, newTFile, strTemplateContent;
 console.log("subTemplates", subTemplates)
+
 for (let template of subTemplates) {
     if (template.path.contains("Aspect")) {
         let aspects = ["Teeth", "Tides", "Veils"];
@@ -74,10 +58,18 @@ for (let tFile of newTFiles) {
         frontmatter["parent"] = "[[" + newCharacterPath.split(".md")[0] + "|" +  newCharacterName + "]]";
         frontmatter["noteBook"] = "[[" + characterTemplateNote.noteBook["path"].split(".md")[0] + "| Wildsea]]"
     });
+
+    await app.fileManager.processFrontMatter(newCharacterTFile, frontmatter => {
+
+    })
 }
 
 await console.log(newTFiles);
-  
+await app.fileManager.processFrontMatter(newCharacterTFile, frontmatter => {
+    frontmatter["Inventory"] = "[[" + newCharacterFolder + "/Inventory/Inventory" + "]]";
+    frontmatter["Journal"] = "[[" + newCharacterFolder + "/Journal/Journal" + "]]";
+    })
+
 }
 
 module.exports = wildseaTemplate;
