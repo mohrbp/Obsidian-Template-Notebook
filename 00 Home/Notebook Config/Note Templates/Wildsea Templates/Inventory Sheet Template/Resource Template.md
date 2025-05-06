@@ -6,9 +6,9 @@ leafTemplate:
 aliases:
   - Resource
 folder:
-  - Resources/Specimen
+  - Resources/Whispers
   - Resources/Salvage
-  - Resources/Whisper
+  - Resources/Specimen
 dated: true
 folderNote: false
 resourceType:

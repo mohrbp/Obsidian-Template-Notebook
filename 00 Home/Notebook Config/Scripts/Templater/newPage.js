@@ -1,43 +1,71 @@
 async function newPage(tp, dv) {
-    // Load the note filter and configuration
+    // Initialize note filter and load configuration
     const { noteFilter } = await cJS();
     const config = noteFilter.loadConfig(dv);
-    const admin = config.admin;
-    const fileYear = tp.date.now("YYYY");
-    const today = tp.date.now("YYYY-MM-DD");
-    const now = tp.date.now("YYYY-MM-DDTHH:mm:ss[Z]")
-
-    // Determine the destination for the new note
-    const noteDest = admin ? await tp.system.suggester(["Inbox", "Root"], ["Inbox", "Root"], true, "Select Note Destination") : "Root";
     
-    let fileTemplate, destinationNoteBook;
+    // Setup metadata
+    const metadata = {
+        fileYear: tp.date.now("YYYY"),
+        today: tp.date.now("YYYY-MM-DD"),
+        now: tp.date.now("YYYY-MM-DDTHH:mm:ss[Z]")
+    };
 
-    // For destinations other than Inbox
-    if (noteDest !== "Inbox") {
-        // Get possible input suggestions
-        let { inputSug, inputVal } = noteFilter.getInputSuggestions(dv, noteDest, config);
-
-        // Select the collection
+    // Step 1: Determine destination type
+    const noteDest = config.admin 
+        ? await tp.system.suggester(
+            ["Inbox", "Root", "Current"],
+            ["Inbox", "Root", "Current"],
+            true,
+            "Select Note Destination"
+          )
+        : "Root";
+        
+    // Step 2: Get destination notebook (if not Inbox)
+    let destinationNoteBook = null;
+    if (noteDest === "Current") {
+        // Get current context
+        const context = await noteFilter.getCurrentNoteContext(tp, dv);
+        console.log(context)
+        // Create collection from parent note (or current note if no parent)
+        const currentCollection = {
+            [context.parentNote.noteBook.display]: [noteFilter.createNoteObject(dv, context.parentNote.path)]
+        };
+        console.log(currentCollection)
+        // Use existing destination notebook determination
+        destinationNoteBook = await noteFilter.determineDestinationNotebook(tp, dv, currentCollection, config);
+    } else if (noteDest !== "Inbox") {
+        const { inputSug, inputVal } = noteFilter.getInputSuggestions(dv, noteDest, config);
         const collection = await tp.system.suggester(inputSug, inputVal, true, "Select a Collection");
-
-        // Determine the destination notebook
         destinationNoteBook = await noteFilter.determineDestinationNotebook(tp, dv, collection, config);
-
-        // Get available templates for the selected notebook
-        const destNoteBookTemplates = noteFilter.getTemplateSuggestions(dv, destinationNoteBook);
-        fileTemplate = await tp.system.suggester(destNoteBookTemplates.map(item => item.display), destNoteBookTemplates, true, "Select Note Template");
     }
 
-    // Determine the target folder and file template note
-    const { targetFolder, fileTemplateNote } = await noteFilter.getTargetFolderAndTemplate(tp, dv, noteDest, fileYear, fileTemplate, config, destinationNoteBook);
-    // Prompt for the filename and construct the file path
-    const fileName = await tp.system.prompt("Enter Note Name");
-    const filePath = await noteFilter.buildFilePath(tp, fileTemplateNote, targetFolder, fileName, today);
-    // Create the new file and apply frontmatter
-    const newTFile = await noteFilter.createNewFile(tp, fileTemplateNote, filePath);
-    await noteFilter.applyFrontmatter(newTFile, destinationNoteBook, fileTemplateNote, config, noteDest, now);
+    // Step 3: Get template and location information
+    const { fileTemplateNote, targetLocation } = await noteFilter.getTemplateAndLocation(
+        tp, dv, noteDest, config, destinationNoteBook
+    );
 
-    return newTFile;
+    console.log(targetLocation)
+    // Step 4: Get filename and build complete path
+    const fileName = await tp.system.prompt("Enter Note Name");
+    const filePath = await noteFilter.buildCompletePath(
+        targetLocation,
+        fileName,
+        metadata,
+        fileTemplateNote
+    );
+
+    // Step 5: Create file and apply frontmatter
+    const newFile = await noteFilter.createNewFile(tp, fileTemplateNote, filePath);
+    await noteFilter.applyFrontmatter(
+        newFile,
+        destinationNoteBook,
+        fileTemplateNote,
+        config,
+        noteDest,
+        metadata.now
+    );
+
+    return newFile;
 }
 
 module.exports = newPage;

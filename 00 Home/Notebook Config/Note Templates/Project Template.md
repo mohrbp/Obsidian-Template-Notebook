@@ -31,3 +31,4 @@ _%>
 ``` dataviewjs
     dv.view("00 Home/Notebook Config/Scripts/Dataview/multicolumn", {"target": dv.current().file.link})
 ```
+

@@ -5,6 +5,7 @@ noteType: "[[Collection Template]]"
 cssclasses:
 ---
 # Tasks
+
 ```dataviewjs
 dv.view("00 Home/Notebook Config/Scripts/Dataview/tasksGTD", {"target": dv.current().file.link})
 ```
