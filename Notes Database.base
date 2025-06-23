@@ -1,0 +1,35 @@
+filters:
+  and:
+    - file.ext == "md"
+formulas: {}
+views:
+  - type: table
+    name: Table
+    filters:
+      and:
+        - or:
+            - "!parentProject.isEmpty()"
+            - "!parentProjects.isEmpty()"
+            - "!parent.isEmpty()"
+    order:
+      - file.name
+      - noteType
+      - parent
+      - noteBook
+      - adminTemplate
+      - allTemplate
+      - branchTemplate
+      - leafTemplate
+    columnSize:
+      file.name: 188
+      note.noteType: 136
+      note.noteBook: 98
+      note.adminTemplate: 80
+      note.allTemplate: 85
+      note.branchTemplate: 93
+      note.leafTemplate: 59
+    sort:
+      - column: file.links
+        direction: DESC
+      - column: note.noteBook
+        direction: ASC

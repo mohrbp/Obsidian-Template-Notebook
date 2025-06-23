@@ -32,6 +32,8 @@
     "allTemplate": "multitext",
     "adminTemplate": "multitext",
     "rootTemplate": "multitext",
-    "Improved Resistance": "text"
+    "Improved Resistance": "text",
+    "leafTemplate": "multitext",
+    "branchTemplate": "multitext"
   }
 }

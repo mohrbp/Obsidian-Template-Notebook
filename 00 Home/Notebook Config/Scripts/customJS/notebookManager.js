@@ -270,7 +270,7 @@ class notebookManager {
             recursive = false,
             includeSource = false,
             formatOutput = false,
-            traversalType = 'children' // New option
+            traversalType = 'children' 
         } = options;
 
         // Define different traversal strategies
