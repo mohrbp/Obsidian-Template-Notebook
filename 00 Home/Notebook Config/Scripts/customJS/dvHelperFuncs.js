@@ -1,4 +1,17 @@
 class dvHelperFuncs {
+
+    loadTasks_new(dv, notebookManager, target) {
+        let targetNote = notebookManager.createNoteObject(dv, target.path)
+        let nestedInput = {
+            parent: [targetNote]
+        };
+        
+        console.log("targetNote", targetNote)
+        let allChildNotes = notebookManager.getAllChildNotes(dv, nestedInput)
+        console.log("allChildNotes", allChildNotes)
+
+ 
+    }
 	
     loadTasks(dv, noteFilter, target) {
         let targetNote = noteFilter.createNoteObject(dv, target.path);

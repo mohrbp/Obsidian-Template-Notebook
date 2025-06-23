@@ -2,7 +2,6 @@
   "showUnsupportedFiles": true,
   "alwaysUpdateLinks": true,
   "promptDelete": false,
-  "showRibbon": false,
   "showInlineTitle": true,
   "propertiesInDocument": "hidden",
   "attachmentFolderPath": "./"

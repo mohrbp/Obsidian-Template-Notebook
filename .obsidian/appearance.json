@@ -8,5 +8,6 @@
     "embed-adjustments"
   ],
   "showViewHeader": true,
-  "accentColor": ""
+  "accentColor": "",
+  "showRibbon": false
 }

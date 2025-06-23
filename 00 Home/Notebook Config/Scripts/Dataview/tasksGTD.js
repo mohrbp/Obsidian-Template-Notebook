@@ -3,6 +3,7 @@
 const { DateTime } = dv.luxon;
 const {noteFilter} = await cJS();
 const {dvHelperFuncs} = await cJS();
+const {notebookManager} = await cJS();
 
 
 if (dvHelperFuncs.isMobileDevice()) {
@@ -17,7 +18,11 @@ let target = input.target;
 let limit = 30
 
 // console.log(customJS)
-let myTasks = dvHelperFuncs.loadTasks(dv, noteFilter, target)
+let myTasks_old = dvHelperFuncs.loadTasks(dv, noteFilter, target)
+console.log("myTasks_old", myTasks_old)
+
+console.log("Start New Tasks")
+let myTasks = dvHelperFuncs.loadTasks_new(dv, notebookManager, target)
 console.log("myTasks", myTasks)
 
 for (let task of myTasks) {

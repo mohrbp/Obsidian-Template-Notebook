@@ -65,10 +65,10 @@ class notebookManager {
             case "Root":
                 // Get root level collections and let user select
                 console.log("config.collections", config.collections)
-                const rootCollections = this.findNotes(dv, config.collections, {
+                const rootCollections = this.traverseNotebook(dv, config.collections, {
                     formatOutput: true,
                     includeSource: true,
-                    recursive: false
+                    traversalType: 'children'       
                 });
 
                 return await tp.system.suggester(
@@ -123,10 +123,10 @@ class notebookManager {
 
         while (true) {
             // Get and format navigation options
-            const options = this.findNotes(dv, currentCollection, {
+            const options = await this.traverseNotebook(dv, initialCollection, {
                 includeSource: true,
                 formatOutput: true,
-                // recursive: true
+                traversalType: 'children'
             });
 
             // If no options available or no child notes, we've reached a destination
@@ -151,40 +151,29 @@ class notebookManager {
         }
     }
 
-    // New consolidated helper function for finding notes
-    findNotes(dv, sourceCollection, options = {}) {
-        const {
-            recursive = false,
-            includeSource = false,
-            formatOutput = false
-        } = options;
+    findNotesWithCriteria (dv, collection, criteria) {
 
+            const normalizePaths = (property) => {
+                if (!property) return [];
+                
+                // Handle array of links
+                if (Array.isArray(property)) {
+                    return property.map(p => p?.path || p).filter(p => p);
+                }
+                
+                // Handle single link
+                if (property.path) {
+                    return [property.path];
+                }
+                
+                // Handle string path
+                if (typeof property === 'string') {
+                    return [property];
+                }
+                
+                return [];
+            };
 
-        // Utility function for function composition
-        const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);
-
-        const normalizePaths = (property) => {
-            if (!property) return [];
-            
-            // Handle array of links
-            if (Array.isArray(property)) {
-                return property.map(p => p?.path || p).filter(p => p);
-            }
-            
-            // Handle single link
-            if (property.path) {
-                return [property.path];
-            }
-            
-            // Handle string path
-            if (typeof property === 'string') {
-                return [property];
-            }
-            
-            return [];
-        };
-
-        const findNotesWithCriteria = (dv, collection, criteria) => {
             return Object.entries(collection).reduce((results, [category, referenceNotes]) => {
                 console.log(`Processing category: ${category} with ${referenceNotes.length} reference notes`);
 
@@ -274,25 +263,55 @@ class notebookManager {
                     ? { ...results, [category]: foundNotes }
                     : results;
             }, {});
+    };
+
+    async traverseNotebook(dv, sourceCollection, options = {}) {
+        const {
+            recursive = false,
+            includeSource = false,
+            formatOutput = false,
+            traversalType = 'children' // New option
+        } = options;
+
+        // Define different traversal strategies
+        const traversalStrategies = {
+            children: {
+                criteria: {
+                    matchNoteBook: true,
+                    isParent: true,
+                    isBranch: true
+                }
+            },
+            siblings: {
+                criteria: {
+                    matchNoteBook: true,
+                    isSibling: true
+                }
+            },
+            template: {
+                criteria: {
+                    matchNoteBook: true,
+                    isBranch: true,
+                    isLeaf: true
+                }
+            }
         };
 
-        // Pure function to get child notes
-        const getChildNotes = collection => {
-
-            return findNotesWithCriteria(dv, collection, {
-                matchNoteBook: true,
-                // excludeNoteType: this.isCollection(noteTypePath),
-                // this implementation is hella confusion, if the noteType is a Collection, then this is true and so the reference note type "Collection", won't be included
-                isParent: true, 
-                isBranch: true
-            });
+        const getNotesForStrategy = collection => {
+            const strategy = traversalStrategies[traversalType];
+            return this.findNotesWithCriteria(dv, collection, strategy.criteria);
         };
+
+
+        // Utility function for function composition
+        const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);
 
         // Pure function for recursive processing using immutable patterns
         const processRecursively = collection => {
             const processCategory = ([category, notes]) => {
+
                 const processNote = (accumulator, note) => {
-                    const childNotes = getChildNotes({ [category]: [note] });
+                    const childNotes = getNotesForStrategy({ [category]: [note] });
                     const categoryChildren = childNotes[category] || [];
                     
                     return {
@@ -323,7 +342,6 @@ class notebookManager {
                 Object.entries(collection).map(processCategory)
             );
         };
-
         // Pure function to combine source and child notes
         const combineSourceAndChildren = (sourceCollection, childNotes) => 
             Object.entries(sourceCollection).reduce((acc, [category, notes]) => ({
@@ -333,7 +351,7 @@ class notebookManager {
 
         // Main processing pipeline
         const process = pipe(
-            getChildNotes,
+            getNotesForStrategy,
             childNotes => {
                 if (recursive) return processRecursively(sourceCollection);
                 if (includeSource) return combineSourceAndChildren(sourceCollection, childNotes);
@@ -344,6 +362,89 @@ class notebookManager {
 
         return process(sourceCollection);
     }
+
+
+    // // New consolidated helper function for finding notes
+    // findNotes(dv, sourceCollection, options = {}) {
+    //     const {
+    //         recursive = false,
+    //         includeSource = false,
+    //         formatOutput = false
+    //     } = options;
+
+
+    //     // Utility function for function composition
+    //     const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);
+
+    //     // Pure function to get child notes
+    //     const getChildNotes = collection => {
+
+    //         return this.findNotesWithCriteria(dv, collection, {
+    //             matchNoteBook: true,
+    //             // excludeNoteType: this.isCollection(noteTypePath),
+    //             // this implementation is hella confusion, if the noteType is a Collection, 
+    //             // then this is true and so the reference note type "Collection", won't be included
+    //             isParent: true, 
+    //             isBranch: true
+    //         });
+    //     };
+
+    //     // Pure function for recursive processing using immutable patterns
+    //     const processRecursively = collection => {
+    //         const processCategory = ([category, notes]) => {
+    //             const processNote = (accumulator, note) => {
+    //                 const childNotes = getChildNotes({ [category]: [note] });
+    //                 const categoryChildren = childNotes[category] || [];
+                    
+    //                 return {
+    //                     processed: [...accumulator.processed, ...categoryChildren],
+    //                     toProcess: [...accumulator.toProcess, ...categoryChildren]
+    //                 };
+    //             };
+
+    //             const processAllNotes = (notesToProcess, accumulated = []) => {
+    //                 if (notesToProcess.length === 0) return accumulated;
+                    
+    //                 const [currentNote, ...remainingNotes] = notesToProcess;
+    //                 const result = processNote(
+    //                     { processed: accumulated, toProcess: [] }, 
+    //                     currentNote
+    //                 );
+                    
+    //                 return processAllNotes(
+    //                     [...remainingNotes, ...result.toProcess],
+    //                     result.processed
+    //                 );
+    //             };
+
+    //             return [category, processAllNotes(notes)];
+    //         };
+
+    //         return Object.fromEntries(
+    //             Object.entries(collection).map(processCategory)
+    //         );
+    //     };
+
+    //     // Pure function to combine source and child notes
+    //     const combineSourceAndChildren = (sourceCollection, childNotes) => 
+    //         Object.entries(sourceCollection).reduce((acc, [category, notes]) => ({
+    //             ...acc,
+    //             [category]: [...notes, ...(childNotes[category] || [])]
+    //         }), {});
+
+    //     // Main processing pipeline
+    //     const process = pipe(
+    //         getChildNotes,
+    //         childNotes => {
+    //             if (recursive) return processRecursively(sourceCollection);
+    //             if (includeSource) return combineSourceAndChildren(sourceCollection, childNotes);
+    //             return childNotes;
+    //         },
+    //         result => formatOutput ? this.formatNotesCollection(result) : result
+    //     );
+
+    //     return process(sourceCollection);
+    // }
 
     // This function theoretically feeds the down stream table generation
     getAllChildNotes(dv, rootCollections) {
@@ -411,24 +512,85 @@ class notebookManager {
             }
 
             return displayFormatters[selectedFormatter](note, category);
+        }   
+
+
+        return Object.entries(collections)
+            .flatMap(([category, notes]) => 
+                notes.map(note => {
+                    const formatted = formatNoteDisplay(note, category, options);
+                    return {
+                        display: formatted.display,
+                        value: { [category]: [formatted.value] }
+                    };
+                })
+            )
+            .reduce((result, formatted) => ({
+                displays: [...result.displays, formatted.display],
+                values: [...result.values, formatted.value]
+            }), { displays: [], values: [] });
+    }
+
+    async generateNoteTable(dv, targetNote, options = {}) {
+        const {
+            sortByCreated = true,
+            limit = null
+        } = options;
+
+        // Create initial collection structure
+        const sourceCollection = {
+            [targetNote.noteBook.display]: [targetNote]
+        };
+
+        // Use findNotes to get all related notes
+        const relatedNotes = await this.traverseNotebook(dv, sourceCollection, {
+            recursive: true,
+            includeSource: true,
+            formatOutput: false,
+            traversalType: "children"
+        });
+
+        // Flatten the notes from all categories
+        const allNotes = Object.values(relatedNotes)
+            .flat()
+            .map(note => note.page);
+
+        // Sort notes if requested
+        if (sortByCreated) {
+            allNotes.sort((a, b) => 
+                DateTime.fromISO(b.created).diff(DateTime.fromISO(a.created))
+            );
         }
 
+        // Apply limit if specified
+        const limitedNotes = limit ? allNotes.slice(0, limit) : allNotes;
 
-    return Object.entries(collections)
-        .flatMap(([category, notes]) => 
-            notes.map(note => {
-                const formatted = formatNoteDisplay(note, category, options);
-                return {
-                    display: formatted.display,
-                    value: { [category]: [formatted.value] }
-                };
-            })
-        )
-        .reduce((result, formatted) => ({
-            displays: [...result.displays, formatted.display],
-            values: [...result.values, formatted.value]
-        }), { displays: [], values: [] });
+        // Generate table data
+        const tableData = limitedNotes.map(note => [
+            note.file.link,
+            note.created,
+            note.noteType,
+            note.file.folder,
+            this.convertLinksToCommaSeparatedList(note.parent)
+        ]);
+
+        return {
+            headers: ["Name", "Created Date", "noteType", "Parent"],
+            rows: tableData
+        };
     }
+
+    // Add helper method for converting links to comma-separated list
+    convertLinksToCommaSeparatedList(links) {
+        if (!links) return '';
+        const linkArray = Array.isArray(links) ? links : [links];
+        return linkArray
+            .map(link => link.path || link)
+            .filter(Boolean)
+            .join(', ');
+    }
+
+
 
     // 3. TEMPLATE HANDLING & SELECTION
 
