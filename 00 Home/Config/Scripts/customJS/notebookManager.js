@@ -1,7 +1,7 @@
 class notebookManager {
     // 1. CORE INITIALIZATION & CONFIGURATION
     loadConfig(dv) {
-        const configNote = dv.page("/00 Home/Notebook Config/Notebook Config");
+        const configNote = dv.page("/00 Home/Config/Config");
         if (!configNote) {
             throw new Error("Configuration note not found");
         }

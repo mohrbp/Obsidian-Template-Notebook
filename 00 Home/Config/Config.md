@@ -1,5 +1,5 @@
 ---
-noteType: "[[Notebook Config]]"
+noteType: "[[Config]]"
 user: Emily Mohr
 aliases:
   - Emily Mohr
@@ -11,13 +11,13 @@ modified: 2024-08-14T19:18:32Z
 admin: true
 templateFolder:
   - "[[Note Templates]]"
-excludePaths: 
+excludePaths:
 collections:
   - "[[01 Projects|Projects]]"
   - "[[02 Wildsea|Wildsea]]"
 ---
 ## Notebook Config
-- ![[2025-03-13T161338024-Pasted image 20250313161336.png|6000]]
+- ![[2025-06-28T165401705-Pasted image 20250313161336.png|6000]]
 ``` mermaid
 sequenceDiagram
 
