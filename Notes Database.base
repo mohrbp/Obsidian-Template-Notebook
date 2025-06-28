@@ -4,7 +4,27 @@ filters:
 formulas: {}
 views:
   - type: table
-    name: Table
+    name: All
+    order:
+      - file.name
+      - noteType
+      - noteBook
+      - parent
+      - file.ctime
+    sort:
+      - property: noteBook
+        direction: DESC
+      - property: file.ctime
+        direction: DESC
+      - property: file.links
+        direction: DESC
+    columnSize:
+      file.name: 188
+      note.noteType: 136
+      note.noteBook: 139
+    cardSize: 200
+  - type: table
+    name: Projects and Parents
     filters:
       and:
         - or:
@@ -20,6 +40,11 @@ views:
       - allTemplate
       - branchTemplate
       - leafTemplate
+    sort:
+      - property: file.links
+        direction: DESC
+      - property: noteBook
+        direction: ASC
     columnSize:
       file.name: 188
       note.noteType: 136
@@ -28,8 +53,3 @@ views:
       note.allTemplate: 85
       note.branchTemplate: 93
       note.leafTemplate: 59
-    sort:
-      - column: file.links
-        direction: DESC
-      - column: note.noteBook
-        direction: ASC

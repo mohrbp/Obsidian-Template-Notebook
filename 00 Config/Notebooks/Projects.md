@@ -1,0 +1,4 @@
+---
+rootPathTemplate: "{index} {title}"
+rootPath:
+---

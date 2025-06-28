@@ -268,5 +268,13 @@
       ],
       "key": "R"
     }
+  ],
+  "templater-obsidian:00 Config/Templater Commands/New Note.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "N"
+    }
   ]
 }

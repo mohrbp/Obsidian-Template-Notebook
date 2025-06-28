@@ -4,20 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "3d4cfff92d1489a4",
+        "id": "bd5e7fe3f96e4f57",
         "type": "tabs",
         "children": [
           {
-            "id": "eab7c9d88a081a64",
+            "id": "7edccd3235d1c636",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "Notes Database.base",
-                "viewName": "Table"
+                "file": "01 Home/01 Home.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-layout-list",
-              "title": "Notes Database"
+              "icon": "lucide-file",
+              "title": "01 Home"
             }
           }
         ]
@@ -87,7 +88,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Notes Database.base",
+                "file": "01 Home/01 Home.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,7 +98,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Notes Database"
+              "title": "Backlinks for 01 Home"
             }
           },
           {
@@ -118,7 +119,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 214.5
+    "width": 251.5
   },
   "right": {
     "id": "ba0d238e076b38ed",
@@ -135,10 +136,10 @@
             "state": {
               "type": "file-properties",
               "state": {
-                "file": "Notes Database.base"
+                "file": "01 Home/01 Home.md"
               },
               "icon": "lucide-info",
-              "title": "File properties for Notes Database"
+              "title": "File properties for 01 Home"
             }
           },
           {
@@ -147,8 +148,8 @@
             "state": {
               "type": "calendar",
               "state": {},
-              "icon": "lucide-file",
-              "title": "Plugin no longer active"
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
             }
           },
           {
@@ -178,21 +179,20 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Notes Database.base",
+                "file": "01 Home/01 Home.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Notes Database"
+              "title": "Outline of 01 Home"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 213.5,
-    "collapsed": true
+    "width": 200
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -203,44 +203,45 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "eab7c9d88a081a64",
+  "active": "7edccd3235d1c636",
   "lastOpenFiles": [
-    "01 Projects/Inside/Inside.md",
-    "01 Projects/Inside/Enzymes/Enzymes.md",
-    "01 Projects/01 Projects.md",
-    "00 Home/Notebook Config/Notebook Config.md",
-    "00 Home/00 Home.md",
-    "01 Projects/Outside/Outside.md",
-    "01 Projects/Outside/Cycling/Cycling.md",
-    "01 Projects/Inside/Enzymes/notebook/2025-03-10-Testing/2025-03-10-Testing.md",
-    "01 Projects/Inside/Enzymes/notebook/2025-03-11-Fur.md",
-    "01 Projects/Inside/Enzymes/notebook/2025-03-10-Water-resistant fur.md",
-    "01 Projects/Inside/Enzymes/Clams/Clams.md",
-    "00 Home/Notebook Config/Note Templates/Folder Note Page Template.md",
-    "00 Home/Notebook Config/Note Templates/Notebook Page Template.md",
-    "00 Home/Notebook Config/Note Templates/Project Template.md",
-    "00 Home/Notebook Config/Note Templates/Topic Template.md",
-    "00 Home/Notebook Config/Note Templates/Collection Template.md",
-    "00 Home/Notebook Config/Scripts/Dataview/notesQuery_new.js",
-    "00 Home/Inbox/2025/2025-04-29-null/2025-04-29-null.md",
-    "00 Home/Inbox/2025/2025-04-29-null",
-    "02 Wildsea/Emily/Emily.md",
-    "02 Wildsea/Emily/Tracks/Tracks.md",
-    "02 Wildsea/Emily/Journal/Journal.md",
-    "02 Wildsea/Emily/Inventory/Inventory.md",
-    "02 Wildsea/02 Wildsea.md",
-    "00 Home/Notebook Config/Note Templates/Note Templates.md",
-    "00 Home/Inbox/2025/2025-03-10-asdf/2025-03-10-asdf.md",
-    "00 Home/Inbox/2025/2025-03-09-awe/2025-03-09-awe.md",
-    "01 Projects/Outside/Cycling/notebook/2025-03-09-test.md",
-    "00 Home/Inbox/2025/2025-04-28-null",
-    "00 Home/Notebook Config/2025-03-13T161338024-Pasted image 20250313161336.png",
-    "01 Projects/Inside/notebook/2025-03-12-hrm",
-    "00 Home/Inbox/2025/2025-03-12-4444",
-    "00 Home/Inbox/2025/2025-03-12-null",
-    "00 Home/Inbox/2025/2025-03-12-aef",
-    "00 Home/Inbox/2025/2025-03-11-asdf",
-    "01 Projects/Inside/Enzymes/Clams/notebook",
-    "01 Projects/Inside/Enzymes/Clams"
+    "00 Config/Templater Commands/New Note.md",
+    "00 Config/Templater Commands/Date Picker.md",
+    "00 Config/Templater Commands/Annotate Task.md",
+    "01 Home/01 Home.md",
+    "Untitled.md",
+    "02 Projects/Inside/notebook/2025-07-01-we/2025-07-01-we.md",
+    "01 Home/!Inbox/2025/2025-07-02-asd/2025-07-02-asd.md",
+    "02 Projects/02 Projects.md",
+    "01 Home/!Inbox/2025/2025-07-02-asd",
+    "01 Home/!Inbox/2025/2025-07-02-asdf/2025-07-02-asdf.md",
+    "01 Home/!Inbox/2025/2025-07-02-asdf",
+    "Notes Database.base",
+    "Untitled 2.md",
+    "01 Home/!Inbox/2025/2025-07-01-test/2025-07-01-test 1.md",
+    "02 Projects/Inside/notebook/2025-07-01-we",
+    "Untitled 1.md",
+    "01 Home/!Inbox/2025/2025-07-01-test/2025-07-01-test.md",
+    "02 Projects/Inside/Inside.md",
+    "01 Home/!Inbox/2025/2025-07-01-test",
+    "02 Projects/Inside/Otters/wwwww/wwwww.md",
+    "02 Projects/Inside/Otters/wwwww/notebook",
+    "02 Projects/Inside/Otters/wwwww",
+    "02 Projects/Inside/wwww/wwww.md",
+    "02 Projects/Inside/Otters/Otters.md",
+    "02 Projects/Inside/wwww/notebook",
+    "02 Projects/Inside/wwww",
+    "02 Projects/Inside/notebook/2025-07-01-wer/2025-07-01-wer.md",
+    "01 Home/!Inbox/2024/2024-09-01-test/2024-09-01-test.md",
+    "01 Home/!Inbox/2024/2024-09-01-tessT/2024-09-01-tessT.md",
+    "01 Home/!Inbox/2024/2024-09-01-awwwww/2024-09-01-awwwww.md",
+    "01 Home/!Inbox/2024/2024-09-01-Aasdf/2024-09-01-Aasdf.md",
+    "01 Home/!Inbox/2024/test.md",
+    "01 Home/!Inbox/2024/again.md",
+    "01 Home/!Inbox/2024/2024-09-01-test",
+    "02 Projects/Inside/Otters/otters 1.md",
+    "02 Projects/Inside/otters/otters 1.md",
+    "00 Config/2025-07-01T111338890-Pasted image 20250313161336.png",
+    "00 Home/Notebook Config/2025-03-13T161338024-Pasted image 20250313161336.png"
   ]
 }

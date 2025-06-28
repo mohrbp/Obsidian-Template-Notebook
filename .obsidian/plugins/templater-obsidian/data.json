@@ -1,6 +1,6 @@
 {
   "command_timeout": 5,
-  "templates_folder": "00 Home/Notebook Config/Templater Commands",
+  "templates_folder": "00 Config/Templater Commands",
   "templates_pairs": [
     [
       "",
@@ -11,22 +11,29 @@
   "auto_jump_to_cursor": false,
   "enable_system_commands": false,
   "shell_path": "",
-  "user_scripts_folder": "00 Home/Notebook Config/Scripts/Templater",
-  "enable_folder_templates": true,
+  "user_scripts_folder": "00 Config/Scripts/Templater",
+  "enable_folder_templates": false,
   "folder_templates": [
     {
       "folder": "",
       "template": ""
     }
   ],
+  "enable_file_templates": false,
+  "file_templates": [
+    {
+      "regex": ".*",
+      "template": ""
+    }
+  ],
   "syntax_highlighting": true,
   "syntax_highlighting_mobile": false,
   "enabled_templates_hotkeys": [
-    "00 Home/Notebook Config/Templater Commands/New Note.md",
-    "00 Home/Notebook Config/Templater Commands/Annotate Task.md"
+    "00 Config/Templater Commands/New Note.md"
   ],
   "startup_templates": [
     ""
   ],
+  "intellisense_render": 1,
   "enable_ribbon_icon": false
 }
