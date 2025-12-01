@@ -18,12 +18,12 @@ let target = input.target;
 let limit = 30
 
 // console.log(customJS)
-let myTasks_old = dvHelperFuncs.loadTasks(dv, noteFilter, target)
-console.log("myTasks_old", myTasks_old)
+// let myTasks_old = dvHelperFuncs.loadTasks(dv, noteFilter, target)
+// console.log("myTasks_old", myTasks_old)
 
 console.log("Start New Tasks")
-let myTasks = dvHelperFuncs.loadTasks_new(dv, notebookManager, target)
-console.log("myTasks", myTasks)
+let myTasks = await dvHelperFuncs.loadTasks_new(dv, notebookManager, target)
+console.log("myTasks_DV", myTasks)
 
 for (let task of myTasks) {
     dvHelperFuncs.addFrontmatterToTask(dv, task);
@@ -31,7 +31,7 @@ for (let task of myTasks) {
 
 let allTasks = myTasks
 
-dvHelperFuncs.arrangeTasksForGTD(allTasks, dv.date("today"));
+dvHelperFuncs.arrangeTasksForGTD(dv, allTasks, dv.date("today"));
 
 let scheduledTasks = allTasks
                         .where(t => t.checked === false)
@@ -42,7 +42,7 @@ let overdueTasks = scheduledTasks
                         .where(t => t.timeUntilScheduled < 0);
                        
 if(overdueTasks.length > 0 ){
-    dvHelperFuncs.displayScheduledTasksInTable(dv, DateTime,
+    dvHelperFuncs.displayScheduledTasksInTable(dv,
                                 "⚠️Overdue⚠️", 
                                 overdueTasks, 
                                 limit);
@@ -54,7 +54,7 @@ let futureTasks = scheduledTasks
                     .filter(t => t.timing !== "overdue");
 
 if (futureTasks.length > 0){
-    dvHelperFuncs.displayScheduledTasksInTable(dv, DateTime, 
+    dvHelperFuncs.displayScheduledTasksInTable(dv, 
                                 "Up Next", 
                                 futureTasks, 
                                 limit);
@@ -64,7 +64,7 @@ let unscheduledTasks = allTasks
                         .where(t => t.checked === false)
                         .where(t => typeof(t.scheduledDate) === "undefined");
 
-dvHelperFuncs.displayUnscheduledTasksInTable(dv, DateTime, 
+dvHelperFuncs.displayUnscheduledTasksInTable(dv, 
                             "Unscheduled", 
                             unscheduledTasks, 
                             limit);
@@ -80,7 +80,7 @@ let myRecentCompleteTasks = allTasks
 
 //dv.taskList(myRecentCompleteTasks);
 
-dvHelperFuncs.displayCompletedTasksInTable(dv, DateTime,
+dvHelperFuncs.displayCompletedTasksInTable(dv,
                             "Recently Completed (Limit " + limit + ")",
                             myRecentCompleteTasks,
                             limit);

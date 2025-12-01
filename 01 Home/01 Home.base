@@ -1,7 +1,6 @@
 filters:
   and:
     - file.ext == "md"
-formulas: {}
 views:
   - type: table
     name: All
@@ -12,9 +11,9 @@ views:
       - parent
       - file.ctime
     sort:
-      - property: noteBook
-        direction: DESC
       - property: file.ctime
+        direction: DESC
+      - property: noteBook
         direction: DESC
       - property: file.links
         direction: DESC
@@ -22,6 +21,7 @@ views:
       file.name: 188
       note.noteType: 136
       note.noteBook: 139
+      note.parent: 151
     cardSize: 200
   - type: table
     name: Projects and Parents

@@ -54,7 +54,7 @@ class notebookManager {
         // Get initial collection based on destination type - Current or Root
         const initialCollection = await this.getInitialCollection(tp, dv, destinationType, config);
 
-        console.log("initialCollection", initialCollection)
+        // console.log("initialCollection", initialCollection)
         // Navigate to final destination
         return await this.navigateToDestination(tp, dv, initialCollection);
      }   
@@ -68,14 +68,14 @@ class notebookManager {
                 
             case "Root":
                 // Get root level collections and let user select
-                console.log("config.collections", config.collections)
+                // console.log("config.collections", config.collections)
                 const rootCollections = await this.traverseNotebook(dv, config.collections, {
                     formatOutput: true,
                     includeSource: true,
-                    traversalType: 'children'       
+                    traversalType: 'child_branch'       
                 });
 
-                console.log ("rootCollections", rootCollections)
+                // console.log ("rootCollections", rootCollections)
                 return await tp.system.suggester(
                         rootCollections.displays,
                         rootCollections.values,
@@ -128,10 +128,10 @@ class notebookManager {
 
         while (true) {
             // Get and format navigation options
-            const options = await this.traverseNotebook(dv, initialCollection, {
+            const options = await this.traverseNotebook(dv, currentCollection, {
                 includeSource: true,
                 formatOutput: true,
-                traversalType: 'children'
+                traversalType: 'child_branch'
             });
 
             // If no options available or no child notes, we've reached a destination
@@ -146,7 +146,7 @@ class notebookManager {
                 true,
                 "Select Destination"
             );
-            
+            // console.log("nextCollection", currentCollection, nextCollection)
             // If same location selected or no selection made, we've reached our destination
             if (!nextCollection || isSameLocation(currentCollection, nextCollection)) {
                 return nextCollection || currentCollection;
@@ -180,18 +180,18 @@ class notebookManager {
             };
 
             return Object.entries(collection).reduce((results, [category, referenceNotes]) => {
-                console.log(`Processing category: ${category} with ${referenceNotes.length} reference notes`);
+                // console.log(`Processing category: ${category} with ${referenceNotes.length} reference notes`);
 
                 const foundNotes = referenceNotes.reduce((acc, referenceNote) => {     
-                    console.log(`Processing reference note: ${referenceNote.name}`);
-                    console.log("referenceNote", referenceNote)
+                    // console.log(`Processing reference note: ${referenceNote.name}`);
+                    // console.log("referenceNote", referenceNote)
 
                     const referenceNoteTypePath = referenceNote.noteType.path
                     const referenceNoteTypePage = dv.page(referenceNoteTypePath)
 
                     // if the referenceNote is a collection, then we will reference the root templates for that specific note
                     // otherwise we will use the branch templates as is defined in the Template defined by the noteType of the Reference Note
-                   // console.log("collection?", this.isCollection(referenceNoteTypePath))
+
 
                     const branchTemplatePaths = this.isCollection(referenceNoteTypePath)
                         ? normalizePaths(referenceNote.page.rootTemplate)
@@ -202,6 +202,10 @@ class notebookManager {
                     const inlinks = referenceNote.page.file.inlinks || [];
                     const referenceParentPaths = normalizePaths(referenceNote.parent);
 
+                   // console.log("collection?", this.isCollection(referenceNoteTypePath))
+                   // console.log("branchTemplatePaths", branchTemplatePaths)
+                   // console.log("referenceNote.page.rootTemplate", normalizePaths(referenceNote.page.rootTemplate))
+                   // console.log("referenceNoteTypePage.branchTemplate", normalizePaths(referenceNoteTypePage.branchTemplate));
 
                     const matches = dv.pages()
                         .filter(page => {
@@ -240,6 +244,12 @@ class notebookManager {
                                     page.noteType && leafTemplatePaths.includes(page.noteType.path);
                             }
 
+                            if (criteria.isBranchOrLeaf) {
+                                criteriaResults.isBranchOrLeaf = 
+                                    page.noteType && (branchTemplatePaths.includes(page.noteType.path) ||
+                                        leafTemplatePaths.includes(page.noteType.path))
+                            }
+
                             if (criteria.isLinked) {
                                 criteriaResults.isLinked = 
                                     inlinks.some(link => link.path === page.file.path);
@@ -250,12 +260,14 @@ class notebookManager {
                                 .every(result => result === true);
 
                             if (matchesAll) {
-                                console.log(`Found matching note: ${page.file.name}`, {
-                                    appliedCriteria: criteriaResults,  // Shows criteria that were checked
-                                    parent: page.parent,
-                                    noteType: page.noteType?.path,
-                                    noteBook: page.noteBook?.path
-                                });
+                                // console.log(`Found matching note: ${page.file.name}`, {
+                                //     appliedCriteria: criteriaResults,  // Shows criteria that were checked
+                                //     // branchTemplatePaths: branchTemplatePaths,
+                                //     // page: page,
+                                //     parent: page.parent,
+                                //     noteType: page.noteType?.path,
+                                //     noteBook: page.noteBook?.path
+                                // });
                             }
 
                             return matchesAll;
@@ -265,7 +277,7 @@ class notebookManager {
                     return [...acc, ...matches];
                 }, []);
                 
-                console.log("foundNotes", foundNotes)
+                // console.log("foundNotes", foundNotes)
                 return foundNotes.length > 0 
                     ? { ...results, [category]: foundNotes }
                     : results;
@@ -277,16 +289,24 @@ class notebookManager {
             recursive = false,
             includeSource = false,
             formatOutput = false,
-            traversalType = 'children' 
+            traversalType = 'child_branch' 
         } = options;
 
         // Define different traversal strategies
         const traversalStrategies = {
-            children: {
+            child_branch: {
                 criteria: {
                     matchNoteBook: true,
                     isParent: true,
                     isBranch: true
+                }
+            },
+            child: {
+                criteria: {
+                    matchNoteBook: true,
+                    isParent: true,
+                    
+                    isBranchOrLeaf: true
                 }
             },
             siblings: {
@@ -315,7 +335,7 @@ class notebookManager {
         const pipe = (...fns) => x => {
             return fns.reduce((v, f, i) => {
                 const result = f(v);
-                console.log(`After function ${f.name || 'anonymous'} [step ${i + 1}]:`, result);
+                // console.log(`After function ${f.name || 'anonymous'} [step ${i + 1}]:`, result);
                 return result;
             }, x);
         };
@@ -324,7 +344,7 @@ class notebookManager {
             return await fns.reduce(async (v, f, i) => {
                 const awaited = await v;
                 const result = await f(awaited);
-                console.log(`After async function ${f.name || 'anonymous'} [step ${i + 1}]:`, result);
+                // console.log(`After async function ${f.name || 'anonymous'} [step ${i + 1}]:`, result);
                 return result;
             }, x);
         };
@@ -373,10 +393,10 @@ class notebookManager {
             }), {});
 
         // Main processing pipeline
-        console.log("formatOutput", formatOutput)
-        console.log("recursive", recursive)
-        console.log("includeSource", includeSource)
-        console.log("sourceCollection", sourceCollection)
+        // console.log("formatOutput", formatOutput)
+        // console.log("recursive", recursive)
+        // console.log("includeSource", includeSource)
+        // console.log("sourceCollection", sourceCollection)
         const process = pipe(
             getNotesForStrategy,
             childNotes => {
@@ -474,10 +494,16 @@ class notebookManager {
     // }
 
     // This function theoretically feeds the down stream table generation
-    getAllChildNotes(dv, rootCollections) {
-        return this.findNotes(dv, rootCollections, {
-            recursive: true
+    async getAllChildNotes(dv, sourceCollection) {
+
+        const allChildNotes = this.traverseNotebook(dv, sourceCollection, {
+            recursive: true,
+            includeSource: true,
+            formatOutput: false,
+            traversalType: 'child'
         });
+
+        return allChildNotes
     }
 
     // Main formatting functions
@@ -564,6 +590,8 @@ class notebookManager {
             limit = null
         } = options;
 
+        const { DateTime } = dv.luxon;
+
         // Create initial collection structure
         const sourceCollection = {
             [targetNote.noteBook.display]: [targetNote]
@@ -574,7 +602,7 @@ class notebookManager {
             recursive: true,
             includeSource: true,
             formatOutput: false,
-            traversalType: "children"
+            traversalType: "child_branch"
         });
 
         // Flatten the notes from all categories
@@ -582,6 +610,7 @@ class notebookManager {
             .flat()
             .map(note => note.page);
 
+        console.log("allNotes", allNotes)
         // Sort notes if requested
         if (sortByCreated) {
             allNotes.sort((a, b) => 
@@ -597,7 +626,7 @@ class notebookManager {
             note.file.link,
             note.created,
             note.noteType,
-            note.file.folder,
+            note.parent,
             this.convertLinksToCommaSeparatedList(note.parent)
         ]);
 
@@ -649,7 +678,7 @@ class notebookManager {
         const noteTypePath = this.accessCollectionAttribute(destinationNotebook, "noteType")[0].path.toLowerCase();
         const noteBookPath = this.accessCollectionAttribute(destinationNotebook, "path")[0];
 
-
+        console.log(noteTypePath, noteBookPath, this.isCollection(noteTypePath))
         // check if this note is the root collection note, if so use root template
         if (this.isCollection(noteTypePath)) {
             return this.extractTemplates(dv.page(noteBookPath).rootTemplate);
@@ -746,21 +775,21 @@ class notebookManager {
             metadata, 
             fileTemplateNote
         );
-        
+
         // Get template content and create file
         const templateContent = await this.getTemplateContent(tp, fileTemplateNote);
         const abstractFolder = await app.vault.getAbstractFileByPath("/");
         
-        return tp.file.create_new(
+        return await tp.file.create_new(
             templateContent,
             fullPath,
-            false,
+            true,
             abstractFolder
         );
     }
 
     // Helper function to build complete note path
-    buildNotePath(targetLocation, fileName, metadata, fileTemplateNote) {
+    async buildNotePath(targetLocation, fileName, metadata, fileTemplateNote) {
 
         // Create filename with date if required
         const fullName = fileTemplateNote.dated 
@@ -774,7 +803,7 @@ class notebookManager {
             : subPath 
                 ? `${basePath}/${subPath}/${fullName}`
                 : `${basePath}/${fullName}`;
-                
+        
         // Add folder structure if it's a folder note
         return fileTemplateNote.folderNote 
             ? `${notePath}/${fullName}` 
@@ -804,7 +833,8 @@ class notebookManager {
     }
 
     cleanupTemplateFrontmatter(frontmatter) {
-        const keysToRemove = ["aliases", "dated", "folderNote", "folder", "modified", "noteBook"];
+        const keysToRemove = ["aliases", "dated", "folderNote", "folder", "modified", "noteBook", "branchTemplate", "leafTemplate"];
+        //branch and leaf template are properties of the template note but shouldn't show up in the final. The template is always there to be referenced
         keysToRemove.forEach(key => delete frontmatter[key]);
     }
 

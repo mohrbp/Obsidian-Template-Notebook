@@ -8,17 +8,17 @@
         "type": "tabs",
         "children": [
           {
-            "id": "7edccd3235d1c636",
+            "id": "86438f4fd385aae2",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01 Home/01 Home.md",
+                "file": "00 Config/Note Templates/Project Template.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "01 Home"
+              "title": "Project Template"
             }
           }
         ]
@@ -88,7 +88,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "01 Home/01 Home.md",
+                "file": "00 Config/Note Templates/Project Template.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -98,7 +98,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 01 Home"
+              "title": "Backlinks for Project Template"
             }
           },
           {
@@ -136,10 +136,10 @@
             "state": {
               "type": "file-properties",
               "state": {
-                "file": "01 Home/01 Home.md"
+                "file": "00 Config/Note Templates/Project Template.md"
               },
               "icon": "lucide-info",
-              "title": "File properties for 01 Home"
+              "title": "File properties for Project Template"
             }
           },
           {
@@ -179,23 +179,25 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "01 Home/01 Home.md",
+                "file": "00 Config/Note Templates/Project Template.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 01 Home"
+              "title": "Outline of Project Template"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "switcher:Open quick switcher": false,
       "daily-notes:Open today's daily note": false,
       "command-palette:Open command palette": false,
@@ -203,44 +205,43 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "7edccd3235d1c636",
+  "active": "86438f4fd385aae2",
   "lastOpenFiles": [
-    "00 Config/Templater Commands/New Note.md",
-    "00 Config/Templater Commands/Date Picker.md",
-    "00 Config/Templater Commands/Annotate Task.md",
-    "01 Home/01 Home.md",
-    "Untitled.md",
-    "02 Projects/Inside/notebook/2025-07-01-we/2025-07-01-we.md",
-    "01 Home/!Inbox/2025/2025-07-02-asd/2025-07-02-asd.md",
-    "02 Projects/02 Projects.md",
-    "01 Home/!Inbox/2025/2025-07-02-asd",
-    "01 Home/!Inbox/2025/2025-07-02-asdf/2025-07-02-asdf.md",
-    "01 Home/!Inbox/2025/2025-07-02-asdf",
-    "Notes Database.base",
-    "Untitled 2.md",
-    "01 Home/!Inbox/2025/2025-07-01-test/2025-07-01-test 1.md",
-    "02 Projects/Inside/notebook/2025-07-01-we",
-    "Untitled 1.md",
-    "01 Home/!Inbox/2025/2025-07-01-test/2025-07-01-test.md",
     "02 Projects/Inside/Inside.md",
-    "01 Home/!Inbox/2025/2025-07-01-test",
-    "02 Projects/Inside/Otters/wwwww/wwwww.md",
-    "02 Projects/Inside/Otters/wwwww/notebook",
-    "02 Projects/Inside/Otters/wwwww",
-    "02 Projects/Inside/wwww/wwww.md",
+    "02 Projects/Inside/Otters/Fur/notebook/2025-11-30-Pigment/2025-11-30-Pigment.md",
+    "02 Projects/Inside/Otters/Fur/Fur.md",
+    "02 Projects/02 Projects.md",
+    "02 Projects/Inside/TV/TV.md",
     "02 Projects/Inside/Otters/Otters.md",
-    "02 Projects/Inside/wwww/notebook",
-    "02 Projects/Inside/wwww",
+    "02 Projects/Inside/TV/Flat Screen/Flat Screen.md",
+    "00 Config/Note Templates/Project Template.md",
+    "00 Config/Scripts/Dataview/multicolumn_new.js",
+    "02 Projects/Inside/Otters/notebook/2025-09-14-Breaking Shells/2025-09-14-Breaking Shells.md",
+    "02 Projects/Inside/Otters/Fur/notebook/2025-11-30-Pigment",
+    "02 Projects/Inside/Otters/Fur/notebook",
+    "02 Projects/Inside/Otters/Fur",
+    "02 Projects/Inside/Otters/notebook/2025-09-14-Oily.md",
+    "02 Projects/Inside/Otters/notebook/2025-09-14-Furry/2025-09-14-Furry.md",
+    "02 Projects/Inside/Otters/notebook/2024-09-02-Holding Hands/2024-09-02-Holding Hands.md",
+    "00 Config/Note Templates/Gallery Template.md",
+    "02 Projects/Inside/Otters/Test Gal/Test Gal.md",
+    "02 Projects/Inside/Otters/Test Gal",
+    "00 Config/Note Templates/Notebook Page Template.md",
+    "01 Home/01 Home.base",
+    "00 Config/Note Templates/Note Templates.md",
+    "00 Config/Note Templates/Collection Template.md",
+    "00 Config/Note Templates/Folder Note Page Template.md",
+    "02 Projects/Inside/TV/notebook/2025-11-25-Test/2025-11-25-Test.md",
+    "02 Projects/Inside/TV/notebook/2025-11-25-Test",
+    "00 Config/00 Config.md",
+    "01 Home/01 Home (769123).base",
+    "01 Home/!Inbox/2025/2025-09-16-Meal Planning/2025-09-16-Meal Planning.md",
+    "01 Home/!Inbox/2025/2025-09-16-Meal Planning",
+    "02 Projects/Inside/TV/Flat Screen/notebook",
+    "02 Projects/Inside/notebook/2025-07-01-test.md",
+    "02 Projects/Inside/notebook/2025-07-01-test 1.md",
+    "02 Projects/Inside/notebook/2025-09-14-Carpet/2025-09-14-Carpet.md",
     "02 Projects/Inside/notebook/2025-07-01-wer/2025-07-01-wer.md",
-    "01 Home/!Inbox/2024/2024-09-01-test/2024-09-01-test.md",
-    "01 Home/!Inbox/2024/2024-09-01-tessT/2024-09-01-tessT.md",
-    "01 Home/!Inbox/2024/2024-09-01-awwwww/2024-09-01-awwwww.md",
-    "01 Home/!Inbox/2024/2024-09-01-Aasdf/2024-09-01-Aasdf.md",
-    "01 Home/!Inbox/2024/test.md",
-    "01 Home/!Inbox/2024/again.md",
-    "01 Home/!Inbox/2024/2024-09-01-test",
-    "02 Projects/Inside/Otters/otters 1.md",
-    "02 Projects/Inside/otters/otters 1.md",
     "00 Config/2025-07-01T111338890-Pasted image 20250313161336.png",
     "00 Home/Notebook Config/2025-03-13T161338024-Pasted image 20250313161336.png"
   ]

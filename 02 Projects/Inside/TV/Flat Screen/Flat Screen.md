@@ -1,9 +1,10 @@
 ---
-noteBook: "[[02 Projects|Projects]]"
 noteType: "[[00 Config/Note Templates/Project Template|Projects]]"
-created: 2024-09-02T16:27:36Z
+created: 2025-09-14T20:10:03Z
 user: "[[00 Config/00 Config|Emily Mohr]]"
-parent: "[[Inside|Inside]]"
+parent:
+  - "[[02 Projects/Inside/TV/TV|TV]]"
+noteBook: "[[02 Projects/02 Projects|Projects]]"
 ---
 # Project Summary
 ### Tasks

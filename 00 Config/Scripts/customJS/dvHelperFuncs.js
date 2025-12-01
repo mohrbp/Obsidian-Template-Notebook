@@ -1,16 +1,34 @@
 class dvHelperFuncs {
 
-    loadTasks_new(dv, notebookManager, target) {
+    async loadTasks_new(dv, notebookManager, target) {
         let targetNote = notebookManager.createNoteObject(dv, target.path)
         let nestedInput = {
             parent: [targetNote]
         };
         
-        console.log("targetNote", targetNote)
-        let allChildNotes = notebookManager.getAllChildNotes(dv, nestedInput)
-        console.log("allChildNotes", allChildNotes)
+        // console.log("targetNote", targetNote)
 
- 
+        let allChildNotes = await notebookManager.traverseNotebook(dv, nestedInput, {
+            recursive: true,
+            includeSource: true,
+            formatOutput: false,
+            traversalType: 'child'
+        });
+        // console.log("ChildNotes", allChildNotes)
+
+        // Flatten the notes from all categories
+        let taskPaths = Object.values(allChildNotes)
+            .flat()
+            .map(note => note.page?.file?.path ?? [])
+
+        // console.log("taskPaths", taskPaths)
+
+        return dv.pages()
+                    .file
+                    .filter(p => taskPaths.includes(p.path))
+                    .tasks
+                    .where(t => t.link.subpath == "Tasks")
+                    .where(t => !t.hasOwnProperty("parent"));
     }
 	
     loadTasks(dv, noteFilter, target) {
@@ -96,7 +114,9 @@ class dvHelperFuncs {
     }
 
     // Function to arrange and format tasks for GTD
-    arrangeTasksForGTD(tasks, currentTime) {
+    arrangeTasksForGTD(dv, tasks, currentTime) {
+
+        const { DateTime } = dv.luxon;  
 
         let recentLow = 1;
         let recentMid = 3;
@@ -111,14 +131,15 @@ class dvHelperFuncs {
             task.visual = task.text;
 
             if (task.checked === true && task.text.match(/([✅]) ?(\d{4}-\d{2}-\d{2})/) != null) {
-                dateMatch = task.text.match(/([✅]) ?(\d{4}-\d{2}-\d{2})/)[2];
+                let dateMatch = task.text.match(/([✅]) ?(\d{4}-\d{2}-\d{2})/)[2];
+                console.log("dateMatch",dateMatch)
                 task.completedDate = DateTime.fromISO(dateMatch);
                 task.visual = task.visual.replace(/([✅]) ?(\d{4}-\d{2}-\d{2})/, "")
             }
 
             if (task.text.match(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/) != null) {
             // Adding Task Scheduled Date
-                dateMatch = task.text.match(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/)[2];
+                let dateMatch = task.text.match(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/)[2];
                 task.scheduledDate = DateTime.fromISO(dateMatch);
                 task.timeUntilScheduled = Math.round(task.scheduledDate.diff(currentTime, "days").as("minutes"));
                 if (task.timeUntilScheduled < (0)) {
@@ -152,7 +173,8 @@ class dvHelperFuncs {
     }
 
     // Function to display Scheduled tasks in a table
-    displayScheduledTasksInTable(dv, DateTime, title, tasks, limit) {
+    displayScheduledTasksInTable(dv, title, tasks, limit) {
+        const { DateTime } = dv.luxon;  
         // Map table variables
         dv.header(3, title);
         dv.table(
@@ -174,19 +196,20 @@ class dvHelperFuncs {
     }
 
     // Function to display Unscheduled tasks in a table
-     displayUnscheduledTasksInTable(dv, DateTime, title, tasks, limit) {
+     displayUnscheduledTasksInTable(dv, title, tasks, limit) {
+        const { DateTime } = dv.luxon;
         // Map table variables
         dv.header(3, title);
         dv.table(
-            ["Task", "Project Category", "Project", "Note", "Created"], 
+            ["Task", "Notebok", "Project", "Note", "Created"], 
             tasks
             .sort(t => DateTime.fromISO(t.created), "desc")
             // Logic to filter, sort, and map tasks
             .map(t => [
             t.visual,
-            this.convertLinksToCommaSeparatedList(t.projectCategory),
-            this.convertLinksToCommaSeparatedList(t.project),
-            t.note_link,
+            this.convertLinksToCommaSeparatedList(t.noteBook),
+            this.convertLinksToCommaSeparatedList(t.parent),
+            t.noteLink,
             DateTime.fromISO(t.created).toFormat("DD"),
             ])
             .limit(limit)
@@ -194,19 +217,20 @@ class dvHelperFuncs {
     }
 
     // Function to display Completed tasks in a table
-     displayCompletedTasksInTable(dv, DateTime, title, tasks, limit) {
+     displayCompletedTasksInTable(dv, title, tasks, limit) {
+        const { DateTime } = dv.luxon;
         // Map table variables 
         dv.header(3, title);
         dv.table(
-            ["Task", "Project Category", "Project", "Note", "Created", "Completed"],
+            ["Task", "Notebook", "Project", "Note", "Created", "Completed"],
             tasks
             .sort(t => DateTime.fromISO(t.completedDate), "desc")
             // Logic to filter, sort, and map tasks
             .map(t => [
             t.visual,
-            this.convertLinksToCommaSeparatedList(t.projectCategory),
-            this.convertLinksToCommaSeparatedList(t.project),
-            t.note_link,
+            this.convertLinksToCommaSeparatedList(t.noteBook),
+            this.convertLinksToCommaSeparatedList(t.parent),
+            t.noteLink,
             DateTime.fromISO(t.created).toFormat("DD"),
             t.completedDate,
             ])
@@ -265,18 +289,4 @@ class dvHelperFuncs {
         );
     }
 
-    /**
-     * Example Usage
-     let unscheduledTasks = Array.from(
-            allTasks
-                .where(t => t.checked === false)
-                .where(t => typeof t.scheduledDate === "undefined")
-            );
-
-        dvHelperFuncs.displayTasksWithUriTable(dv, 
-            "Unscheduled Tasks with URI Actions", 
-            unscheduledTasks, 
-            limit
-        );
-    */
 }
