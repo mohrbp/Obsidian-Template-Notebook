@@ -8,5 +8,7 @@
   "customjs",
   "attachment-management",
   "calendar",
-  "obsidian-tasks-plugin"
+  "obsidian-tasks-plugin",
+  "pomodoro-timer",
+  "obsidian-advanced-uri"
 ]

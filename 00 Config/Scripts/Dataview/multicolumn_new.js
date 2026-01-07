@@ -8,7 +8,7 @@ function generateMultiColumnMarkdown(data) {
     // "> [!multi-column]\n";
 
     data.forEach(obj => {
-        // Assuming 'propertyName' and 'propertyValue' are hardcoded properties
+        // Assuming 'propertyName' and 'propertyLink' are hardcoded properties
         // Safer to do this so that they can be validated 
         console.log(obj)
         const propertyName = obj.name;

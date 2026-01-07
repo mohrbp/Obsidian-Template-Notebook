@@ -36,7 +36,9 @@ async function newNote(tp, dv) {
             config, 
             destinationNotebook
         );
-        console.log("fileTemplateNote", fileTemplateNote)
+        // console.log("fileTemplateNote", fileTemplateNote)
+        // console.log("targetLocation", targetLocation)
+
         // Step 4: Get filename and Create file and apply frontmatter
         const fileName = await tp.system.prompt("Enter Note Name");
         const newFile = await notebookManager.createNote(

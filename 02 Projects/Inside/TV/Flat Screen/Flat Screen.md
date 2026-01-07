@@ -4,6 +4,7 @@ created: 2025-09-14T20:10:03Z
 user: "[[00 Config/00 Config|Emily Mohr]]"
 parent:
   - "[[02 Projects/Inside/TV/TV|TV]]"
+  - "[[02 Projects/Inside/Otters/Otters|Otters]]"
 noteBook: "[[02 Projects/02 Projects|Projects]]"
 ---
 # Project Summary

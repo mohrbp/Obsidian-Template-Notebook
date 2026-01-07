@@ -276,5 +276,13 @@
       ],
       "key": "N"
     }
+  ],
+  "templater-obsidian:00 Config/Templater Commands/Forward.md": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "R"
+    }
   ]
 }

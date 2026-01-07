@@ -6,11 +6,11 @@ const {dvHelperFuncs} = await cJS();
 const {notebookManager} = await cJS();
 
 
-if (dvHelperFuncs.isMobileDevice()) {
-    console.log("This is a mobile device");
-} else {
-    console.log("This is not a mobile device");
-}
+// if (dvHelperFuncs.isMobileDevice()) {
+//     console.log("This is a mobile device");
+// } else {
+//     console.log("This is not a mobile device");
+// }
 // // const dv = this.app.plugins.plugins["dataview"].api
 
 
@@ -21,9 +21,9 @@ let limit = 30
 // let myTasks_old = dvHelperFuncs.loadTasks(dv, noteFilter, target)
 // console.log("myTasks_old", myTasks_old)
 
-console.log("Start New Tasks")
+// console.log("Start New Tasks")
 let myTasks = await dvHelperFuncs.loadTasks_new(dv, notebookManager, target)
-console.log("myTasks_DV", myTasks)
+// console.log("myTasks_DV", myTasks)
 
 for (let task of myTasks) {
     dvHelperFuncs.addFrontmatterToTask(dv, task);

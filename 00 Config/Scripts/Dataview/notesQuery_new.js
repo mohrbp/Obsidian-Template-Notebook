@@ -21,7 +21,11 @@ const relatedNotes = await notebookManager.traverseNotebook(dv, sourceCollection
 // Flatten the notes from all categories
 const allNotes = Object.values(relatedNotes)
     .flat()
-    .map(note => note.page);
+    .map(note => note.page)
+    // Filter to remove duplicate objects based on unique file paths
+    .filter((note, index, self) => 
+        index === self.findIndex(n => n.file.path === note.file.path)
+    );
 
 // console.log("allNotes", allNotes)
 // Sort notes if requested
@@ -72,7 +76,7 @@ dv.table(["Name", "Created Date", "noteType", "Parent"],
         p.file.link,
         p.created,
         p.noteType,
-        p.parent
+        dvHelperFuncs.convertLinksToCommaSeparatedList(p.parent)
         ])
     //  .limit(25)
         )

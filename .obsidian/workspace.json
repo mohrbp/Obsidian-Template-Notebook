@@ -8,17 +8,17 @@
         "type": "tabs",
         "children": [
           {
-            "id": "86438f4fd385aae2",
+            "id": "2239fc68ee8078db",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "00 Config/Note Templates/Project Template.md",
+                "file": "02 Projects/Inside/Otters/Otters.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Project Template"
+              "title": "Otters"
             }
           }
         ]
@@ -88,7 +88,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "00 Config/Note Templates/Project Template.md",
+                "file": "02 Projects/Inside/Otters/Otters.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -98,7 +98,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Project Template"
+              "title": "Backlinks for Otters"
             }
           },
           {
@@ -119,7 +119,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 251.5
+    "width": 327.5
   },
   "right": {
     "id": "ba0d238e076b38ed",
@@ -128,7 +128,7 @@
       {
         "id": "390470ae3b09d7b9",
         "type": "tabs",
-        "dimension": 59.35828877005348,
+        "dimension": 45.37275064267353,
         "children": [
           {
             "id": "cd813c420b7ec2ab",
@@ -136,10 +136,10 @@
             "state": {
               "type": "file-properties",
               "state": {
-                "file": "00 Config/Note Templates/Project Template.md"
+                "file": "02 Projects/Inside/Otters/Otters.md"
               },
               "icon": "lucide-info",
-              "title": "File properties for Project Template"
+              "title": "File properties for Otters"
             }
           },
           {
@@ -171,7 +171,7 @@
       {
         "id": "844435420d9ac6a0",
         "type": "tabs",
-        "dimension": 40.64171122994652,
+        "dimension": 54.62724935732647,
         "children": [
           {
             "id": "48c059ee29a956ae",
@@ -179,21 +179,20 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "00 Config/Note Templates/Project Template.md",
+                "file": "02 Projects/Inside/Otters/Otters.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Project Template"
+              "title": "Outline of Otters"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -202,47 +201,57 @@
       "daily-notes:Open today's daily note": false,
       "command-palette:Open command palette": false,
       "workspaces:Manage workspace layouts": false,
-      "templater-obsidian:Templater": false
+      "templater-obsidian:Templater": false,
+      "pomodoro-timer:Toggle timer panel": false
     }
   },
-  "active": "86438f4fd385aae2",
+  "active": "2239fc68ee8078db",
   "lastOpenFiles": [
-    "02 Projects/Inside/Inside.md",
-    "02 Projects/Inside/Otters/Fur/notebook/2025-11-30-Pigment/2025-11-30-Pigment.md",
-    "02 Projects/Inside/Otters/Fur/Fur.md",
-    "02 Projects/02 Projects.md",
-    "02 Projects/Inside/TV/TV.md",
-    "02 Projects/Inside/Otters/Otters.md",
-    "02 Projects/Inside/TV/Flat Screen/Flat Screen.md",
-    "00 Config/Note Templates/Project Template.md",
-    "00 Config/Scripts/Dataview/multicolumn_new.js",
-    "02 Projects/Inside/Otters/notebook/2025-09-14-Breaking Shells/2025-09-14-Breaking Shells.md",
-    "02 Projects/Inside/Otters/Fur/notebook/2025-11-30-Pigment",
-    "02 Projects/Inside/Otters/Fur/notebook",
-    "02 Projects/Inside/Otters/Fur",
-    "02 Projects/Inside/Otters/notebook/2025-09-14-Oily.md",
-    "02 Projects/Inside/Otters/notebook/2025-09-14-Furry/2025-09-14-Furry.md",
     "02 Projects/Inside/Otters/notebook/2024-09-02-Holding Hands/2024-09-02-Holding Hands.md",
-    "00 Config/Note Templates/Gallery Template.md",
-    "02 Projects/Inside/Otters/Test Gal/Test Gal.md",
-    "02 Projects/Inside/Otters/Test Gal",
-    "00 Config/Note Templates/Notebook Page Template.md",
-    "01 Home/01 Home.base",
-    "00 Config/Note Templates/Note Templates.md",
-    "00 Config/Note Templates/Collection Template.md",
-    "00 Config/Note Templates/Folder Note Page Template.md",
-    "02 Projects/Inside/TV/notebook/2025-11-25-Test/2025-11-25-Test.md",
-    "02 Projects/Inside/TV/notebook/2025-11-25-Test",
+    "02 Projects/Inside/Otters/notebook/2025-09-14-Furry/2025-09-14-Furry.md",
+    "02 Projects/Inside/Otters/Fur/Fur.md",
+    "02 Projects/Inside/Otters/Fur/notebook/2025-11-30-Pigment/2025-11-30-Pigment.md",
+    "01 Home/!Inbox/2026/2026-01-07-Test/2026-01-07-Test.md",
+    "01 Home/!Inbox/2026/2026-01-07-Test",
+    "01 Home/!Inbox/2026",
+    "00 Config/Templater Commands/Forward.md",
+    "02 Projects/Inside/Otters/notebook/2025-09-14-Oily.md",
+    "02 Projects/Inside/Otters/Otters.md",
+    "00 Config/Notebooks/Notebooks.md",
+    "00 Config/Scripts/Templater/embedLinkToContent.js",
+    "00 Config/Scripts/Templater/forwardContenttoTarget.js",
+    "00 Config/Scripts/Templater/forwardTasktoTarget.js",
+    "00 Config/Scripts/Templater/selectExistingNote.js",
+    "00 Config/Scripts/Templater/fowardContent.js",
+    "00 Config/Templater Commands/Annotate Task.md",
+    "00 Config/DevLog/DevLog.md",
+    "00 Config/Templater Commands/Covert to Header.md",
+    "00 Config/Scripts/Templater/bulletsToHeader.js",
+    "00 Config/Templater Commands/Date Picker.md",
+    "00 Config/Templater Commands/New Note.md",
+    "00 Config/Scripts/Templater/bulletsToHeaders.js",
+    "02 Projects/Inside/Inside.md",
     "00 Config/00 Config.md",
-    "01 Home/01 Home (769123).base",
-    "01 Home/!Inbox/2025/2025-09-16-Meal Planning/2025-09-16-Meal Planning.md",
-    "01 Home/!Inbox/2025/2025-09-16-Meal Planning",
-    "02 Projects/Inside/TV/Flat Screen/notebook",
-    "02 Projects/Inside/notebook/2025-07-01-test.md",
-    "02 Projects/Inside/notebook/2025-07-01-test 1.md",
-    "02 Projects/Inside/notebook/2025-09-14-Carpet/2025-09-14-Carpet.md",
-    "02 Projects/Inside/notebook/2025-07-01-wer/2025-07-01-wer.md",
-    "00 Config/2025-07-01T111338890-Pasted image 20250313161336.png",
+    "02 Projects/02 Projects.md",
+    "02 Projects/Test/Test.md",
+    "02 Projects/Test/notebook",
+    "02 Projects/Inside/Test/Test.md",
+    "00 Config/DevLog/Pasted image 20251217115245.png",
+    "00 Config/Note Templates/Folder Note Page Template.md",
+    "00 Config/Note Templates/Note Templates.md",
+    "00 Config/Note Templates/Task Template.md",
+    "00 Config/Notebooks/Projects.md",
+    "00 Config/DevLog/Pasted image 20251210220912.png",
+    "00 Config/Note Templates/Topic Template.md",
+    "00 Config/Note Templates/Project Template.md",
+    "00 Config/DevLog/2025-12-10T220133922-Screenshot 2025-12-10 at 9.54.42 PM.png",
+    "02 Projects/Inside/Otters/notebook/2024-09-02-Holding Hands/watch them hold hands.md",
+    "00 Config/DevLog/2025-12-10T215546038-Pasted image 20251210185639.png",
+    "00 Config/DevLog/2025-12-10T215545818-Pasted image 20251207153639.png",
+    "00 Config/DevLog/2025-12-10T215545912-Pasted image 20251207153203.png",
+    "00 Config/DevLog/2025-12-10T215546163-Pasted image 20251207141210.png",
+    "00 Config/DevLog/2025-12-10T215546102-Pasted image 20251207141148.png",
+    "00 Config/DevLog/2025-12-10T215546213-Pasted image 20250313161336.png",
     "00 Home/Notebook Config/2025-03-13T161338024-Pasted image 20250313161336.png"
   ]
 }

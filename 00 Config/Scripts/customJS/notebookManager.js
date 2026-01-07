@@ -54,7 +54,7 @@ class notebookManager {
         // Get initial collection based on destination type - Current or Root
         const initialCollection = await this.getInitialCollection(tp, dv, destinationType, config);
 
-        // console.log("initialCollection", initialCollection)
+        console.log("initialCollection", initialCollection)
         // Navigate to final destination
         return await this.navigateToDestination(tp, dv, initialCollection);
      }   
@@ -677,27 +677,26 @@ class notebookManager {
     async selectNoteTemplate(tp, dv, destinationNotebook) {
         const noteTypePath = this.accessCollectionAttribute(destinationNotebook, "noteType")[0].path.toLowerCase();
         const noteBookPath = this.accessCollectionAttribute(destinationNotebook, "path")[0];
-
-        console.log(noteTypePath, noteBookPath, this.isCollection(noteTypePath))
-        // check if this note is the root collection note, if so use root template
-        if (this.isCollection(noteTypePath)) {
-            return this.extractTemplates(dv.page(noteBookPath).rootTemplate);
-
-        }
-
-        // Need to double check if the use of noteTypePath here is making the template files in config always the reference
-        // for selecting a new note template rather than the ones linked in the parent
-        // This is using the template file in config and this is the intended behavior
-
-        // if not root collection note, get the leaf and branch templates from the noteType template in the Config folder
-        const noteTypePage = dv.page(noteTypePath);
         let templates = [];
 
-        if (noteTypePage.leafTemplate) {
-            templates = templates.concat(this.extractTemplates(noteTypePage.leafTemplate));
-        }
-        if (noteTypePage.branchTemplate) {
-            templates = templates.concat(this.extractTemplates(noteTypePage.branchTemplate));
+        // console.log(noteTypePath, noteBookPath, this.isCollection(noteTypePath))
+        // check if this note is the root collection note, if so use root template
+        if (this.isCollection(noteTypePath)) {
+            templates = this.extractTemplates(dv.page(noteBookPath).rootTemplate);
+
+        } else {
+            // for selecting a new note template rather than the ones linked in the parent
+            // This is using the template file in config and this is the intended behavior
+
+            // if not root collection note, get the leaf and branch templates from the noteType template in the Config folder
+            const noteTypePage = dv.page(noteTypePath);
+
+            if (noteTypePage.leafTemplate) {
+                templates = templates.concat(this.extractTemplates(noteTypePage.leafTemplate));
+            }
+            if (noteTypePage.branchTemplate) {
+                templates = templates.concat(this.extractTemplates(noteTypePage.branchTemplate));
+            }
         }
 
         const selectedTemplate = await tp.system.suggester(
@@ -775,11 +774,16 @@ class notebookManager {
             metadata, 
             fileTemplateNote
         );
+        // console.log("fullPath", fullPath)
 
         // Get template content and create file
         const templateContent = await this.getTemplateContent(tp, fileTemplateNote);
+        // console.log("templateContent", templateContent)
+
         const abstractFolder = await app.vault.getAbstractFileByPath("/");
         
+        // console.log("abstractFolder", abstractFolder)
+
         return await tp.file.create_new(
             templateContent,
             fullPath,
