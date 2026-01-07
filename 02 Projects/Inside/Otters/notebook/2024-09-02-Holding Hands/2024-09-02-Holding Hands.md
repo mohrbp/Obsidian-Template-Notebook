@@ -7,5 +7,6 @@ parent:
   - "[[Otters]]"
 ---
 # Notes
+![[02 Projects/Inside/Otters/notebook/2025-09-14-Furry/2025-09-14-Furry.md#Forwarded from 2024-09-02-Holding Hands|2025-09-14-Furry]]
 # Tasks
-- [ ] watch them hold hands 
+- [>] [[2025-09-14-Oily]] Watch them hold hands

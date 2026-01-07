@@ -7,4 +7,3 @@ noteBook: "[[02 Projects/02 Projects|Projects]]"
 ---
 # Notes
 # Tasks
-- [ ] Clams
