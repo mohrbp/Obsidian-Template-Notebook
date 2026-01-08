@@ -3,7 +3,8 @@ noteBook: "[[02 Projects|Projects]]"
 noteType: "[[00 Config/Note Templates/Project Template|Projects]]"
 created: 2024-09-02T16:27:36Z
 user: "[[00 Config/00 Config|Emily Mohr]]"
-parent: "[[Inside|Inside]]"
+parent:
+  - "[[Inside|Inside]]"
 ---
 # Project Summary
 ### Tasks

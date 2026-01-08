@@ -10,5 +10,6 @@
   "calendar",
   "obsidian-tasks-plugin",
   "pomodoro-timer",
-  "obsidian-advanced-uri"
+  "obsidian-advanced-uri",
+  "obsidian-linter"
 ]

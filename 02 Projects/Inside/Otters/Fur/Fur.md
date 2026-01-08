@@ -2,7 +2,8 @@
 noteType: "[[00 Config/Note Templates/Project Template|Projects]]"
 created: 2025-11-30T16:51:59Z
 user: "[[00 Config/00 Config|Emily Mohr]]"
-parent: "[[02 Projects/Inside/Otters/Otters|Otters]]"
+parent:
+  - "[[02 Projects/Inside/Otters/Otters|Otters]]"
 noteBook: "[[02 Projects/02 Projects|Projects]]"
 ---
 # Project Summary

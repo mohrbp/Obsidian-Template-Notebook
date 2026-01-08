@@ -6,118 +6,34 @@ parent:
 noteBook:
 ---
 # Dev Log
-## Dec 2025
-### So what do we need to do now?
-- Clean up function and variable naming, comments, console.logs 
-- ~~Notes with Multiple Parents~~
-	- Don't think Querying works right now
-	- Display doesn't for two reasons
-		- Duplicated in searches
-		- Indented in the display
-		- ![[2025-12-10T215545818-Pasted image 20251207153639.png]]
-- Update and make any changes you want to GTD
-	- All of the Date Times, Parent and Notebook relationships need to be double checked and updated, since they are mostly used for the old system
-	- Annotating Tasks
-		- Completion dates without using the Tasks plugin
-		- Moving Tasks to another note
-			- This was really pretty helpful ![[2025-12-10T215545912-Pasted image 20251207153203.png]]
-		- Rescheduling 
-		- Doing this with URI based buttons/click-ables
-	- Task Summary Data
-		- Tracking Complete and Incomplete Tasks for a Note
-		- Task Progress Bar for a Given Note or Collection of Notes
-			- Relatedly, Distribution 
-			- of Completed, Incomplete and Scheduled Tasks
-	- Create a Task Note template
-		- Each Task has Actions (or action items or subtasks) which are just check boxes
-			- Used to track completion percent of the task
-			- Can add a Task with a URI button to Folder Note (or probably a Project)
-			- ![[Pasted image 20251217115245.png]]
-		- Pomodoro should make timeEntries when working on an Action that are reflected in the Task Frontmatter
-			- Projects will summarize these timeEntires
-		- Bases View - I think this is possible, not sure
-			- The Obsidian Road map does not include Tasks in Bases, but does include Bases views as Calendar and Kanban
-			- It is worth considering whether a more atomized task approach is actually the best solution going forward 
-				- If you are going to use URI for completing, moving and rescheduling - I'm not sure it really makes sense to do it with Bases
-					- Unless there is an elegant solution there
-					- URIs don't work in the normal bases files, but do in the embeds - planned on being fixed relatively soon - https://forum.obsidian.md/t/in-base-files-local-uris-in-formulas-do-not-open/106878/8
-			- Not sure exactly how one would manage various annotations like color coding, but maybe that's actually accomplishable 
-				- Progress Bars in Bases 
-					- ![[2025-12-10T220133922-Screenshot 2025-12-10 at 9.54.42 PM.png]]
-		- Implement some learnings from Task Notes - https://github.com/callumalpass/tasknotes
-			- A potentially useful example or add on depending on what seems most functionally useful
-			- I don't particularly care for the implementation of having a single TaskNotes folder, though
-				- Might be able to be toggled, but isn't a solution if it needs to be a set location for these to function
-				- There is a default location and then you can have the task converted within a file which then adds it to the folder note, so that's easiy enough
-			- The use of timeEntries is a good implementation however
-				- Gets at pomodoro and change history in the same approach
-					- Is it a feature if your change history isn't really stored if there isn't a pomo
-				- ![[2025-12-10T215546038-Pasted image 20251210185639.png]]
-			- Is there a reason that this doesn't work for you?
-				- Like does the filtering not match with you how you want to do your notebook relationships 
-				- Its definitely not perfect
-					- The creation of subtasks that end up in the Default folder and not stored alongside the task is somewhat of an issue to me
-					- Likewise, the fact that it will not actually trigger note creation with the standard method makes the rest of the templating not work the same for any "task" structure 
-				- I'm somewhat curious if TaskForge will work without actually using tasking notes 
-					- Seems like yes - https://taskforge.md/faq
-					- Works with Obsidian "Tasks" as well
-				- Where are you without it?
-					- Somewhat annoying to make new Tasks without the convert inline task feature - which was kinda really nice
-						- This sitting at the top of the task file and in the originating file is in fact convenient ![[Pasted image 20251210220912.png]]
-						- Currently cannot apply a template when clicking new note in bases
-							- Not sure thats on the road map and would likely need to come from the Templater plugin - so anyones guess
-							- If you could apply a type checking based on the noteType that would probably work, but be hella clunky
-					- I think still relatively convinced that a 1 note per task approach makes sense
-	- Calendar and Gantt View
-- Work through some default architecture for different note types
-	- What would you like to include?
-		- Collections (recipes, games, movies/shows)
-			- Rename "Collection" in scripts and docs
-				- Collection is kind of a mediocre name for the boarder category 
-					- Like Recipes are a Collection, but Your Projects Notebook is something different
-			- Creating a new Notebook/Collection 
-				- I believe this is currently buried in the [[00 Config]] and is intended to be determined by the [[Notebooks]] folder
-		- Projects
-			- You had some stuff from prior versions that are worth reviewing to see if you wanna keep doing it
-				- Embedding New note page files into the parent note
-					- Not totally sure if this is necessary with both Bases and the DataviewJS approach
-						- I believe this was somewhat because you wanted to be able to export these together for other people - outside of Obsidian
-						- I think that is still a worthy goal, but I think that may be possible with static HTML (hosted or not)
-				- Note Refactoring
-					- Moving sections of a note to another note 
-						- ![[DevLog#Forward Selection from 2023]]
-					- Do you include some sort of Parentage update when Refactoring?
-						- Seems reasonable to at least be an option
-				- Pomodoro
-					- Actively tracking tasks this way 
-					- Aggregating statistics if possible
-		- Inbox
-			- Currently not easy to add types of notes to the inbox and serves as a catch-all
-				- Newly created notes, any web clips (Read-it-later)
-			- Has a base but doesn't really have a way to triage otherwise 
-	- Add custom templates for notes
-		- Allow the templates to be stored somewhere other that in the Config folder for these
-		- Allow (for example a project note) to include a custom branch or leaf template that is not assigned according to the note template
-	- Make it easier to look at your note templates 
-		- I don't think the current traversalType for templates actually works right now
-- QOL Improvements
-	- Update Hotkeys
-		- What do I use all the time
-			- Open in Finder
-			- Toggle Source Mode
-			- Move Folder - because of folder notes
-	- Heading and Bullets
-		- ~~Toggle bulleted indentation to Headings~~
-		- Insert Code in Bulleted List - Maybe obviated by relying on Headings More
-	- Changelog and Modified Date
-		- There are two general use cases here 
-			- Navigating to what I was just working on
-			- Seeing what I did on a particular date
-		- This needs to be hard coded so that you don't lose it if its modified again in the future - sometimes called "burn-in"
-			- The more this is handled by creating new notes (or modifying dated frontmatter) and running pomodoros that append timeEntries the easier this will be to track
-- Update [[README]]
-- Consolidate Historical DevLog (2023 onward) and Move to EM_XS Git
-#### Forward Selection from 2023
+## Jan 2026
+
+### Working on Forwarding Content
+
+#### Note on Forwarding Tasks if using Task Notes
+- If tasks are individual notes, you will want to be able to move the Task Note itself to the desired location as well as linking the note properly
+	- This somewhat overlaps with the need to update properties if moving a note to a new notebook
+		- And likewise, what frontmatter to add when appending content to a different note
+			- Like the note should be linked just by nature of doing it, but you had previously added something to the frontmatter and could easily add a relatives field if desired.
+
+#### Identified a bug in Current Context
+- Doesn't properly find Context when in a folder note or page
+	- Currently references `currentNote.parent` which doesn't exist, while `currentNote.page.parent` should
+		- However, this is an object
+		- And notably, may contain multiple different parents which should be selectable 
+		- Similar selections are made when invoking templates in selectNotebookTemplate
+
+#### Imported old functions
+- Added `forwardContenttoTarget`, `forwardTasktoTarget`, `embedLinkToContent` [sic] and the Forward Selection Templater command from 2023 Notebook Design Docs
+	- Updated to use "#Notes" and "#Tasks" and then asked Claude to help update to use the logic seen in newNotes
+		- Honestly, didn't do a bad job, but certainly isn't perfect
+			- Issue with Context [[DevLog#Identified a bug in Current Context]]
+			- Definitely too many separate scripts involved, don't like having the long templater command and Linking is not super clear or probably as desired
+				- `appendContentToTarget` is still in the work space too and may clean up some of these issues, but also may be redundant
+		- Created `selectExistingNote` to capture new note selection logic
+			- Previously had used some heuristic for grabbing recent notes, which may also have some value
+
+##### Forward Selection from 2023
 ``` JS
 	const contentType = await tp.system.suggester(["Copy", "Cut", "Link", "Embed Here", "Embed in Content"], ["Copy", "Cut", "Link", "Embed Here", "Embed in Content"], false);
 	if (contentType == "Copy") {
@@ -137,6 +53,129 @@ noteBook:
 	} else {
 	new Notice("Text not selected");
 ```
+
+### Cleaned up old logs and added new functions
+- Fixed multi-parent notes showing poorly in Dataview
+	- Added filtering by index in notesQuery
+- Added a function for converting a bullet hierarchy into a header
+	- bulletsToHeader
+	- Considering if its worth adding something to convert Headers back into bullets
+		- Particularly since its easier to move bullets
+		- Or maybe make something to move headers?
+			- I've consider a "Select a header" func
+				- And I think I used it for something before, but I don't remember what
+## Dec 2025
+### So what do we need to do now?
+- Clean up function and variable naming, comments, console.logs 
+- ~~Notes with Multiple Parents~~
+	- Don't think Querying works right now
+	- Display doesn't for two reasons
+		- Duplicated in searches
+		- Indented in the display
+		- ![[2025-12-10T215545818-Pasted image 20251207153639.png]]
+### Update and make any changes you want to GTD
+- All of the Date Times, Parent and Notebook relationships need to be double checked and updated, since they are mostly used for the old system
+- Annotating Tasks
+	- Completion dates without using the Tasks plugin
+	- Moving Tasks to another note
+		- This was really pretty helpful ![[2025-12-10T215545912-Pasted image 20251207153203.png]]
+	- Rescheduling 
+	- Doing this with URI based buttons/click-ables
+- Task Summary Data
+	- Tracking Complete and Incomplete Tasks for a Note
+	- Task Progress Bar for a Given Note or Collection of Notes
+		- Relatedly, Distribution 
+		- of Completed, Incomplete and Scheduled Tasks
+- Create a Task Note template
+	- Each Task has Actions (or action items or subtasks) which are just check boxes
+		- Used to track completion percent of the task
+		- Can add a Task with a URI button to Folder Note (or probably a Project)
+			- ![[Pasted image 20251217115245.png]]
+	- Pomodoro should make timeEntries when working on an Action that are reflected in the Task Frontmatter
+		- Projects will summarize these timeEntires
+	- Bases View - I think this is possible, not sure
+		- The Obsidian Road map does not include Tasks in Bases, but does include Bases views as Calendar and Kanban
+		- It is worth considering whether a more atomized task approach is actually the best solution going forward 
+			- If you are going to use URI for completing, moving and rescheduling - I'm not sure it really makes sense to do it with Bases
+				- Unless there is an elegant solution there
+				- URIs don't work in the normal bases files, but do in the embeds - planned on being fixed relatively soon - https://forum.obsidian.md/t/in-base-files-local-uris-in-formulas-do-not-open/106878/8
+		- Not sure exactly how one would manage various annotations like color coding, but maybe that's actually accomplishable 
+			- Progress Bars in Bases 
+				- ![[2025-12-10T220133922-Screenshot 2025-12-10 at 9.54.42 PM.png]]
+	- Implement some learnings from Task Notes - https://github.com/callumalpass/tasknotes
+		- A potentially useful example or add on depending on what seems most functionally useful
+		- I don't particularly care for the implementation of having a single TaskNotes folder, though
+			- Might be able to be toggled, but isn't a solution if it needs to be a set location for these to function
+			- There is a default location and then you can have the task converted within a file which then adds it to the folder note, so that's easiy enough
+		- The use of timeEntries is a good implementation however
+			- Gets at pomodoro and change history in the same approach
+				- Is it a feature if your change history isn't really stored if there isn't a pomo
+			- ![[2025-12-10T215546038-Pasted image 20251210185639.png]]
+		- Is there a reason that this doesn't work for you?
+			- Like does the filtering not match with you how you want to do your notebook relationships 
+			- Its definitely not perfect
+				- The creation of subtasks that end up in the Default folder and not stored alongside the task is somewhat of an issue to me
+				- Likewise, the fact that it will not actually trigger note creation with the standard method makes the rest of the templating not work the same for any "task" structure 
+			- I'm somewhat curious if TaskForge will work without actually using tasking notes 
+				- Seems like yes - https://taskforge.md/faq
+				- Works with Obsidian "Tasks" as well
+			- Where are you without it?
+				- Somewhat annoying to make new Tasks without the convert inline task feature - which was kinda really nice
+					- This sitting at the top of the task file and in the originating file is in fact convenient ![[Pasted image 20251210220912.png]]
+					- Currently cannot apply a template when clicking new note in bases
+						- Not sure thats on the road map and would likely need to come from the Templater plugin - so anyones guess
+						- If you could apply a type checking based on the noteType that would probably work, but be hella clunky
+				- I think still relatively convinced that a 1 note per task approach makes sense
+- Calendar and Gantt View
+### Work through some default architecture for different note types
+- What would you like to include?
+	- Collections (recipes, games, movies/shows)
+		- Rename "Collection" in scripts and docs
+			- Collection is kind of a mediocre name for the boarder category 
+				- Like Recipes are a Collection, but Your Projects Notebook is something different
+		- Creating a new Notebook/Collection 
+			- I believe this is currently buried in the [[00 Config]] and is intended to be determined by the [[Notebooks]] folder
+	- Projects
+		- You had some stuff from prior versions that are worth reviewing to see if you wanna keep doing it
+			- Embedding New note page files into the parent note
+				- Not totally sure if this is necessary with both Bases and the DataviewJS approach
+					- I believe this was somewhat because you wanted to be able to export these together for other people - outside of Obsidian
+					- I think that is still a worthy goal, but I think that may be possible with static HTML (hosted or not)
+			- Note Refactoring
+				- Moving sections of a note to another note 
+					- ![[DevLog#Forward Selection from 2023]]
+				- Do you include some sort of Parentage update when Refactoring?
+					- Seems reasonable to at least be an option
+			- Pomodoro
+				- Actively tracking tasks this way 
+				- Aggregating statistics if possible
+	- Inbox
+		- Currently not easy to add types of notes to the inbox and serves as a catch-all
+			- Newly created notes, any web clips (Read-it-later)
+		- Has a base but doesn't really have a way to triage otherwise 
+- Add custom templates for notes
+	- Allow the templates to be stored somewhere other that in the Config folder for these
+	- Allow (for example a project note) to include a custom branch or leaf template that is not assigned according to the note template
+- Make it easier to look at your note templates 
+	- I don't think the current traversalType for templates actually works right now
+## QOL Improvements
+- Update Hotkeys
+	- What do I use all the time
+		- Open in Finder
+		- Toggle Source Mode
+		- Move Folder - because of folder notes
+- Heading and Bullets
+	- ~~Toggle bulleted indentation to Headings~~
+	- Insert Code in Bulleted List - Maybe obviated by relying on Headings More
+- Changelog and Modified Date
+	- There are two general use cases here 
+		- Navigating to what I was just working on
+		- Seeing what I did on a particular date
+	- This needs to be hard coded so that you don't lose it if its modified again in the future - sometimes called "burn-in"
+		- The more this is handled by creating new notes (or modifying dated frontmatter) and running pomodoros that append timeEntries the easier this will be to track
+- Update [[README]]
+- Consolidate Historical DevLog (2023 onward) and Move to EM_XS Git
+
 ## Nov 2025
 ### Obsidian
 - While there is definitely organizational stuff to do, I think there's only a bit of scripting to work on

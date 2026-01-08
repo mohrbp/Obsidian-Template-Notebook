@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "bd5e7fe3f96e4f57",
+        "id": "407a4cdbf0bc199c",
         "type": "tabs",
         "children": [
           {
-            "id": "2239fc68ee8078db",
+            "id": "3b50aec492610997",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "02 Projects/Inside/Otters/Otters.md",
+                "file": "02 Projects/Inside/Inside.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Otters"
+              "title": "Inside"
             }
           }
         ]
@@ -88,7 +88,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "02 Projects/Inside/Otters/Otters.md",
+                "file": "02 Projects/Inside/Inside.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -98,7 +98,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Otters"
+              "title": "Backlinks for Inside"
             }
           },
           {
@@ -136,10 +136,10 @@
             "state": {
               "type": "file-properties",
               "state": {
-                "file": "02 Projects/Inside/Otters/Otters.md"
+                "file": "02 Projects/Inside/Inside.md"
               },
               "icon": "lucide-info",
-              "title": "File properties for Otters"
+              "title": "File properties for Inside"
             }
           },
           {
@@ -179,20 +179,20 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "02 Projects/Inside/Otters/Otters.md",
+                "file": "02 Projects/Inside/Inside.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Otters"
+              "title": "Outline of Inside"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 251.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -205,18 +205,32 @@
       "pomodoro-timer:Toggle timer panel": false
     }
   },
-  "active": "2239fc68ee8078db",
+  "active": "3b50aec492610997",
   "lastOpenFiles": [
-    "02 Projects/Inside/Otters/notebook/2024-09-02-Holding Hands/2024-09-02-Holding Hands.md",
-    "02 Projects/Inside/Otters/notebook/2025-09-14-Furry/2025-09-14-Furry.md",
-    "02 Projects/Inside/Otters/Fur/Fur.md",
+    "01 Home/!Inbox/2025/2025-07-02-asd/2025-07-02-asd.md",
+    "02 Projects/02 Projects.md",
+    "02 Projects/Inside/Otters/notebook/2025-09-14-Breaking Shells/2025-09-14-Breaking Shells.md",
+    "02 Projects/Inside/Otters/notebook/2025-09-14-Oily.md",
+    "02 Projects/Inside/Otters/notebook/2025-09-14-Ollie.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-08-Test.md",
+    "01 Home/!Inbox/2025/2025-04-29-null/2025-04-29-null.md",
+    "01 Home/!Inbox/2025/2025-07-01-asdf/2025-07-01-asdf.md",
+    "01 Home/!Inbox/2025/2025-03-10-asdf/2025-03-10-asdf.md",
+    "01 Home/!Inbox/2025/2025-03-10-Testing/2025-03-10-Testing.md",
+    "01 Home/!Inbox/2025/2025-03-09-awe/2025-03-09-awe.md",
+    "02 Projects/Inside/Inside.md",
     "02 Projects/Inside/Otters/Fur/notebook/2025-11-30-Pigment/2025-11-30-Pigment.md",
+    "02 Projects/Inside/Otters/notebook/2025-09-14-Furry/2025-09-14-Furry.md",
+    "02 Projects/Inside/Otters/notebook/2024-09-02-Holding Hands/2024-09-02-Holding Hands.md",
+    "02 Projects/Inside/TV/notebook/2025-09-14-Shows/2025-09-14-Shows.md",
+    "02 Projects/Inside/TV/notebook/2025-11-25-Test/2025-11-25-Test.md",
+    "00 Config/DevLog/DevLog.md",
+    "00 Config/Templater Commands/Forward.md",
+    "02 Projects/Inside/Otters/Otters.md",
+    "02 Projects/Inside/Otters/Fur/Fur.md",
     "01 Home/!Inbox/2026/2026-01-07-Test/2026-01-07-Test.md",
     "01 Home/!Inbox/2026/2026-01-07-Test",
     "01 Home/!Inbox/2026",
-    "00 Config/Templater Commands/Forward.md",
-    "02 Projects/Inside/Otters/notebook/2025-09-14-Oily.md",
-    "02 Projects/Inside/Otters/Otters.md",
     "00 Config/Notebooks/Notebooks.md",
     "00 Config/Scripts/Templater/embedLinkToContent.js",
     "00 Config/Scripts/Templater/forwardContenttoTarget.js",
@@ -224,28 +238,14 @@
     "00 Config/Scripts/Templater/selectExistingNote.js",
     "00 Config/Scripts/Templater/fowardContent.js",
     "00 Config/Templater Commands/Annotate Task.md",
-    "00 Config/DevLog/DevLog.md",
     "00 Config/Templater Commands/Covert to Header.md",
     "00 Config/Scripts/Templater/bulletsToHeader.js",
     "00 Config/Templater Commands/Date Picker.md",
-    "00 Config/Templater Commands/New Note.md",
     "00 Config/Scripts/Templater/bulletsToHeaders.js",
-    "02 Projects/Inside/Inside.md",
-    "00 Config/00 Config.md",
-    "02 Projects/02 Projects.md",
-    "02 Projects/Test/Test.md",
     "02 Projects/Test/notebook",
-    "02 Projects/Inside/Test/Test.md",
     "00 Config/DevLog/Pasted image 20251217115245.png",
-    "00 Config/Note Templates/Folder Note Page Template.md",
-    "00 Config/Note Templates/Note Templates.md",
-    "00 Config/Note Templates/Task Template.md",
-    "00 Config/Notebooks/Projects.md",
     "00 Config/DevLog/Pasted image 20251210220912.png",
-    "00 Config/Note Templates/Topic Template.md",
-    "00 Config/Note Templates/Project Template.md",
     "00 Config/DevLog/2025-12-10T220133922-Screenshot 2025-12-10 at 9.54.42 PM.png",
-    "02 Projects/Inside/Otters/notebook/2024-09-02-Holding Hands/watch them hold hands.md",
     "00 Config/DevLog/2025-12-10T215546038-Pasted image 20251210185639.png",
     "00 Config/DevLog/2025-12-10T215545818-Pasted image 20251207153639.png",
     "00 Config/DevLog/2025-12-10T215545912-Pasted image 20251207153203.png",

@@ -94,23 +94,44 @@ class notebookManager {
         if (!currentFile) {
             throw new Error("No current file found");
         }
-
+        
         // Create note object and validate properties
         const currentNote = this.createNoteObject(dv, currentFile.path);
         if (!currentNote.noteBook || !currentNote.noteType) {
             throw new Error("Current note lacks required properties");
         }
-
-        // Use parent note if exists, otherwise use current note
-        const contextNote = currentNote.parent 
-            ? this.createNoteObject(dv, currentNote.parent.path)
-            : currentNote;
+        
+        // Determine the context note based on parent presence
+        let contextNote;
+        
+        if (currentNote.page && currentNote.page.parent && currentNote.page.parent.length > 0) {
+            // Parent(s) exist
+            let selectedParent;
+            
+            if (currentNote.page.parent.length === 1) {
+                // Single parent - use it directly
+                selectedParent = currentNote.page.parent[0];
+            } else {
+                // Multiple parents - prompt user to select
+                selectedParent = await tp.system.suggester(
+                    currentNote.page.parent.map(parent => parent.display || parent.path),
+                    currentNote.page.parent,
+                    true,
+                    "Select Parent Note for Context"
+                );
+            }
+            
+            contextNote = this.createNoteObject(dv, selectedParent.path);
+        } else {
+            // No parent exists - use current note
+            contextNote = currentNote;
+        }
         
         // Return in collection format
         return {
             [contextNote.noteBook.display]: [contextNote]
         };
-   }
+    }
 
 
      // Main navigation function that handles traversing the note hierarchy
@@ -853,11 +874,14 @@ class notebookManager {
             config.user
         );
     }
-
+    
     addDestinationFrontmatter(frontmatter, destinationNotebook) {
-        frontmatter["parent"] = this.createWikiLink(
-            this.accessCollectionAttribute(destinationNotebook, "path")[0],
-            this.accessCollectionAttribute(destinationNotebook, "name")[0]
+        // Create array of parent wikiLinks
+        const parentPaths = this.accessCollectionAttribute(destinationNotebook, "path");
+        const parentNames = this.accessCollectionAttribute(destinationNotebook, "name");
+        
+        frontmatter["parent"] = parentPaths.map((path, index) => 
+            this.createWikiLink(path, parentNames[index])
         );
         
         frontmatter["noteBook"] = this.createWikiLink(
