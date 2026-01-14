@@ -3,8 +3,8 @@
   if (selection) {
     // Prompt for new or existing file
     const target = await tp.system.suggester(
-      ["New File", "Existing"], 
-      ["New File", "Existing"],
+      ["Existing", "New File"], 
+      ["Existing", "New File"], 
       true,
       "Forward to new or existing file?"
     );
@@ -43,41 +43,51 @@
     if (fwdType == "Task") {
       tR += await tp.user.forwardTasktoTarget(tp, selection, newFile.basename);
     } else if (fwdType == "Content") {
-      const newHeading = "Forwarded from " + thisFile; 
-      let linkedHeading = await tp.user.forwardContenttoTarget(
+      // Forward content and get link info
+      const forwardResult = await tp.user.forwardContenttoTarget(
         tp, 
         selection, 
-        newFile.basename, 
-        newHeading
+        newFile.basename,
+        thisFile
       );
       
       // Determine how to handle the original content
       const contentType = await tp.system.suggester(
-        ["Copy", "Cut", "Link", "Embed Here", "Embed in Content"], 
-        ["Copy", "Cut", "Link", "Embed Here", "Embed in Content"], 
+        ["Embed At Current Position", "Copy", "Cut", "Link"], 
+        ["Embed At Current Position", "Copy", "Cut", "Link"], 
         false,
         "How to handle original content?"
       );
       
-      if (contentType == "Copy") {
+      // Handle the original content location
+      if (contentType === "Copy") {
         tR += selection;
-      } else if (contentType == "Cut") {
+      } else if (contentType === "Cut") {
         tR += "";
-      } else if (contentType == "Link") {
-        tR += linkedHeading;
-      } else if (contentType == "Embed Here") {
-        tR += "!" + linkedHeading;
-      } else if (contentType == "Embed in Content") {
-        await tp.user.embedLinkToContent(
-          tp, 
-          thisFile, 
-          newFile.basename, 
-          newHeading, 
-          true
-        );
+      } else if (contentType === "Link") {
+        tR += forwardResult.linkedHeading;
+      } else if (contentType === "Embed At Current Position") {
+        // Get the header level from the selection
+        const headerLevel = getHeaderLevel(selection);
+        const headerPrefix = '#'.repeat(headerLevel);
+        
+        // Create header link to target note
+        const headerLink = `${headerPrefix} [[${newFile.basename}]]`;
+        
+        // Create embed with display name
+        const embed = `![[${forwardResult.embedLink}]]`;
+        
+        tR += `${headerLink}\n${embed}`;
       }
     }
   } else {
     new Notice("Text not selected");
+  }
+  
+  // Helper function to get header level from selection
+  function getHeaderLevel(text) {
+    const firstLine = text.trim().split('\n')[0];
+    const match = firstLine.match(/^(#+)\s/);
+    return match ? match[1].length : 2; // Default to ## if no header found
   }
 _%>

@@ -18,7 +18,7 @@ async function forwardTasktoTarget(tp, selection, targetBasename) {
     
     const headerTask = "# Tasks\n" + selection;
     
-    // Check if "# Action Items" exists, if not append to end
+    // Check if "# Tasks" exists, if not append to end
     let targetNoteReplaced;
     if (targetNoteContent.includes("# Tasks")) {
       targetNoteReplaced = targetNoteContent.replace("# Tasks", headerTask);
