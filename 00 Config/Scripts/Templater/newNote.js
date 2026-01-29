@@ -13,8 +13,8 @@ async function newNote(tp, dv) {
         // Step 1: Determine destination type based on user permissions
         const destinationType = config.admin 
             ? await tp.system.suggester(
-                ["Inbox", "Root", "Current"],
-                ["Inbox", "Root", "Current"],
+                ["Inbox", "Root", "Current", "Parent"],
+                ["Inbox", "Root", "Current", "Parent"],
                 true,
                 "Select Note Destination"
               )
@@ -24,10 +24,10 @@ async function newNote(tp, dv) {
         const destinationNotebook = await notebookManager.getDestinationNotebook(
             tp, 
             dv, 
-            destinationType, 
+            destinationType,
             config
         );
-        console.log("destinationNotebook", destinationNotebook)
+        // console.log("destinationNotebook", destinationNotebook)
         // Step 3: Get template and location information
         const { fileTemplateNote, targetLocation } = await notebookManager.getTemplateAndLocation(
             tp, 
@@ -48,7 +48,7 @@ async function newNote(tp, dv) {
             metadata,
             fileTemplateNote
         );
-        console.log("newFile", newFile)
+        // console.log("newFile", newFile)
 
         await notebookManager.applyFrontmatter(
             newFile,

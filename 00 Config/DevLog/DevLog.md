@@ -8,7 +8,36 @@ noteBook:
 # Dev Log
 ## Jan 2026
 
+### Working on Tasks
+#### Organization of Tasks/Structuring Relationships
+- How do you want Tasks to be stored wrt Folder Notes and Projects?
+	- Current Context actually grabs the Parent note the current note so it doesn't necessarily work for adding a task inside a Folder Note right, it would add it to the Tasks folder for the Parent
+##### Updated Current Context
+- To resolve the first issue above, the current context now can recognize the difference between asking for the parent note and the current note and added a separate option for that
+	- ![[2026-01-28T191756297-Pasted image 20260128191754.png|250]]
+- 
+#### Templates
+- Made a default [[Task Template]] that is assigned in the [[Note Templates]] default
+- Started on a Script to create new Tasks that will be the basis of a button in notes
+	- Otherwise probably worth adding Tasks to the Leaf formats of projects and maybe Folder Notes so you can find the that way
+
+### Daily and Monthly Notes
+#### Made a new [[Daily Note Template]]
+- Uses List Modified Plugin to track changes to notes
+- Uses frontmatter for habit tracking
+#### Monthly Note Base
+- [[Monthly Note Base Template]]
+- This is actually the text for a base not an embedded 
+	- Probably need to change that
+
+### MoodMeter
+![[2026-01-13-MoodMeter]]
 ### Working on Forwarding Content
+#### Removed the Embed in Content Option
+- Some weirdness was going on where one option would embed the link to the forwarded content at the top of the "Content" (renamed to "Notes") section where as the other would Embed at the highlighted position/cursor position. 
+	- Removed the former in favor of the latter
+- Updated so that the headers are reduced a level when starting with a second level header so that the subsections embed as expected
+- Updated so that the new header includes a link to the forwarded note to provide more clear two-way linking
 
 #### Note on Forwarding Tasks if using Task Notes
 - If tasks are individual notes, you will want to be able to move the Task Note itself to the desired location as well as linking the note properly
@@ -167,7 +196,7 @@ noteBook:
 - Heading and Bullets
 	- ~~Toggle bulleted indentation to Headings~~
 	- Insert Code in Bulleted List - Maybe obviated by relying on Headings More
-- Changelog and Modified Date
+- ~~Changelog and Modified Date~~
 	- There are two general use cases here 
 		- Navigating to what I was just working on
 		- Seeing what I did on a particular date

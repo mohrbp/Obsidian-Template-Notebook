@@ -53,35 +53,41 @@ class notebookManager {
 
         // Get initial collection based on destination type - Current or Root
         const initialCollection = await this.getInitialCollection(tp, dv, destinationType, config);
-
         console.log("initialCollection", initialCollection)
-        // Navigate to final destination
-        return await this.navigateToDestination(tp, dv, initialCollection);
+
+        if (destinationType == "Current") {
+            return initialCollection
+        } else {
+            // Navigate to final destination
+            return await this.navigateToDestination(tp, dv, initialCollection);
+        }
      }   
 
     // Helper to get the starting point for navigation
     async getInitialCollection(tp, dv, destinationType, config) {
         switch (destinationType) {
             case "Current":
-                // Get context from current note
+                // Get context from current note (not parent)
+                return await this.getCurrentNoteContext(tp, dv, { preferCurrent: true });
+                
+            case "Parent":
+                // Get context from parent note (default behavior)
                 return await this.getCurrentNoteContext(tp, dv);
                 
             case "Root":
                 // Get root level collections and let user select
-                // console.log("config.collections", config.collections)
                 const rootCollections = await this.traverseNotebook(dv, config.collections, {
                     formatOutput: true,
                     includeSource: true,
                     traversalType: 'child_branch'       
                 });
-
-                // console.log ("rootCollections", rootCollections)
+                
                 return await tp.system.suggester(
-                        rootCollections.displays,
-                        rootCollections.values,
-                        true,
-                        "Select Collection"
-                    );
+                    rootCollections.displays,
+                    rootCollections.values,
+                    true,
+                    "Select Collection"
+                );
                 
             default:
                 throw new Error(`Unsupported destination type: ${destinationType}`);
@@ -89,7 +95,11 @@ class notebookManager {
     }
 
     // Gets the context for the current note, either from itself or its parent
-    async getCurrentNoteContext(tp, dv) {
+    async getCurrentNoteContext(tp, dv, options = {}) {
+        const {
+            preferCurrent = false  // If true, returns current note instead of parent
+        } = options;
+        
         const currentFile = tp.file.find_tfile(tp.file.path(true));
         if (!currentFile) {
             throw new Error("No current file found");
@@ -101,11 +111,14 @@ class notebookManager {
             throw new Error("Current note lacks required properties");
         }
         
-        // Determine the context note based on parent presence
+        // Determine the context note based on options and parent presence
         let contextNote;
         
-        if (currentNote.page && currentNote.page.parent && currentNote.page.parent.length > 0) {
-            // Parent(s) exist
+        if (preferCurrent) {
+            // User explicitly wants current note
+            contextNote = currentNote;
+        } else if (currentNote.page && currentNote.page.parent && currentNote.page.parent.length > 0) {
+            // Parent(s) exist - use parent context
             let selectedParent;
             
             if (currentNote.page.parent.length === 1) {
@@ -123,7 +136,7 @@ class notebookManager {
             
             contextNote = this.createNoteObject(dv, selectedParent.path);
         } else {
-            // No parent exists - use current note
+            // No parent exists - fall back to current note
             contextNote = currentNote;
         }
         
