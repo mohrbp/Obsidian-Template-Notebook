@@ -1,14 +1,12 @@
 ---
 noteBook: "[[Note Templates]]"
 noteType: "[[Folder Note Page Template|Folder Note]]"
-branchTemplate: 
-leafTemplate: 
+leafTemplate1: "[[Task Template|Task]]"
+leafFolder1:
 aliases:
   - Folder Note
 dated: true
 folderNote: true
-folder:
-  - notebook
 ---
 # Notes
 # Tasks

@@ -5,14 +5,16 @@ branchTemplate:
 leafTemplate:
 aliases:
   - Task
-folder:
-  - Tasks
+folderNote: false
+dated: true
 status:
 priority:
 due:
 scheduled:
 completed:
 timeEntries:
+embed:
+  - prompt
 ---
 # Notes
 # Actions
