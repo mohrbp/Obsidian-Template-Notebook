@@ -9,10 +9,10 @@ dated: true
 folderNote: true
 folder:
   - notebook
-mood: FUMING
-energyLevel: 8
-affectLevel: 1
-moodTimestamp: 2026-01-13 22:16:36
+mood: AT EASE
+energyLevel: 5
+affectLevel: 6
+moodTimestamp: 2026-01-14 05:10:24
 ---
 # Notes
 ## Did basically all of this with Claude

@@ -2,9 +2,18 @@
 exercised: false
 exerciseType:
 journaled: false
-noteType: "[[00 Config/Note Templates/Daily Note Template|Daily]]"
+noteType: "[[Daily Note Template|Daily]]"
+voiceTrained: false
+<%*
+const dayName = "{{date:dddd}}"
+if (dayName === "Sunday") {
+    tR += "shot: \n";
+}
+_%>
 ---
 # Notes
+
+# Tasks
 
 # Tracking
 ```dataviewjs 
