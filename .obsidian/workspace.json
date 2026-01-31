@@ -11,14 +11,10 @@
             "id": "cf15ee58bbe67958",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "00 Config/Templater Commands/Forward.md",
-                "mode": "source",
-                "source": true
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Forward"
+              "title": "New tab"
             }
           }
         ]
@@ -88,7 +84,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "00 Config/Templater Commands/Forward.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -98,7 +93,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Forward"
+              "title": "Backlinks"
             }
           },
           {
@@ -136,10 +131,10 @@
             "state": {
               "type": "file-properties",
               "state": {
-                "file": "00 Config/Templater Commands/Forward.md"
+                "file": "02 Projects/Inside/Otters/tasks/2026-01-15-Test/2026-01-15-Test.md"
               },
               "icon": "lucide-info",
-              "title": "File properties for Forward"
+              "title": "File properties for 2026-01-15-Test"
             }
           },
           {
@@ -179,13 +174,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "00 Config/Templater Commands/Forward.md",
+                "file": "02 Projects/Inside/Otters/tasks/2026-01-15-Test/2026-01-15-Test.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Forward"
+              "title": "Outline of 2026-01-15-Test"
             }
           }
         ]
@@ -205,12 +200,22 @@
       "pomodoro-timer:Toggle timer panel": false
     }
   },
-  "active": "cf15ee58bbe67958",
+  "active": "6831f7f0a05ddd74",
   "lastOpenFiles": [
+    "02 Projects/Inside/Otters/tasks/2026-01-31-Test.md",
+    "02 Projects/Inside/Otters/tasks/2026-01-15-Test/2026-01-15-Test.md",
+    "00 Config/Note Templates/Project Template.md",
+    "00 Config/Templater Commands/Forward.md",
+    "02 Projects/Inside/notebook/2026-01-31-Test/2026-01-31-Test.md",
+    "02 Projects/Inside/notebook/2026-01-31-Test",
+    "02 Projects/Inside/notebook/2026-01-31-Test.md",
+    "02 Projects/Inside/Otters/tasks/2026-01-15-Test",
+    "02 Projects/Inside/Otters/tasks",
+    "02 Projects/Inside/Otters/notebook/2026-01-15-Test/2026-01-15-Test.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-15-Test",
     "00 Config/Templater Commands/MoodMeter.md",
     "00 Config/Templater Commands/New Note.md",
     "00 Config/Templater Commands/New Task.md",
-    "00 Config/Templater Commands/Forward.md",
     "00 Config/Templater Commands/Date Picker.md",
     "00 Config/Templater Commands/Covert to Header.md",
     "00 Config/Note Templates/Task Template.md",
@@ -223,26 +228,16 @@
     "00 Config/Note Templates/Gallery Template.md",
     "00 Config/Note Templates/Monthly Note Base Template.md",
     "00 Config/Note Templates/Notebook Page Template.md",
-    "00 Config/Note Templates/Project Template.md",
     "00 Config/Note Templates/Topic Template.md",
     "00 Config/Note Templates/Embedded Page Template.md",
     "00 Config/Note Templates/Project Task Template.md",
     "00 Config/Note Templates/Project Template Dev.md",
-    "02 Projects/Inside/2026-01-31-Test.md",
-    "02 Projects/Inside/tasks/2026-01-31-Test.md",
-    "02 Projects/Inside/2026-01-31-null.md",
     "02 Projects/Inside/tasks",
-    "00 Config/DevLog/DevLog.md",
-    "02 Projects/Inside/notebook/2026-01-31-Test/2026-01-31-Test.md",
-    "02 Projects/Inside/notebook/2026-01-31-Test",
     "02 Projects/Inside/Otters/notebook/2026-01-31-Test",
     "01 Home/01 Home.base",
     "00 Config/DevLog/2026-01-28T191756297-Pasted image 20260128191754.png",
-    "02 Projects/Inside/Otters/tasks/2026-01-15-Test",
-    "02 Projects/Inside/Otters/tasks",
     "02 Projects/Inside/Otters/notebook/2026-01-15-null",
     "00 Config/Scripts/Templater/newTask.js",
-    "02 Projects/Inside/Otters/notebook/2026-01-15-Test",
     "01 Home/!Inbox/2026/2026-01-13-Test",
     "00 Config/DevLog/Pasted image 20251217115245.png",
     "00 Config/DevLog/Pasted image 20251210220912.png",
