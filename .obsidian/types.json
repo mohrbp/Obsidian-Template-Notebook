@@ -59,9 +59,6 @@
     "due": "date",
     "scheduled": "date",
     "completed": "datetime",
-    "timeEntries": "multitext",
-    "embed": "multitext",
-    "branchTemplate1": "text",
-    "leafFolder3": "multitext"
+    "timeEntries": "multitext"
   }
 }

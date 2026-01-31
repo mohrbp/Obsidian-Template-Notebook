@@ -7,6 +7,7 @@ aliases:
   - Gallery
 dated: false
 folderNote: true
+folder:
 ---
 ```base
 filters:

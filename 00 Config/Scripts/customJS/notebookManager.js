@@ -229,17 +229,15 @@ class notebookManager {
 
                     const branchTemplatePaths = this.isCollection(referenceNoteTypePath)
                         ? normalizePaths(referenceNote.page.rootTemplate)
-                        : this.getNumberedTemplatePaths(referenceNoteTypePage, 'branchTemplate');
+                        : normalizePaths(referenceNoteTypePage.branchTemplate);
                         
-                    const leafTemplatePaths = this.getNumberedTemplatePaths(referenceNoteTypePage, 'leafTemplate');
+                    const leafTemplatePaths = normalizePaths(referenceNoteTypePage?.leafTemplate);
 
                     const inlinks = referenceNote.page.file.inlinks || [];
                     const referenceParentPaths = normalizePaths(referenceNote.parent);
 
                    // console.log("collection?", this.isCollection(referenceNoteTypePath))
-                   //  console.log("branchTemplatePaths", branchTemplatePaths)
-                  // console.log("leafTemplatePaths", leafTemplatePaths)
-
+                   // console.log("branchTemplatePaths", branchTemplatePaths)
                    // console.log("referenceNote.page.rootTemplate", normalizePaths(referenceNote.page.rootTemplate))
                    // console.log("referenceNoteTypePage.branchTemplate", normalizePaths(referenceNoteTypePage.branchTemplate));
 
@@ -692,13 +690,9 @@ class notebookManager {
             return this.getInboxTemplateAndLocation(dv, config);
         }
 
-        const templateInfo = await this.selectNoteTemplate(tp, dv, destinationNotebook);
-        const targetLocation = await this.getLocationConfig(tp, dv, templateInfo, destinationNotebook);
-        
-        return { 
-            fileTemplateNote: templateInfo.templateNote, 
-            targetLocation 
-        };
+        const fileTemplateNote = await this.selectNoteTemplate(tp, dv, destinationNotebook);
+        const targetLocation = await this.getLocationConfig(tp, fileTemplateNote, destinationNotebook);
+        return { fileTemplateNote, targetLocation };
     }
 
     getInboxTemplateAndLocation(dv, config) {
@@ -714,63 +708,39 @@ class notebookManager {
         };
     }
 
-    getTaskTemplate(dv, config) {
-        const noteTemplate = dv.page(config.templateFolder[0].path);
-        const fileTemplateNote = dv.page(noteTemplate.taskTemplate.path);
-
-        return fileTemplateNote
-    }
-
     async selectNoteTemplate(tp, dv, destinationNotebook) {
         const noteTypePath = this.accessCollectionAttribute(destinationNotebook, "noteType")[0].path.toLowerCase();
         const noteBookPath = this.accessCollectionAttribute(destinationNotebook, "path")[0];
-        let templateOptions = []; // Array of {template, fieldName, index}
+        let templates = [];
 
+        // console.log(noteTypePath, noteBookPath, this.isCollection(noteTypePath))
+        // check if this note is the root collection note, if so use root template
         if (this.isCollection(noteTypePath)) {
-            const templates = this.extractTemplates(dv.page(noteBookPath).rootTemplate);
-            templateOptions = templates.map(t => ({
-                template: t,
-                fieldName: 'rootTemplate',
-                index: null
-            }));
+            templates = this.extractTemplates(dv.page(noteBookPath).rootTemplate);
+
         } else {
+            // for selecting a new note template rather than the ones linked in the parent
+            // This is using the template file in config and this is the intended behavior
+
+            // if not root collection note, get the leaf and branch templates from the noteType template in the Config folder
             const noteTypePage = dv.page(noteTypePath);
-            
-            // Collect leaf templates with field information
-            let index = 1;
-            while (noteTypePage[`leafTemplate${index}`]) {
-                templateOptions.push({
-                    template: noteTypePage[`leafTemplate${index}`],
-                    fieldName: 'leafTemplate',
-                    index: index
-                });
-                index++;
+
+            if (noteTypePage.leafTemplate) {
+                templates = templates.concat(this.extractTemplates(noteTypePage.leafTemplate));
             }
-            
-            // Collect branch templates with field information
-            index = 1;
-            while (noteTypePage[`branchTemplate${index}`]) {
-                templateOptions.push({
-                    template: noteTypePage[`branchTemplate${index}`],
-                    fieldName: 'branchTemplate',
-                    index: index
-                });
-                index++;
+            if (noteTypePage.branchTemplate) {
+                templates = templates.concat(this.extractTemplates(noteTypePage.branchTemplate));
             }
         }
 
-        const selectedOption = await tp.system.suggester(
-            templateOptions.map(opt => opt.template.display),
-            templateOptions,
+        const selectedTemplate = await tp.system.suggester(
+            templates.map(item => item.display),
+            templates,
             true,
             "Select Note Template"
         );
 
-        return {
-            templateNote: dv.page(selectedOption.template.path),
-            fieldName: selectedOption.fieldName,
-            index: selectedOption.index
-        };
+        return dv.page(selectedTemplate.path);
     }
 
     extractTemplates(templates) {
@@ -778,65 +748,30 @@ class notebookManager {
         return Array.isArray(templates) ? templates : [templates];
     }
 
-    getNumberedTemplates(page, templateType) {
-        if (!page) return [];
-        
-        const templates = [];
-        let index = 1;
-        
-        while (page[`${templateType}${index}`]) {
-            templates.push(page[`${templateType}${index}`]);
-            index++;
-        }
-        console.log("templates",templates)
-        return templates;
-    }
-
-    getNumberedTemplatePaths(page, templateType) {
-        const templates = this.getNumberedTemplates(page, templateType);
-        return templates.map(t => t?.path).filter(Boolean);
-    }
-
-
     // 4. LOCATION & PATH MANAGEMENT
 
     // Takes a template and destination, returns a complete location configuration
-    async getLocationConfig(tp, dv, templateInfo, destinationNotebook) {
+    async getLocationConfig(tp, fileTemplateNote, destinationNotebook) {
         const baseFolder = this.accessCollectionAttribute(destinationNotebook, "folder")[0];
-        const parentNote = this.accessCollectionAttribute(destinationNotebook, "page")[0];
         
-        console.log("baseFolder:", baseFolder);
-        console.log("templateInfo:", templateInfo);
-        console.log("parentNote:", parentNote?.file?.name);
+        // If no folder specified in template, use standard location
+        if (!fileTemplateNote.folder) {
+            return { 
+                basePath: baseFolder, 
+                subPath: null, 
+                type: "standard" 
+            };
+        }
         
-        let subPath = null;
-        
-        // If we have field info (not rootTemplate), check for corresponding folder field
-        // in the parent note's noteType template
-        if (templateInfo.fieldName !== 'rootTemplate' && templateInfo.index) {
-            const parentNoteTypePath = parentNote.noteType?.path;
+        // Handle folder selection if multiple options exist
+        const subPath = Array.isArray(fileTemplateNote.folder) 
+            ? await this.selectFolder(tp, fileTemplateNote.folder)
+            : fileTemplateNote.folder;
             
-            if (parentNoteTypePath) {
-                const parentNoteTypePage = dv.page(parentNoteTypePath);
-                const folderFieldName = `${templateInfo.fieldName.replace('Template', 'Folder')}${templateInfo.index}`;
-                subPath = parentNoteTypePage[folderFieldName] || null;
-                
-                console.log(`Checking parent noteType (${parentNoteTypePage.file.name}) field ${folderFieldName}:`, subPath);
-            }
-        }
-        
-        // Fallback to template-defined folder (legacy support)
-        if (!subPath && templateInfo.templateNote.folder) {
-            console.log("Using legacy template folder field");
-            subPath = Array.isArray(templateInfo.templateNote.folder) 
-                ? await this.selectFolder(tp, templateInfo.templateNote.folder)
-                : templateInfo.templateNote.folder;
-        }
-        
         return {
             basePath: baseFolder,
             subPath: subPath,
-            type: subPath ? "custom" : "standard"
+            type: "custom"
         };
     }
 
@@ -936,24 +871,8 @@ class notebookManager {
     }
 
     cleanupTemplateFrontmatter(frontmatter) {
-        const keysToRemove = [
-            "aliases", 
-            "dated", 
-            "folderNote", 
-            "folder", 
-            "modified", 
-            "noteBook", 
-            "branchTemplate", 
-            "leafTemplate"
-        ];
-        
-        // Also remove all numbered template and folder fields
-        Object.keys(frontmatter).forEach(key => {
-            if (key.match(/^(branchTemplate|leafTemplate|branchFolder|leafFolder)\d+$/)) {
-                keysToRemove.push(key);
-            }
-        });
-        
+        const keysToRemove = ["aliases", "dated", "folderNote", "folder", "modified", "noteBook", "branchTemplate", "leafTemplate"];
+        //branch and leaf template are properties of the template note but shouldn't show up in the final. The template is always there to be referenced
         keysToRemove.forEach(key => delete frontmatter[key]);
     }
 

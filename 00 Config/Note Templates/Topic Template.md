@@ -1,13 +1,15 @@
 ---
 noteBook: "[[Note Templates]]"
 noteType: "[[Topic Template|Topics]]"
-branchTemplate1: "[[Topic Template|Topics]]"
-leafTemplate1: "[[Notebook Page Template|Note Page]]"
-leafFolder1: notebook
+branchTemplate: 
+leafTemplate:
+  - "[[Notebook Page Template|Note Page]]"
+  - "[[Topic Template|Topics]]"
 aliases:
   - Topics
 dated: false
 folderNote: true
+folder:
 ---
 <%*
 // Build project Folder Structure
