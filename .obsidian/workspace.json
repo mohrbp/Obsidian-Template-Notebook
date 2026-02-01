@@ -11,13 +11,32 @@
             "id": "cf15ee58bbe67958",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "02 Projects/Inside/Otters/Otters.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "Otters"
+            }
+          },
+          {
+            "id": "993dbc80e4235a7e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "00 Config/Note Templates/Project Template.md",
+                "mode": "source",
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "Project Template"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -84,6 +103,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "00 Config/Note Templates/Project Template.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -93,7 +113,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for Project Template"
             }
           },
           {
@@ -131,10 +151,10 @@
             "state": {
               "type": "file-properties",
               "state": {
-                "file": "02 Projects/Inside/Otters/tasks/2026-01-15-Test/2026-01-15-Test.md"
+                "file": "00 Config/Note Templates/Project Template.md"
               },
               "icon": "lucide-info",
-              "title": "File properties for 2026-01-15-Test"
+              "title": "File properties for Project Template"
             }
           },
           {
@@ -174,13 +194,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "02 Projects/Inside/Otters/tasks/2026-01-15-Test/2026-01-15-Test.md",
+                "file": "00 Config/Note Templates/Project Template.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2026-01-15-Test"
+              "title": "Outline of Project Template"
             }
           }
         ]
@@ -200,38 +220,38 @@
       "pomodoro-timer:Toggle timer panel": false
     }
   },
-  "active": "6831f7f0a05ddd74",
+  "active": "993dbc80e4235a7e",
   "lastOpenFiles": [
-    "02 Projects/Inside/Otters/tasks/2026-01-31-Test.md",
-    "02 Projects/Inside/Otters/tasks/2026-01-15-Test/2026-01-15-Test.md",
+    "02 Projects/02 Projects.md",
+    "02 Projects/Inside/Otters/notebook/2025-09-14-Furry/2025-09-14-Furry.md",
     "00 Config/Note Templates/Project Template.md",
-    "00 Config/Templater Commands/Forward.md",
-    "02 Projects/Inside/notebook/2026-01-31-Test/2026-01-31-Test.md",
+    "02 Projects/Inside/Otters/Otters.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test Embed.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Embe.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 13.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 12.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 11.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 10.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Embeddy.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Enbed.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 9.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-EEE.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Embed 1.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 8.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 7.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 6.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 5.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 1.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 4.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Embed.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 3.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test 2.md",
+    "02 Projects/Inside/Otters/notebook/2026-01-31-Test.md",
+    "02 Projects/Inside/Inside.md",
     "02 Projects/Inside/notebook/2026-01-31-Test",
-    "02 Projects/Inside/notebook/2026-01-31-Test.md",
     "02 Projects/Inside/Otters/tasks/2026-01-15-Test",
     "02 Projects/Inside/Otters/tasks",
-    "02 Projects/Inside/Otters/notebook/2026-01-15-Test/2026-01-15-Test.md",
     "02 Projects/Inside/Otters/notebook/2026-01-15-Test",
-    "00 Config/Templater Commands/MoodMeter.md",
-    "00 Config/Templater Commands/New Note.md",
-    "00 Config/Templater Commands/New Task.md",
-    "00 Config/Templater Commands/Date Picker.md",
-    "00 Config/Templater Commands/Covert to Header.md",
-    "00 Config/Note Templates/Task Template.md",
-    "02 Projects/Inside/Inside.md",
-    "02 Projects/Inside/notebook/2025-07-01-we/2025-07-01-we.md",
-    "02 Projects/Inside/notebook/2025-07-01-we/2026-01-31-Test.md",
-    "00 Config/Note Templates/Folder Note Page Template.md",
-    "00 Config/Note Templates/Collection Template.md",
-    "00 Config/Note Templates/Daily Note Template.md",
-    "00 Config/Note Templates/Gallery Template.md",
-    "00 Config/Note Templates/Monthly Note Base Template.md",
-    "00 Config/Note Templates/Notebook Page Template.md",
-    "00 Config/Note Templates/Topic Template.md",
-    "00 Config/Note Templates/Embedded Page Template.md",
-    "00 Config/Note Templates/Project Task Template.md",
-    "00 Config/Note Templates/Project Template Dev.md",
     "02 Projects/Inside/tasks",
     "02 Projects/Inside/Otters/notebook/2026-01-31-Test",
     "01 Home/01 Home.base",

@@ -29,7 +29,7 @@ async function newNote(tp, dv) {
         );
         // console.log("destinationNotebook", destinationNotebook)
         // Step 3: Get template and location information
-        const { fileTemplateNote, targetLocation } = await notebookManager.getTemplateAndLocation(
+        const { fileTemplateNote, targetLocation, templateInfo } = await notebookManager.getTemplateAndLocation(
             tp, 
             dv, 
             destinationType, 
@@ -38,6 +38,7 @@ async function newNote(tp, dv) {
         );
         // console.log("fileTemplateNote", fileTemplateNote)
         // console.log("targetLocation", targetLocation)
+        console.log("templateInfo", templateInfo)
 
         // Step 4: Get filename and Create file and apply frontmatter
         const fileName = await tp.system.prompt("Enter Note Name");
@@ -58,6 +59,18 @@ async function newNote(tp, dv) {
             destinationType,
             metadata.now
         );
+
+        // Step 5: Handle embedding in parent note if configured
+        if (destinationType !== "Inbox" && destinationNotebook) {
+            await notebookManager.handleNoteEmbed(
+                tp,
+                dv,
+                newFile,
+                destinationNotebook,
+                fileTemplateNote,
+                templateInfo
+            );
+        }
 
         return newFile;
 }

@@ -8,6 +8,7 @@ leafTemplate3: "[[Task Template|Task]]"
 leafFolder1: notebook
 leafFolder2: notebook
 leafFolder3: tasks
+leafEmbed1: "# Notes"
 aliases:
   - Projects
 dated: false

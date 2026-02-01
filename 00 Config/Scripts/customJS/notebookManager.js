@@ -697,7 +697,8 @@ class notebookManager {
         
         return { 
             fileTemplateNote: templateInfo.templateNote, 
-            targetLocation 
+            targetLocation,
+            templateInfo // Add this so we can use it for embedding
         };
     }
 
@@ -710,7 +711,8 @@ class notebookManager {
             targetLocation: {
                 basePath: "01 Home/!Inbox",
                 type: "inbox"
-            }
+            },
+            templateInfo: null // Inbox doesn't have template info
         };
     }
 
@@ -944,12 +946,13 @@ class notebookManager {
             "modified", 
             "noteBook", 
             "branchTemplate", 
-            "leafTemplate"
+            "leafTemplate",
+            "rootEmbed"  // Also remove rootEmbed if present
         ];
         
-        // Also remove all numbered template and folder fields
+        // Also remove all numbered template, folder, and embed fields
         Object.keys(frontmatter).forEach(key => {
-            if (key.match(/^(branchTemplate|leafTemplate|branchFolder|leafFolder)\d+$/)) {
+            if (key.match(/^(branchTemplate|leafTemplate|branchFolder|leafFolder|branchEmbed|leafEmbed)\d+$/)) {
                 keysToRemove.push(key);
             }
         });
@@ -987,6 +990,202 @@ class notebookManager {
     createWikiLink(path, display) {
         const cleanPath = path.split(".md")[0];
         return `[[${cleanPath}|${display}]]`;
+    }
+
+    // 7. NOTE EMBEDDING FUNCTIONALITY
+
+    async handleNoteEmbed(tp, dv, newFile, destinationNotebook, fileTemplateNote, templateInfo) {
+        // Get the parent note(s)
+        const parentPaths = this.accessCollectionAttribute(destinationNotebook, "path");
+        const parentPages = this.accessCollectionAttribute(destinationNotebook, "page");
+        
+        if (!parentPaths || parentPaths.length === 0) {
+            return; // No parent to embed in
+        }
+
+        // If no templateInfo (e.g., inbox), skip embedding
+        if (!templateInfo) {
+            return;
+        }
+
+        // Get embed configuration from the PARENT'S noteType (not the new note's template)
+        const parentPage = parentPages[0]; // Use first parent for embed config
+        if (!parentPage.noteType || !parentPage.noteType.path) {
+            return; // Parent has no noteType
+        }
+        
+        const parentNoteType = dv.page(parentPage.noteType.path);
+        const embedConfig = this.getEmbedConfig(parentNoteType, templateInfo);
+        
+        if (!embedConfig || embedConfig.action === 'none') {
+            return; // No embed configuration or null value
+        }
+
+        // Handle prompt option
+        let headingName = embedConfig.heading;
+        if (embedConfig.heading === "prompt") {
+            headingName = await tp.system.prompt(
+                "Enter heading name for embed (e.g., ## Notes)",
+                "## Notes"
+            );
+            
+            // If user cancels or leaves blank, don't embed
+            if (!headingName || headingName.trim() === "") {
+                return;
+            }
+        }
+
+        // Validate heading format
+        if (!headingName || !headingName.startsWith('#')) {
+            console.warn(`Invalid heading format: ${headingName}. Must start with #`);
+            return;
+        }
+
+        // Embed in each parent note
+        for (const parentPath of parentPaths) {
+            await this.embedInParent(tp, dv, newFile, parentPath, headingName);
+        }
+    }
+
+    getEmbedConfig(parentNoteType, templateInfo) {
+        // Read embed configuration from the PARENT'S noteType
+        // This tells us where to embed the child note in the parent
+        
+        const { fieldName, index } = templateInfo;
+        
+        // For root templates, check rootEmbed (not numbered)
+        if (fieldName === 'rootTemplate') {
+            const embedValue = parentNoteType.rootEmbed;
+            return this.parseEmbedValue(embedValue, 'rootEmbed');
+        }
+        
+        // For leaf/branch templates, construct the field name
+        // e.g., leafTemplate1 -> leafEmbed1, branchTemplate2 -> branchEmbed2
+        const embedFieldName = fieldName.replace('Template', 'Embed') + (index || '');
+        const embedValue = parentNoteType[embedFieldName];
+        
+        return this.parseEmbedValue(embedValue, embedFieldName);
+    }
+
+    parseEmbedValue(embedValue, fieldName) {
+        // Handle null or undefined - no embedding
+        if (embedValue === null || embedValue === undefined) {
+            return { action: 'none' };
+        }
+        
+        // Handle "prompt" - ask user for heading
+        if (embedValue === "prompt") {
+            return { 
+                action: 'embed',
+                heading: 'prompt',
+                fieldName: fieldName
+            };
+        }
+        
+        // Handle string starting with # - use as heading
+        if (typeof embedValue === 'string' && embedValue.startsWith('#')) {
+            return { 
+                action: 'embed',
+                heading: embedValue,
+                fieldName: fieldName
+            };
+        }
+        
+        // Invalid value - log warning and don't embed
+        console.warn(`Invalid embed value for ${fieldName}: ${embedValue}. Must be null, "prompt", or a string starting with #`);
+        return { action: 'none' };
+    }
+
+    async embedInParent(tp, dv, newFile, parentPath, headingName) {
+        try {
+            // Get the parent file
+            const parentFile = tp.file.find_tfile(parentPath);
+            if (!parentFile) {
+                console.warn(`Parent file not found: ${parentPath}`);
+                return;
+            }
+
+            // Read current content
+            const currentContent = await app.vault.read(parentFile);
+            
+            // Parse heading level from headingName (count # characters)
+            const headingLevel = headingName.match(/^#+/)[0].length;
+            
+            // Create the new file's name without extension
+            const newFileName = newFile.basename;
+
+            // Create the heading link to the new note - ONE LEVEL DEEPER than the target heading
+            const childHeadingLevel = headingLevel + 1;
+            const headingPrefix = '#'.repeat(childHeadingLevel);
+            const headingLink = `${headingPrefix} [[${newFileName}]]`;
+            
+            // Create the embed link
+            const embedLink = `![[${newFileName}]]`;
+            
+            // Combine heading and embed
+            const embedBlock = `${headingLink}\n${embedLink}`;
+            
+            // Find the target heading in the parent file
+            const targetHeading = headingName.replace(/^#+\s*/, '').trim();
+            const result = this.findOrCreateHeading(
+                currentContent, 
+                headingName,
+                embedBlock,
+                headingLevel
+            );
+            
+            // Write the updated content back to the parent file
+            await app.vault.modify(parentFile, result.content);
+            
+        } catch (error) {
+            console.error(`Error embedding in parent ${parentPath}:`, error);
+            new Notice(`Failed to embed in parent note: ${error.message}`);
+        }
+    }
+
+    findOrCreateHeading(content, targetHeading, embedBlock, headingLevel) {
+        const lines = content.split('\n');
+        const headingText = targetHeading.replace(/^#+\s*/, '').trim();
+        const headingPattern = new RegExp(`^#{${headingLevel}}\\s+${this.escapeRegex(headingText)}\\s*$`);
+        
+        // Find the target heading
+        let headingIndex = -1;
+        for (let i = 0; i < lines.length; i++) {
+            if (headingPattern.test(lines[i])) {
+                headingIndex = i;
+                break;
+            }
+        }
+        
+        if (headingIndex === -1) {
+            // Heading doesn't exist - append to end of file
+            const newContent = content.trim() + '\n\n' + targetHeading + '\n' + embedBlock;
+            return {
+                content: newContent,
+                created: true
+            };
+        }
+        
+        // Heading exists - find where to insert the embed
+        // We want to add it right after the heading, before any content
+        let insertIndex = headingIndex + 1;
+        
+        // Skip any blank lines immediately after the heading
+        while (insertIndex < lines.length && lines[insertIndex].trim() === '') {
+            insertIndex++;
+        }
+        
+        // Insert the embed block
+        lines.splice(insertIndex, 0, embedBlock);
+        
+        return {
+            content: lines.join('\n'),
+            created: false
+        };
+    }
+
+    escapeRegex(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
     // 8. UTILITY FUNCTIONS
