@@ -6,7 +6,45 @@ parent:
 noteBook:
 ---
 # Dev Log
+## Feb 2026
+### Actually setting up the Task management 
+- Two types of information - Tasks and Actions
+	- Actions are individual check boxes within a note
+		- Generally individual Actions are only summarized within the note from which they originate
+			- May see number of Actions/% completed summarized at a higher level
+		- Actions are what Pomodoros are logged to
+		- Actions can be recorded anywhere throughout a note and do not specifically need to be in the "Action Items" or "Tasks" section like I have done before
+	- Tasks are Task notes that can have Actions of their own
+		- Actions can be turned into Tasks
+			- This uses the Leaf information for the Parent note to create the corresponding Task Note
+		- Tasks can be forwarded to other notes
+			- Assigns a new parent
+			- And moves the note to the appropriate location
+				- Not entirely positive on the implementation here
+					- Probably easiest to copy the content and then create a new note that has that information from the new Parent
+					- Need to check that "Existing" locations have valid Task Leaves and so it may be easiest to gather the appropriate folder information then and not need to re-create the note, which would be more elegant
+- Task and Action summary 
+	- Sections show up as they Exist for a given note
+	- Tasks
+		- Any Tasks that have this note as the Parent - could go deeper with this too
+		- Displays the number of completed Actions/Total Actions
+		- Button to Complete
+		- Button (maybe URI) to Forward to a New or Existing Note
+	- Actions
+		- Actions from this Note 
+			- Potentially Actions from any Related Notes
+		- Buttons to Create a Task from this Action here or To create a Task in a different location (like a new or existing note)
+		- Button to Complete the Action from this interface that marks the Completion Date by annotating the task
 ## Jan 2026
+### Adding embedding options for leaves and branches
+- Also used Claude
+- Frequently had wanted to embed the new notes in the parent for creating a contiguous notebook that can be exported
+	- Should also be useful for appending all of the the information about tasks in a folder note
+- This is pretty adjustable - its per leaf type and can be set to prompt 
+### Updating Leaves and Branches for array to single fields
+- Updated this so that it would be easier to add attributes to new notes while using the same template based on the note from which it was generated
+	- Specifically, using the same task template for Projects and Folder notes, where the projects should end up in a "Tasks" folder where the Folder note tasks should just go in the same folder
+- This was updated with Claude 
 
 ### Working on Tasks
 #### Organization of Tasks/Structuring Relationships
@@ -29,6 +67,8 @@ noteBook:
 - [[Monthly Note Base Template]]
 - This is actually the text for a base not an embedded 
 	- Probably need to change that
+- Moved this to a Yearly note template because its kinda short to only keep track of these trends over 1 month. 
+	- Obvi that's pretty changeable over time 
 
 ### MoodMeter
 ![[2026-01-13-MoodMeter]]

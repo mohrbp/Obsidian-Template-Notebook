@@ -53,7 +53,7 @@ class notebookManager {
 
         // Get initial collection based on destination type - Current or Root
         const initialCollection = await this.getInitialCollection(tp, dv, destinationType, config);
-        console.log("initialCollection", initialCollection)
+        // console.log("initialCollection", initialCollection)
 
         if (destinationType == "Current") {
             return initialCollection
@@ -291,6 +291,11 @@ class notebookManager {
                                     inlinks.some(link => link.path === page.file.path);
                             }
 
+                            if (criteria.hasNoteTypeContaining) {
+                                criteriaResults.hasNoteTypeContaining = 
+                                    page.noteType?.path?.toLowerCase().includes(criteria.hasNoteTypeContaining.toLowerCase());
+                            }
+
                             // Check if all requested criteria pass
                             const matchesAll = Object.values(criteriaResults)
                                 .every(result => result === true);
@@ -356,6 +361,14 @@ class notebookManager {
                     matchNoteBook: true,
                     isBranch: true,
                     isLeaf: true
+                }
+            },
+            task_children: {
+                criteria: {
+                    matchNoteBook: true,
+                    isLeaf: true,
+                    hasNoteTypeContaining: 'task template',
+                    isParent: true
                 }
             }
         };
@@ -790,7 +803,7 @@ class notebookManager {
             templates.push(page[`${templateType}${index}`]);
             index++;
         }
-        console.log("templates",templates)
+        // console.log("templates",templates)
         return templates;
     }
 
@@ -807,9 +820,9 @@ class notebookManager {
         const baseFolder = this.accessCollectionAttribute(destinationNotebook, "folder")[0];
         const parentNote = this.accessCollectionAttribute(destinationNotebook, "page")[0];
         
-        console.log("baseFolder:", baseFolder);
-        console.log("templateInfo:", templateInfo);
-        console.log("parentNote:", parentNote?.file?.name);
+        // console.log("baseFolder:", baseFolder);
+        // console.log("templateInfo:", templateInfo);
+        // console.log("parentNote:", parentNote?.file?.name);
         
         let subPath = null;
         
@@ -829,7 +842,7 @@ class notebookManager {
         
         // Fallback to template-defined folder (legacy support)
         if (!subPath && templateInfo.templateNote.folder) {
-            console.log("Using legacy template folder field");
+            // console.log("Using legacy template folder field");
             subPath = Array.isArray(templateInfo.templateNote.folder) 
                 ? await this.selectFolder(tp, templateInfo.templateNote.folder)
                 : templateInfo.templateNote.folder;

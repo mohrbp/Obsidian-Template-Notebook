@@ -1,97 +1,161 @@
+// ============================================================================
+// GTD Task Management Dashboard
+// Handles both Tasks (note files) and Actions (checkboxes)
+// ============================================================================
 
-// Main code
 const { DateTime } = dv.luxon;
-const {noteFilter} = await cJS();
 const {dvHelperFuncs} = await cJS();
 const {notebookManager} = await cJS();
 
-
-// if (dvHelperFuncs.isMobileDevice()) {
-//     console.log("This is a mobile device");
-// } else {
-//     console.log("This is not a mobile device");
-// }
-// // const dv = this.app.plugins.plugins["dataview"].api
-
-
+// Get target from input parameter
 let target = input.target;
-let limit = 30
+let limit = 30;
 
-// console.log(customJS)
-// let myTasks_old = dvHelperFuncs.loadTasks(dv, noteFilter, target)
-// console.log("myTasks_old", myTasks_old)
+// ============================================================================
+// LOAD TASKS (Note Files)
+// ============================================================================
 
-// console.log("Start New Tasks")
-let myTasks = await dvHelperFuncs.loadTasks_new(dv, notebookManager, target)
-// console.log("myTasks_DV", myTasks)
+let myTaskFiles = await dvHelperFuncs.loadTasks(dv, notebookManager, target);
+console.log("myTaskFiles", myTaskFiles);
 
-for (let task of myTasks) {
-    dvHelperFuncs.addFrontmatterToTask(dv, task);
+// Process Tasks for GTD
+dvHelperFuncs.arrangeTasksForGTD(dv, myTaskFiles, dv.date("today"));
+
+// ============================================================================
+// LOAD ACTIONS (Checkboxes)
+// ============================================================================
+
+let myActions = await dvHelperFuncs.loadActions(dv, notebookManager, target);
+// console.log("myActions", myActions);
+
+// Add frontmatter to actions
+for (let action of myActions) {
+    dvHelperFuncs.addFrontmatterToAction(dv, action);
 }
 
-let allTasks = myTasks
+// Process Actions for GTD
+dvHelperFuncs.arrangeActionsForGTD(dv, myActions, dv.date("today"));
 
-dvHelperFuncs.arrangeTasksForGTD(dv, allTasks, dv.date("today"));
+// ============================================================================
+// DISPLAY SCHEDULED SECTION
+// ============================================================================
 
-let scheduledTasks = allTasks
-                        .where(t => t.checked === false)
-                        .where(t => typeof(t.scheduledDate) !== "undefined");
+// Filter scheduled Tasks and Actions
+let scheduledTasks = myTaskFiles
+    .filter(t => !t.completed)
+    .filter(t => typeof(t.scheduledDate) !== "undefined");
 
+let scheduledActions = myActions
+    .where(a => a.checked === false)
+    .where(a => typeof(a.scheduledDate) !== "undefined");
 
-let overdueTasks = scheduledTasks
-                        .where(t => t.timeUntilScheduled < 0);
-                       
-if(overdueTasks.length > 0 ){
-    dvHelperFuncs.displayScheduledTasksInTable(dv,
-                                "⚠️Overdue⚠️", 
-                                overdueTasks, 
-                                limit);
-};
-
-
-let futureTasks = scheduledTasks
-                    .filter(t => t.hasOwnProperty("timing"))
-                    .filter(t => t.timing !== "overdue");
-
-if (futureTasks.length > 0){
-    dvHelperFuncs.displayScheduledTasksInTable(dv, 
-                                "Up Next", 
-                                futureTasks, 
-                                limit);
+// Display Overdue Tasks
+let overdueTaskFiles = scheduledTasks.filter(t => t.timeUntilScheduled < 0);
+if (overdueTaskFiles.length > 0) {
+    dvHelperFuncs.displayScheduledTasksTable(dv,
+        "⚠️ Overdue Tasks ⚠️", 
+        overdueTaskFiles, 
+        limit);
 }
 
-let unscheduledTasks = allTasks
-                        .where(t => t.checked === false)
-                        .where(t => typeof(t.scheduledDate) === "undefined");
+// Display Overdue Actions
+let overdueActions = scheduledActions.where(a => a.timeUntilScheduled < 0);
+if (overdueActions.length > 0) {
+    dvHelperFuncs.displayScheduledActionsTable(dv,
+        "⚠️ Overdue Actions ⚠️", 
+        overdueActions, 
+        limit);
+}
 
-dvHelperFuncs.displayUnscheduledTasksInTable(dv, 
-                            "Unscheduled", 
-                            unscheduledTasks, 
-                            limit);
+// Display Future Scheduled Tasks
+let futureTaskFiles = scheduledTasks
+    .filter(t => t.hasOwnProperty("timing"))
+    .filter(t => t.timing !== "overdue");
 
-// dvHelperFuncs.displayTasksWithUriTable(dv,
-//                             "Unscheduled", 
-//                             unscheduledTasks, 
-//                             limit)
+if (futureTaskFiles.length > 0) {
+    dvHelperFuncs.displayScheduledTasksTable(dv, 
+        "Up Next - Tasks", 
+        futureTaskFiles, 
+        limit);
+}
 
-let myRecentCompleteTasks = allTasks
-                        .where(t => t.checked === true)
-                        .where(t => typeof(t.completedDate) !== "undefined");
+// Display Future Scheduled Actions
+let futureActions = scheduledActions
+    .filter(a => a.hasOwnProperty("timing"))
+    .filter(a => a.timing !== "overdue");
 
-//dv.taskList(myRecentCompleteTasks);
+if (futureActions.length > 0) {
+    dvHelperFuncs.displayScheduledActionsTable(dv, 
+        "Up Next - Actions", 
+        futureActions, 
+        limit);
+}
 
-dvHelperFuncs.displayCompletedTasksInTable(dv,
-                            "Recently Completed (Limit " + limit + ")",
-                            myRecentCompleteTasks,
-                            limit);
+// ============================================================================
+// DISPLAY UNSCHEDULED SECTION
+// ============================================================================
 
-// Updating dataviewJS element to be scrollable everywhere
+// Filter unscheduled Tasks and Actions
+let unscheduledTasks = myTaskFiles
+    .filter(t => !t.completed)
+    .filter(t => typeof(t.scheduledDate) === "undefined");
 
-// Put all dataviewjs in a scroll view.
+let unscheduledActions = myActions
+    .where(a => a.checked === false)
+    .where(a => typeof(a.scheduledDate) === "undefined");
+
+// Display unscheduled Tasks
+if (unscheduledTasks.length > 0) {
+    dvHelperFuncs.displayUnscheduledTasksTable(dv, 
+        "Unscheduled Tasks", 
+        unscheduledTasks, 
+        limit);
+}
+
+// Display unscheduled Actions
+if (unscheduledActions.length > 0) {
+    dvHelperFuncs.displayUnscheduledActionsTable(dv, 
+        "Unscheduled Actions", 
+        unscheduledActions, 
+        limit);
+}
+
+// ============================================================================
+// DISPLAY COMPLETED SECTION
+// ============================================================================
+
+// Filter completed Tasks and Actions
+let completedTasks = myTaskFiles
+    .filter(t => t.completed)
+    .filter(t => typeof(t.completedDate) !== "undefined");
+
+let completedActions = myActions
+    .where(a => a.checked === true)
+    .where(a => typeof(a.completedDate) !== "undefined");
+
+// Display completed Tasks
+if (completedTasks.length > 0) {
+    dvHelperFuncs.displayCompletedTasksTable(dv,
+        "Recently Completed Tasks (Limit " + limit + ")",
+        completedTasks,
+        limit);
+}
+
+// Display completed Actions
+if (completedActions.length > 0) {
+    dvHelperFuncs.displayCompletedActionsTable(dv,
+        "Recently Completed Actions (Limit " + limit + ")",
+        completedActions,
+        limit);
+}
+
+// ============================================================================
+// MAKE DATAVIEWJS SCROLLABLE
+// ============================================================================
+
+// Put all dataviewjs in a scroll view
 let elements = document.getElementsByClassName('block-language-dataviewjs');
 for (let i = 0; i < elements.length; i++) {
-  let item = elements.item(i);
-  item.setAttribute("style", "max-height:400px;overflow:auto;");
+    let item = elements.item(i);
+    item.setAttribute("style", "max-height:400px;overflow:auto;");
 }
-
-

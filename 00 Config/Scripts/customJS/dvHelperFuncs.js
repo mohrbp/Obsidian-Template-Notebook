@@ -1,121 +1,76 @@
 class dvHelperFuncs {
 
-    async loadTasks_new(dv, notebookManager, target) {
-        let targetNote = notebookManager.createNoteObject(dv, target.path)
+    // ============================================================================
+    // CORE DATA LOADING FUNCTIONS - Using traverseNotebook for both
+    // ============================================================================
+
+    /**
+     * Load all Actions (checkboxes) from target note and its children
+     * Uses traverseNotebook with 'child' strategy
+     */
+    async loadActions(dv, notebookManager, target) {
+        let targetNote = notebookManager.createNoteObject(dv, target.path);
         let nestedInput = {
             parent: [targetNote]
         };
         
-        // console.log("targetNote", targetNote)
-
+        // Get all child notes recursively using traverseNotebook
         let allChildNotes = await notebookManager.traverseNotebook(dv, nestedInput, {
             recursive: true,
             includeSource: true,
             formatOutput: false,
             traversalType: 'child'
         });
-        // console.log("ChildNotes", allChildNotes)
 
-        // Flatten the notes from all categories
-        let taskPaths = Object.values(allChildNotes)
+        // Flatten the notes from all categories and extract paths
+        let notePaths = Object.values(allChildNotes)
             .flat()
-            .map(note => note.page?.file?.path ?? [])
+            .map(note => note.page?.file?.path)
+            .filter(Boolean);
 
-        // console.log("taskPaths", taskPaths)
-
+        // Return all tasks from these notes that are in the "Tasks" section
         return dv.pages()
-                    .file
-                    .filter(p => taskPaths.includes(p.path))
-                    .tasks
-                    .where(t => t.link.subpath == "Tasks")
-                    .where(t => !t.hasOwnProperty("parent"));
-    }
-	
-    loadTasks(dv, noteFilter, target) {
-        let targetNote = noteFilter.createNoteObject(dv, target.path);
-        let nestedInput = {
-            parent: [targetNote]
-        };
-
-        let allChildNotes = noteFilter.getAllChildNotes(dv, nestedInput);
-        let taskFilter = this.createTaskFilter(targetNote, allChildNotes, include = false);
-
-        return dv.pages()
-            .filter(p => noteFilter.dataFilter([p], taskFilter).length > 0)
             .file
+            .filter(p => notePaths.includes(p.path))
             .tasks
-            .where(t => t.link.subpath == "Tasks")
+            // .where(t => t.link.subpath == "Tasks")
             .where(t => !t.hasOwnProperty("parent"));
     }
 
-    createTaskFilter(targetNote, allChildNotes, include = true) {
-        let taskFilter = include == true ? {noteType: { includePaths: targetNote.noteType.path }} : 
-        {noteType: { excludePaths: targetNote.noteType.path }}
-
-        for (let cat in allChildNotes) {
-            taskFilter[cat] = {
-                includePaths: [targetNote.path],
-                excludePaths: []
-            };
-            for (let index in allChildNotes[cat]) {
-                taskFilter[cat].includePaths.push(String(allChildNotes[cat][index].path));
-            }
-        }
+    /**
+     * Load all Tasks (note files) that have the target in their parent field
+     * Uses traverseNotebook with 'task_children' strategy
+     */
+    async loadTasks(dv, notebookManager, target) {
+        let targetNote = notebookManager.createNoteObject(dv, target.path);
+        let nestedInput = {
+            parent: [targetNote]
+        };
         
-        return taskFilter;
+        // Use traverseNotebook with task_children strategy
+        let taskNotes = await notebookManager.traverseNotebook(dv, nestedInput, {
+            recursive: false,  // Tasks are direct children only (not recursive)
+            includeSource: false,
+            formatOutput: false,
+            traversalType: 'task_children'
+        });
+
+        // Flatten and return as array of pages
+        return Object.values(taskNotes)
+            .flat()
+            .map(note => note.page)
+            .filter(Boolean);
     }
 
-    convertLinksToCommaSeparatedList(text) {
-        // Function to Format Links for Tasks Table
-        // Regular expression to match Markdown links
-        const markdownRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    // ============================================================================
+    // GTD PROCESSING FUNCTIONS
+    // ============================================================================
 
-        // Regular expression to match Wiki links
-        const wikiRegex = /\[\[([^\]]+)\]\]/g;
-
-        // Array to store all links
-        const linksArray = [];
-
-        // Find Markdown links and add to the array
-        let markdownMatch;
-        while ((markdownMatch = markdownRegex.exec(text)) !== null) {
-        const linkText = markdownMatch[1];
-        const linkUrl = markdownMatch[2];
-        linksArray.push(`[${linkText}](${linkUrl})`);
-        }
-
-        // Find Wiki links and add to the array
-        let wikiMatch;
-        while ((wikiMatch = wikiRegex.exec(text)) !== null) {
-        const wikiLink = wikiMatch[1];
-        linksArray.push(`[[${wikiLink}]]`);
-        }
-        // Join the links with commas and return the result
-        return linksArray.join(', ');
-    }
-
-// Function to check if the device is a mobile device
-    isMobileDevice() {
-        return /Mobi|Android/i.test(navigator.userAgent);
-    }
-
-// Function to add file frontmatter to task object
-     addFrontmatterToTask(dv, task) {
-        if (dv.page(task.path) && dv.page(task.path).file) {
-            const page = dv.page(task.path).file;
-            const frontmatter = page.frontmatter;
-            task.created = frontmatter.created || task.created;
-            task.modified = page.mtime || task.modified
-            task.noteBook = frontmatter.noteBook || task.noteBook;
-            task.parent = frontmatter.parent || task.parent;
-            task.noteType = frontmatter.noteType || task.noteType;
-            task.noteLink = page.link || task.noteLink;
-        }
-    }
-
-    // Function to arrange and format tasks for GTD
-    arrangeTasksForGTD(dv, tasks, currentTime) {
-
+    /**
+     * Arrange and format Actions for GTD workflow
+     * Note: addFrontmatterToTask should be called BEFORE this function
+     */
+    arrangeActionsForGTD(dv, actions, currentTime) {
         const { DateTime } = dv.luxon;  
 
         let recentLow = 1;
@@ -126,167 +81,349 @@ class dvHelperFuncs {
         const blue = "<span style='border-left: 3px solid rgb(39, 117, 182);'>&nbsp;</span>";
         const green = "<span style='border-left: 3px solid green;'>&nbsp;</span>";
 
-        const taskCounts = {};
-        for (let task of tasks) {
-            task.visual = task.text;
+        for (let action of actions) {
+            action.visual = action.text;
 
-            if (task.checked === true && task.text.match(/([✅]) ?(\d{4}-\d{2}-\d{2})/) != null) {
-                let dateMatch = task.text.match(/([✅]) ?(\d{4}-\d{2}-\d{2})/)[2];
-                console.log("dateMatch",dateMatch)
-                task.completedDate = DateTime.fromISO(dateMatch);
-                task.visual = task.visual.replace(/([✅]) ?(\d{4}-\d{2}-\d{2})/, "")
+            // Handle completed actions
+            if (action.checked === true && action.text.match(/([✅]) ?(\d{4}-\d{2}-\d{2})/) != null) {
+                let dateMatch = action.text.match(/([✅]) ?(\d{4}-\d{2}-\d{2})/)[2];
+                action.completedDate = DateTime.fromISO(dateMatch);
+                action.visual = action.visual.replace(/([✅]) ?(\d{4}-\d{2}-\d{2})/, "");
             }
 
-            if (task.text.match(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/) != null) {
-            // Adding Task Scheduled Date
-                let dateMatch = task.text.match(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/)[2];
-                task.scheduledDate = DateTime.fromISO(dateMatch);
+            // Handle scheduled actions
+            if (action.text.match(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/) != null) {
+                let dateMatch = action.text.match(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/)[2];
+                action.scheduledDate = DateTime.fromISO(dateMatch);
+                action.timeUntilScheduled = Math.round(action.scheduledDate.diff(currentTime, "days").as("minutes"));
+                
+                if (action.timeUntilScheduled < 0) {
+                    action.color = red;
+                    action.timing = "overdue";
+                } else if (action.timeUntilScheduled < (1440 * recentLow)) {
+                    action.color = green;
+                    action.timing = "due";
+                } else if (action.timeUntilScheduled < (1440 * recentMid)) {
+                    action.color = blue;
+                    action.timing = "upcoming";
+                } else if (action.timeUntilScheduled < (1440 * recentHigh)) {
+                    action.timing = "future";
+                    action.color = "";
+                }
+                
+                if (action.checked === false) {
+                    action.visual = action.color + action.visual.replace(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/, "");
+                } else {
+                    action.visual = action.visual.replace(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/, "");
+                }
+            }
+        }
+    }
+
+    /**
+     * Arrange and format Tasks (note files) for GTD workflow
+     */
+    arrangeTasksForGTD(dv, tasks, currentTime) {
+        const { DateTime } = dv.luxon;  
+
+        let recentLow = 1;
+        let recentMid = 3;
+        let recentHigh = 7;
+
+        const red = "<span style='border-left: 3px solid red;'>&nbsp;</span>";
+        const blue = "<span style='border-left: 3px solid rgb(39, 117, 182);'>&nbsp;</span>";
+        const green = "<span style='border-left: 3px solid green;'>&nbsp;</span>";
+
+        for (let task of tasks) {
+            task.visual = task.file.link;
+
+            // Handle completed tasks
+            if (task.completed) {
+                task.completedDate = DateTime.fromISO(task.completed);
+            }
+
+            // Handle scheduled tasks
+            if (task.scheduled) {
+                task.scheduledDate = DateTime.fromISO(task.scheduled);
                 task.timeUntilScheduled = Math.round(task.scheduledDate.diff(currentTime, "days").as("minutes"));
-                if (task.timeUntilScheduled < (0)) {
+                
+                if (task.timeUntilScheduled < 0) {
                     task.color = red;
                     task.timing = "overdue";
-                } else if ((task.timeUntilScheduled < (1400 * recentLow)) && (task.timeUntilScheduled >= (0))) {
+                } else if (task.timeUntilScheduled < (1440 * recentLow)) {
                     task.color = green;
                     task.timing = "due";
-                } else if ((task.timeUntilScheduled < (1400 * recentMid)) && (task.timeUntilScheduled >= (1400 * recentLow))) {
+                } else if (task.timeUntilScheduled < (1440 * recentMid)) {
                     task.color = blue;
                     task.timing = "upcoming";
-                } else if (task.timeUntilScheduled >= 0 && task.timeUntilScheduled < (1440 * recentHigh)) {
+                } else if (task.timeUntilScheduled < (1440 * recentHigh)) {
                     task.timing = "future";
                     task.color = "";
                 }
-                if (task.checked === false) {
-                    task.visual = task.color + task.visual.replace(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/, "")
-                    } else {
-                    task.visual = task.visual.replace(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})/, "")
-                };
-                // Count tasks by timing, project, and projectCategory
-       //         const key = `${task.timing}_${task.project}_${task.projectCategory}`;
-                const key = `${task.timing}_${task.projectCategory}`;
-                taskCounts[key] = (taskCounts[key] || 0) + 1;
-      //      console.log("Scheduled - ", task.scheduled,
-      //                  "\n scheduledDate - ", task.scheduledDate,
-      //                  "\n timeUntilScheduled = ", task.timeUntilScheduled);
+                
+                task.visual = task.color + " " + task.file.link;
             }
         }
-        // console.log("Task Counts:", taskCounts);
     }
 
-    // Function to display Scheduled tasks in a table
-    displayScheduledTasksInTable(dv, title, tasks, limit) {
+    // ============================================================================
+    // TABLE DISPLAY FUNCTIONS - ACTIONS
+    // ============================================================================
+
+    displayScheduledActionsTable(dv, title, actions, limit) {
         const { DateTime } = dv.luxon;  
-        // Map table variables
-        dv.header(3, title);
+        
+        if (title) dv.header(3, title);
+        
+        let filteredActions = actions
+            .filter(a => a.scheduledDate && !a.checked)
+            .sort(a => a.scheduledDate, "asc");
+            
+        if (filteredActions.length === 0) return;
+        
         dv.table(
-            ["Task", "Scheduled", "Parent", "noteType", "noteBook", "Note", "Created"], 
-            tasks
-            .sort(t => DateTime.fromISO(t.scheduledDate), "asc")
-            // Logic to filter, sort, and map tasks
-            .map(t => [
-            t.visual,
-            t.scheduledDate.toFormat("DD"),
-            this.convertLinksToCommaSeparatedList(t.parent),
-            t.noteType,
-            t.noteBook,     
-            t.noteLink,
-            DateTime.fromISO(t.created).toFormat("DD"),
-            ])
-            .limit(limit)
+            ["Action", "Scheduled", "Parent", "noteType", "noteBook", "Note", "Created"], 
+            filteredActions
+                .map(a => [
+                    a.visual,
+                    a.scheduledDate.toFormat("DD"),
+                    this.convertLinksToCommaSeparatedList(a.parent),
+                    a.noteType,
+                    a.noteBook,
+                    a.noteLink,
+                    DateTime.fromISO(a.created).toFormat("DD"),
+                ])
+                .limit(limit)
         );
     }
 
-    // Function to display Unscheduled tasks in a table
-     displayUnscheduledTasksInTable(dv, title, tasks, limit) {
+    displayUnscheduledActionsTable(dv, title, actions, limit) {
         const { DateTime } = dv.luxon;
-        // Map table variables
-        dv.header(3, title);
+        
+        if (title) dv.header(3, title);
+        
+        let filteredActions = actions
+            .filter(a => !a.scheduledDate && !a.checked)
+            .sort(a => DateTime.fromISO(a.created), "desc");
+            
+        if (filteredActions.length === 0) return;
+        
         dv.table(
-            ["Task", "Notebok", "Project", "Note", "Created"], 
-            tasks
-            .sort(t => DateTime.fromISO(t.created), "desc")
-            // Logic to filter, sort, and map tasks
-            .map(t => [
-            t.visual,
-            this.convertLinksToCommaSeparatedList(t.noteBook),
-            this.convertLinksToCommaSeparatedList(t.parent),
-            t.noteLink,
-            DateTime.fromISO(t.created).toFormat("DD"),
-            ])
-            .limit(limit)
+            ["Action", "Notebook", "Project", "Note", "Created"], 
+            filteredActions
+                .map(a => [
+                    a.visual,
+                    this.convertLinksToCommaSeparatedList(a.noteBook),
+                    this.convertLinksToCommaSeparatedList(a.parent),
+                    a.noteLink,
+                    DateTime.fromISO(a.created).toFormat("DD"),
+                ])
+                .limit(limit)
         );
     }
 
-    // Function to display Completed tasks in a table
-     displayCompletedTasksInTable(dv, title, tasks, limit) {
+    displayCompletedActionsTable(dv, title, actions, limit) {
         const { DateTime } = dv.luxon;
-        // Map table variables 
-        dv.header(3, title);
+        
+        if (title) dv.header(3, title);
+        
+        let filteredActions = actions
+            .filter(a => a.checked && a.completedDate)
+            .sort(a => a.completedDate, "desc");
+            
+        if (filteredActions.length === 0) return;
+        
         dv.table(
-            ["Task", "Notebook", "Project", "Note", "Created", "Completed"],
-            tasks
-            .sort(t => DateTime.fromISO(t.completedDate), "desc")
-            // Logic to filter, sort, and map tasks
-            .map(t => [
-            t.visual,
-            this.convertLinksToCommaSeparatedList(t.noteBook),
-            this.convertLinksToCommaSeparatedList(t.parent),
-            t.noteLink,
-            DateTime.fromISO(t.created).toFormat("DD"),
-            t.completedDate,
-            ])
-            .limit(limit)
+            ["Action", "Notebook", "Project", "Note", "Created", "Completed"],
+            filteredActions
+                .map(a => [
+                    a.visual,
+                    this.convertLinksToCommaSeparatedList(a.noteBook),
+                    this.convertLinksToCommaSeparatedList(a.parent),
+                    a.noteLink,
+                    DateTime.fromISO(a.created).toFormat("DD"),
+                    a.completedDate.toFormat("DD"),
+                ])
+                .limit(limit)
         );
+    }
+
+    // ============================================================================
+    // TABLE DISPLAY FUNCTIONS - TASKS
+    // ============================================================================
+
+    displayScheduledTasksTable(dv, title, tasks, limit) {
+        const { DateTime } = dv.luxon;  
+        
+        if (title) dv.header(3, title);
+        
+        let filteredTasks = tasks
+            .filter(t => t.scheduled && !t.completed)
+            .sort(t => t.scheduledDate, "asc");
+            
+        if (filteredTasks.length === 0) return;
+        
+        dv.table(
+            ["Task", "Scheduled", "Status", "Priority", "Parent", "noteType", "noteBook", "Created"], 
+            filteredTasks
+                .map(t => [
+                    t.visual,
+                    t.scheduledDate.toFormat("DD"),
+                    t.status || "",
+                    t.priority || "",
+                    this.convertLinksToCommaSeparatedList(t.parent),
+                    t.noteType,
+                    t.noteBook,
+                    DateTime.fromISO(t.created).toFormat("DD"),
+                ])
+                .slice(0, limit)
+        );
+    }
+
+    displayUnscheduledTasksTable(dv, title, tasks, limit) {
+        const { DateTime } = dv.luxon;
+        
+        if (title) dv.header(3, title);
+        
+        let filteredTasks = tasks
+            .filter(t => !t.scheduled && !t.completed)
+            .sort(t => DateTime.fromISO(t.created), "desc");
+            
+        if (filteredTasks.length === 0) return;
+        
+        dv.table(
+            ["Task", "Status", "Priority", "Notebook", "Project", "Created"], 
+            filteredTasks
+                .map(t => [
+                    t.file.link,
+                    t.status || "",
+                    t.priority || "",
+                    this.convertLinksToCommaSeparatedList(t.noteBook),
+                    this.convertLinksToCommaSeparatedList(t.parent),
+                    DateTime.fromISO(t.created).toFormat("DD"),
+                ])
+                .slice(0, limit)
+        );
+    }
+
+    displayCompletedTasksTable(dv, title, tasks, limit) {
+        const { DateTime } = dv.luxon;
+        
+        if (title) dv.header(3, title);
+        
+        let filteredTasks = tasks
+            .filter(t => t.completed)
+            .sort(t => t.completedDate, "desc");
+            
+        if (filteredTasks.length === 0) return;
+        
+        dv.table(
+            ["Task", "Status", "Priority", "Project", "Created", "Completed"],
+            filteredTasks
+                .map(t => [
+                    t.file.link,
+                    t.status || "",
+                    t.priority || "",
+                    this.convertLinksToCommaSeparatedList(t.parent),
+                    DateTime.fromISO(t.created).toFormat("DD"),
+                    t.completedDate.toFormat("DD"),
+                ])
+                .slice(0, limit)
+        );
+    }
+
+    // ============================================================================
+    // UTILITY FUNCTIONS
+    // ============================================================================
+
+    addFrontmatterToAction(dv, task) {
+        if (dv.page(task.path) && dv.page(task.path).file) {
+            const page = dv.page(task.path).file;
+            const frontmatter = page.frontmatter;
+            task.created = frontmatter.created || task.created;
+            task.modified = page.mtime || task.modified;
+            task.noteBook = frontmatter.noteBook || task.noteBook;
+            task.parent = frontmatter.parent || task.parent;
+            task.noteType = frontmatter.noteType || task.noteType;
+            task.noteLink = page.link || task.noteLink;
+        }
+    }
+
+    convertLinksToCommaSeparatedList(text) {
+        if (!text) return '';
+        
+        if (Array.isArray(text)) {
+            return text
+                .map(item => {
+                    if (typeof item === 'object' && item.path) {
+                        return `[[${item.path}]]`;
+                    }
+                    return String(item);
+                })
+                .join(', ');
+        }
+        
+        const markdownRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+        const wikiRegex = /\[\[([^\]]+)\]\]/g;
+        const linksArray = [];
+
+        let markdownMatch;
+        while ((markdownMatch = markdownRegex.exec(text)) !== null) {
+            const linkText = markdownMatch[1];
+            const linkUrl = markdownMatch[2];
+            linksArray.push(`[${linkText}](${linkUrl})`);
+        }
+
+        let wikiMatch;
+        while ((wikiMatch = wikiRegex.exec(text)) !== null) {
+            const wikiLink = wikiMatch[1];
+            linksArray.push(`[[${wikiLink}]]`);
+        }
+
+        return linksArray.length > 0 ? linksArray.join(', ') : String(text);
     }
 
     /**
-     * Create an Obsidian URI for modifying frontmatter of a specific note.
-     * @param {string} vaultName - The name of the Obsidian vault.
-     * @param {string} notePath - The relative path to the note within the vault.
-     * @param {Array<string>} frontmatterKeyPath - The key path in the frontmatter to modify.
-     * @param {any} value - The value to set for the specified frontmatter key.
-     * @returns {string} The Obsidian URI for the frontmatter modification.
-     */
+       * Create an Obsidian URI for modifying frontmatter of a specific note.
+       * @param {string} vaultName - The name of the Obsidian vault.
+       * @param {string} notePath - The relative path to the note within the vault.
+       * @param {Array<string>} frontmatterKeyPath - The key path in the frontmatter to modify.
+       * @param {any} value - The value to set for the specified frontmatter key.
+       * @returns {string} The Obsidian URI for the frontmatter modification.
+       */
+    
     createObsidianUri(vaultName, notePath, frontmatterKeyPath, value) {
-        const encodedVault = encodeURIComponent(vaultName);
-        const encodedPath = encodeURIComponent(notePath);
-        const encodedKeyPath = encodeURIComponent(JSON.stringify(frontmatterKeyPath));
-        const encodedData = encodeURIComponent(JSON.stringify(value));
+          const encodedVault = encodeURIComponent(vaultName);
+          const encodedPath = encodeURIComponent(notePath);
+          const encodedKeyPath = encodeURIComponent(JSON.stringify(frontmatterKeyPath));
+          const encodedData = encodeURIComponent(JSON.stringify(value));
 
-        return `obsidian://advanced-uri?vault=${encodedVault}&filepath=${encodedPath}&frontmatterkey=${encodedKeyPath}&data=${encodedData}`;
+          return `obsidian://advanced-uri?vault=${encodedVault}&filepath=${encodedPath}&frontmatterkey=${encodedKeyPath}&data=${encodedData}`;
     }
 
-
-    /**
-     * Display a table of tasks with dynamic links for Obsidian URI actions.
-     * @param {object} dv - The Dataview API instance.
-     * @param {string} title - The title of the table.
-     * @param {array} tasks - The array of tasks to display.
-     * @param {number} limit - The maximum number of tasks to display.
-     */
     displayTasksWithUriTable(dv, title, tasks, limit) {
-        // Map table variables
-        dv.header(3, title);
-        // Ensure tasks is a plain array
-        const taskArray = Array.from(tasks);
+            // Map table variables
+            dv.header(3, title);
+            // Ensure tasks is a plain array
+            const taskArray = Array.from(tasks);
 
-        const vaultName = "My Notes"; // Replace with your vault's name
+            const vaultName = "My Notes"; // Replace with your vault's name
 
-        return dv.table(
-            ["Task", "Note Link", "Modify Frontmatter"],
-            tasks.slice(0, limit).map(task => {
-                const notePath = task.path;
-                const frontmatterKeyPath = ["target_uri"];
-                const value = "safd";
+            return dv.table(
+                ["Task", "Note Link", "Modify Frontmatter"],
+                tasks.slice(0, limit).map(task => {
+                    const notePath = task.path;
+                    const frontmatterKeyPath = ["target_uri"];
+                    const value = "safd";
 
-                const uri = this.createObsidianUri(vaultName, notePath, frontmatterKeyPath, value);
+                    const uri = this.createObsidianUri(vaultName, notePath, frontmatterKeyPath, value);
 
-                return [
-                    task.visual,
-                    `[[${notePath}]]`,
-                    `[Set Target URI](${uri})`
-                ];
-            })
-        );
-    }
-
+                    return [
+                        task.visual,
+                        `[[${notePath}]]`,
+                        `[Set Target URI](${uri})`
+                    ];
+                })
+            )
+        }   
 }
