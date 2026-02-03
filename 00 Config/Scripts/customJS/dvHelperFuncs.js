@@ -33,7 +33,7 @@ class dvHelperFuncs {
             .file
             .filter(p => notePaths.includes(p.path))
             .tasks
-            // .where(t => t.link.subpath == "Tasks")
+            .where(t => t.link.subpath == "Tasks")
             .where(t => !t.hasOwnProperty("parent"));
     }
 
@@ -167,11 +167,183 @@ class dvHelperFuncs {
     }
 
     // ============================================================================
+    // ADVANCED URI FUNCTIONS
+    // ============================================================================
+
+    /**
+     * Get vault name from app
+     */
+    getVaultName() {
+        return app.vault.getName();
+    }
+
+    /**
+     * Create URI to update frontmatter field
+     */
+    createFrontmatterUri(notePath, frontmatterKey, value) {
+        const vaultName = this.getVaultName();
+        const encodedVault = encodeURIComponent(vaultName);
+        const encodedPath = encodeURIComponent(notePath);
+        const encodedKeyPath = encodeURIComponent(([frontmatterKey]));
+        const encodedData = encodeURIComponent(JSON.stringify(value));
+
+        return `obsidian://advanced-uri?vault=${encodedVault}&filepath=${encodedPath}&frontmatterkey=${encodedKeyPath}&data=${encodedData}`;
+    }
+
+    /**
+     * Create URI to replace text in a file
+     */
+    createTextReplaceUri(notePath, searchText, replaceText) {
+        const vaultName = this.getVaultName();
+        const encodedVault = encodeURIComponent(vaultName);
+        const encodedPath = encodeURIComponent(notePath);
+        const encodedSearch = encodeURIComponent(searchText);
+        const encodedReplace = encodeURIComponent(replaceText);
+
+        return `obsidian://advanced-uri?vault=${encodedVault}&filepath=${encodedPath}&search=${encodedSearch}&replace=${encodedReplace}`;
+    }
+
+    /**
+     * Get luxon from dataview (helper for creating URIs without dv parameter)
+     */
+    getLuxon() {
+        // Access luxon from window.DataviewAPI if available
+        if (window.DataviewAPI && window.DataviewAPI.luxon) {
+            return window.DataviewAPI.luxon;
+        }
+        // Fallback - will be set in display functions
+        return this._luxon || { DateTime: { now: () => ({ toFormat: () => new Date().toISOString() }) } };
+    }
+
+    // ============================================================================
+    // COMPLETION URI FUNCTIONS
+    // ============================================================================
+
+    /**
+     * Create completion URI for Task (note file)
+     * Updates the 'completed' frontmatter field with current timestamp
+     */
+    createTaskCompletionUri(task) {
+        const { DateTime } = this.getLuxon();
+        const now = DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        return this.createFrontmatterUri(task.file.path, "completed", now);
+    }
+
+    /**
+     * Create completion URI for Action (checkbox)
+     * Replaces the checkbox line with checked version and completion date
+     */
+    createActionCompletionUri(action) {
+        const { DateTime } = this.getLuxon();
+        const today = DateTime.now().toFormat("yyyy-MM-dd");
+        
+        // Original text (unchecked)
+        const searchText = `- [ ] ${action.text}`;
+        
+        // New text (checked with completion date)
+        // Remove any existing date markers first
+        let cleanText = action.text
+            .replace(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})\s*/g, '')
+            .trim();
+        
+        const replaceText = `- [x] ${cleanText} ✅ ${today}`;
+        
+        return this.createTextReplaceUri(action.path, searchText, replaceText);
+    }
+
+    // ============================================================================
+    // SCHEDULING URI FUNCTIONS
+    // ============================================================================
+
+    /**
+     * Create scheduling URI for Task (note file)
+     * Updates the 'scheduled' frontmatter field with provided date
+     */
+    createTaskScheduleUri(task, scheduledDate) {
+        return this.createFrontmatterUri(task.file.path, "scheduled", scheduledDate);
+    }
+
+    /**
+     * Create scheduling URI for Action (checkbox)
+     * Adds or updates the schedule date marker in the checkbox text
+     */
+    createActionScheduleUri(action, scheduledDate) {
+        const searchText = `- [ ] ${action.text}`;
+        
+        // Remove any existing schedule markers
+        let cleanText = action.text
+            .replace(/([⌛⏳]) ?(\d{4}-\d{2}-\d{2})\s*/g, '')
+            .trim();
+        
+        // Add new schedule marker
+        const replaceText = `- [ ] ⏳ ${scheduledDate} ${cleanText}`;
+        
+        return this.createTextReplaceUri(action.path, searchText, replaceText);
+    }
+
+    /**
+     * Create quick schedule URIs for common timeframes
+     * Returns object with URIs for today, tomorrow, and next week
+     */
+    createQuickScheduleUris(item, isTask = true) {
+        const { DateTime } = this.getLuxon();
+        
+        const today = DateTime.now().toFormat("yyyy-MM-dd");
+        const tomorrow = DateTime.now().plus({ days: 1 }).toFormat("yyyy-MM-dd");
+        const nextWeek = DateTime.now().plus({ days: 7 }).toFormat("yyyy-MM-dd");
+        const nextMonth = DateTime.now().plus({ months: 1 }).toFormat("yyyy-MM-dd");
+        
+        if (isTask) {
+            return {
+                today: this.createTaskScheduleUri(item, today),
+                tomorrow: this.createTaskScheduleUri(item, tomorrow),
+                nextWeek: this.createTaskScheduleUri(item, nextWeek),
+                nextMonth: this.createTaskScheduleUri(item, nextMonth)
+            };
+        } else {
+            return {
+                today: this.createActionScheduleUri(item, today),
+                tomorrow: this.createActionScheduleUri(item, tomorrow),
+                nextWeek: this.createActionScheduleUri(item, nextWeek),
+                nextMonth: this.createActionScheduleUri(item, nextMonth)
+            };
+        }
+    }
+
+    /**
+     * Create reschedule URIs for already scheduled items
+     * Adds +1 day, +3 days, and +7 days options
+     */
+    createRescheduleUris(item, currentScheduledDate, isTask = true) {
+        const { DateTime } = this.getLuxon();
+        
+        const currentDate = DateTime.fromISO(currentScheduledDate);
+        const plusOneDay = currentDate.plus({ days: 1 }).toFormat("yyyy-MM-dd");
+        const plusThreeDays = currentDate.plus({ days: 3 }).toFormat("yyyy-MM-dd");
+        const plusSevenDays = currentDate.plus({ days: 7 }).toFormat("yyyy-MM-dd");
+        
+        if (isTask) {
+            return {
+                plusOne: this.createTaskScheduleUri(item, plusOneDay),
+                plusThree: this.createTaskScheduleUri(item, plusThreeDays),
+                plusSeven: this.createTaskScheduleUri(item, plusSevenDays)
+            };
+        } else {
+            return {
+                plusOne: this.createActionScheduleUri(item, plusOneDay),
+                plusThree: this.createActionScheduleUri(item, plusThreeDays),
+                plusSeven: this.createActionScheduleUri(item, plusSevenDays)
+            };
+        }
+    }
+
+    // ============================================================================
     // TABLE DISPLAY FUNCTIONS - ACTIONS
     // ============================================================================
 
     displayScheduledActionsTable(dv, title, actions, limit) {
-        const { DateTime } = dv.luxon;  
+        const { DateTime } = dv.luxon;
+        this._luxon = dv.luxon;  // Store for URI creation
         
         if (title) dv.header(3, title);
         
@@ -182,23 +354,35 @@ class dvHelperFuncs {
         if (filteredActions.length === 0) return;
         
         dv.table(
-            ["Action", "Scheduled", "Parent", "noteType", "noteBook", "Note", "Created"], 
+            ["✓", "📅", "Action", "Scheduled", "Parent", "noteType", "noteBook", "Note", "Created"], 
             filteredActions
-                .map(a => [
-                    a.visual,
-                    a.scheduledDate.toFormat("DD"),
-                    this.convertLinksToCommaSeparatedList(a.parent),
-                    a.noteType,
-                    a.noteBook,
-                    a.noteLink,
-                    DateTime.fromISO(a.created).toFormat("DD"),
-                ])
-                .limit(limit)
+                .map(a => {
+                    const reschedule = this.createRescheduleUris(
+                        a, 
+                        a.scheduledDate.toFormat("yyyy-MM-dd"), 
+                        false
+                    );
+                    const rescheduleLinks = `[+1](${reschedule.plusOne}) [+3](${reschedule.plusThree}) [+7](${reschedule.plusSeven})`;
+                    
+                    return [
+                        `[✓](${this.createActionCompletionUri(a)})`,
+                        rescheduleLinks,
+                        a.visual,
+                        a.scheduledDate.toFormat("DD"),
+                        this.convertLinksToCommaSeparatedList(a.parent),
+                        a.noteType,
+                        a.noteBook,
+                        a.noteLink,
+                        DateTime.fromISO(a.created).toFormat("DD"),
+                    ];
+                })
+                .slice(0, limit)
         );
     }
 
     displayUnscheduledActionsTable(dv, title, actions, limit) {
         const { DateTime } = dv.luxon;
+        this._luxon = dv.luxon;
         
         if (title) dv.header(3, title);
         
@@ -209,16 +393,23 @@ class dvHelperFuncs {
         if (filteredActions.length === 0) return;
         
         dv.table(
-            ["Action", "Notebook", "Project", "Note", "Created"], 
+            ["✓", "📅", "Action", "Notebook", "Project", "Note", "Created"], 
             filteredActions
-                .map(a => [
-                    a.visual,
-                    this.convertLinksToCommaSeparatedList(a.noteBook),
-                    this.convertLinksToCommaSeparatedList(a.parent),
-                    a.noteLink,
-                    DateTime.fromISO(a.created).toFormat("DD"),
-                ])
-                .limit(limit)
+                .map(a => {
+                    const schedule = this.createQuickScheduleUris(a, false);
+                    const scheduleLinks = `[T](${schedule.today}) [Tm](${schedule.tomorrow}) [W](${schedule.nextWeek}) [M](${schedule.nextMonth})`;
+                    
+                    return [
+                        `[✓](${this.createActionCompletionUri(a)})`,
+                        scheduleLinks,
+                        a.visual,
+                        this.convertLinksToCommaSeparatedList(a.noteBook),
+                        this.convertLinksToCommaSeparatedList(a.parent),
+                        a.noteLink,
+                        DateTime.fromISO(a.created).toFormat("DD"),
+                    ];
+                })
+                .slice(0, limit)
         );
     }
 
@@ -244,7 +435,7 @@ class dvHelperFuncs {
                     DateTime.fromISO(a.created).toFormat("DD"),
                     a.completedDate.toFormat("DD"),
                 ])
-                .limit(limit)
+                .slice(0, limit)
         );
     }
 
@@ -253,7 +444,8 @@ class dvHelperFuncs {
     // ============================================================================
 
     displayScheduledTasksTable(dv, title, tasks, limit) {
-        const { DateTime } = dv.luxon;  
+        const { DateTime } = dv.luxon;
+        this._luxon = dv.luxon;
         
         if (title) dv.header(3, title);
         
@@ -264,24 +456,36 @@ class dvHelperFuncs {
         if (filteredTasks.length === 0) return;
         
         dv.table(
-            ["Task", "Scheduled", "Status", "Priority", "Parent", "noteType", "noteBook", "Created"], 
+            ["✓", "📅", "Task", "Scheduled", "Status", "Priority", "Parent", "noteType", "noteBook", "Created"], 
             filteredTasks
-                .map(t => [
-                    t.visual,
-                    t.scheduledDate.toFormat("DD"),
-                    t.status || "",
-                    t.priority || "",
-                    this.convertLinksToCommaSeparatedList(t.parent),
-                    t.noteType,
-                    t.noteBook,
-                    DateTime.fromISO(t.created).toFormat("DD"),
-                ])
+                .map(t => {
+                    const reschedule = this.createRescheduleUris(
+                        t, 
+                        t.scheduledDate.toFormat("yyyy-MM-dd"), 
+                        true
+                    );
+                    const rescheduleLinks = `[+1](${reschedule.plusOne}) [+3](${reschedule.plusThree}) [+7](${reschedule.plusSeven})`;
+                    
+                    return [
+                        `[✓](${this.createTaskCompletionUri(t)})`,
+                        rescheduleLinks,
+                        t.visual,
+                        t.scheduledDate.toFormat("DD"),
+                        t.status || "",
+                        t.priority || "",
+                        this.convertLinksToCommaSeparatedList(t.parent),
+                        t.noteType,
+                        t.noteBook,
+                        DateTime.fromISO(t.created).toFormat("DD"),
+                    ];
+                })
                 .slice(0, limit)
         );
     }
 
     displayUnscheduledTasksTable(dv, title, tasks, limit) {
         const { DateTime } = dv.luxon;
+        this._luxon = dv.luxon;
         
         if (title) dv.header(3, title);
         
@@ -292,16 +496,23 @@ class dvHelperFuncs {
         if (filteredTasks.length === 0) return;
         
         dv.table(
-            ["Task", "Status", "Priority", "Notebook", "Project", "Created"], 
+            ["✓", "📅", "Task", "Status", "Priority", "Notebook", "Project", "Created"], 
             filteredTasks
-                .map(t => [
-                    t.file.link,
-                    t.status || "",
-                    t.priority || "",
-                    this.convertLinksToCommaSeparatedList(t.noteBook),
-                    this.convertLinksToCommaSeparatedList(t.parent),
-                    DateTime.fromISO(t.created).toFormat("DD"),
-                ])
+                .map(t => {
+                    const schedule = this.createQuickScheduleUris(t, true);
+                    const scheduleLinks = `[T](${schedule.today}) [Tm](${schedule.tomorrow}) [W](${schedule.nextWeek}) [M](${schedule.nextMonth})`;
+                    
+                    return [
+                        `[✓](${this.createTaskCompletionUri(t)})`,
+                        scheduleLinks,
+                        t.file.link,
+                        t.status || "",
+                        t.priority || "",
+                        this.convertLinksToCommaSeparatedList(t.noteBook),
+                        this.convertLinksToCommaSeparatedList(t.parent),
+                        DateTime.fromISO(t.created).toFormat("DD"),
+                    ];
+                })
                 .slice(0, limit)
         );
     }
@@ -383,47 +594,7 @@ class dvHelperFuncs {
         return linksArray.length > 0 ? linksArray.join(', ') : String(text);
     }
 
-    /**
-       * Create an Obsidian URI for modifying frontmatter of a specific note.
-       * @param {string} vaultName - The name of the Obsidian vault.
-       * @param {string} notePath - The relative path to the note within the vault.
-       * @param {Array<string>} frontmatterKeyPath - The key path in the frontmatter to modify.
-       * @param {any} value - The value to set for the specified frontmatter key.
-       * @returns {string} The Obsidian URI for the frontmatter modification.
-       */
-    
-    createObsidianUri(vaultName, notePath, frontmatterKeyPath, value) {
-          const encodedVault = encodeURIComponent(vaultName);
-          const encodedPath = encodeURIComponent(notePath);
-          const encodedKeyPath = encodeURIComponent(JSON.stringify(frontmatterKeyPath));
-          const encodedData = encodeURIComponent(JSON.stringify(value));
-
-          return `obsidian://advanced-uri?vault=${encodedVault}&filepath=${encodedPath}&frontmatterkey=${encodedKeyPath}&data=${encodedData}`;
+    isMobileDevice() {
+        return /Mobi|Android/i.test(navigator.userAgent);
     }
-
-    displayTasksWithUriTable(dv, title, tasks, limit) {
-            // Map table variables
-            dv.header(3, title);
-            // Ensure tasks is a plain array
-            const taskArray = Array.from(tasks);
-
-            const vaultName = "My Notes"; // Replace with your vault's name
-
-            return dv.table(
-                ["Task", "Note Link", "Modify Frontmatter"],
-                tasks.slice(0, limit).map(task => {
-                    const notePath = task.path;
-                    const frontmatterKeyPath = ["target_uri"];
-                    const value = "safd";
-
-                    const uri = this.createObsidianUri(vaultName, notePath, frontmatterKeyPath, value);
-
-                    return [
-                        task.visual,
-                        `[[${notePath}]]`,
-                        `[Set Target URI](${uri})`
-                    ];
-                })
-            )
-        }   
 }

@@ -9,7 +9,7 @@ modified: 2024-09-02T16:03:48Z
 cssclasses: []
 ---
 # Project Summary
-### Tasks
+
 ``` dataviewjs
     dv.view("00 Config/Scripts/Dataview/tasksGTD", {"target": dv.current().file.link})
 ```
