@@ -7,14 +7,21 @@ aliases:
   - Task
 folderNote: false
 dated: true
-status:
+manual_status:
+  - x
+  - "?"
+  - <
+  - ">"
+  - /
+  - +
+  - R
+  - "!"
+  - i
+  - B
 priority:
-due:
 scheduled:
 completed:
 timeEntries:
-embed:
-  - prompt
 ---
 # Notes
 # Actions

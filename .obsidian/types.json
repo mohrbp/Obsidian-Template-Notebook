@@ -62,6 +62,7 @@
     "timeEntries": "multitext",
     "embed": "multitext",
     "branchTemplate1": "text",
-    "leafFolder3": "multitext"
+    "leafFolder3": "multitext",
+    "manual_status": "multitext"
   }
 }
