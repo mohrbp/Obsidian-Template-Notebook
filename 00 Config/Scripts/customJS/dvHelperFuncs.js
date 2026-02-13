@@ -204,6 +204,28 @@ class dvHelperFuncs {
     }
 
     /**
+     * Create URI to run a Templater template
+     * Note: Requires the file path to the Templater script
+     */
+    createTemplaterUri(templatePath, targetFolder = "", fileName = "") {
+        const vaultName = this.getVaultName();
+        const encodedVault = encodeURIComponent(vaultName);
+        const encodedTemplate = encodeURIComponent(templatePath);
+        
+        let uri = `obsidian://advanced-uri?vault=${encodedVault}&filepath=${encodedTemplate}`;
+        
+        if (targetFolder) {
+            uri += `&folder=${encodeURIComponent(targetFolder)}`;
+        }
+        
+        if (fileName) {
+            uri += `&filename=${encodeURIComponent(fileName)}`;
+        }
+        
+        return uri;
+    }
+
+    /**
      * Get luxon from dataview (helper for creating URIs without dv parameter)
      */
     getLuxon() {
@@ -213,6 +235,71 @@ class dvHelperFuncs {
         }
         // Fallback - will be set in display functions
         return this._luxon || { DateTime: { now: () => ({ toFormat: () => new Date().toISOString() }) } };
+    }
+
+    // ============================================================================
+    // TASK TEMPLATE VALIDATION
+    // ============================================================================
+
+    /**
+     * Check if a note's noteType has Task Template in its leaf or branch templates
+     * Returns object with { canCreateTask: boolean, taskTemplateInfo: object }
+     */
+    checkCanCreateTask(dv, parentNotePath) {
+        const parentPage = dv.page(parentNotePath);
+        
+        if (!parentPage || !parentPage.noteType || !parentPage.noteType.path) {
+            return { canCreateTask: false, taskTemplateInfo: null };
+        }
+        
+        const parentNoteType = dv.page(parentPage.noteType.path);
+        if (!parentNoteType) {
+            return { canCreateTask: false, taskTemplateInfo: null };
+        }
+        
+        // Check all numbered leaf and branch templates for Task Template
+        let templateIndex = 1;
+        
+        // Check leaf templates
+        while (parentNoteType[`leafTemplate${templateIndex}`]) {
+            const template = parentNoteType[`leafTemplate${templateIndex}`];
+            if (template && template.path && template.path.toLowerCase().includes('task')) {
+                return {
+                    canCreateTask: true,
+                    taskTemplateInfo: {
+                        templatePath: template.path,
+                        templateDisplay: template.display || 'Task',
+                        fieldName: 'leafTemplate',
+                        index: templateIndex,
+                        folderField: `leafFolder${templateIndex}`,
+                        embedField: `leafEmbed${templateIndex}`
+                    }
+                };
+            }
+            templateIndex++;
+        }
+        
+        // Check branch templates
+        templateIndex = 1;
+        while (parentNoteType[`branchTemplate${templateIndex}`]) {
+            const template = parentNoteType[`branchTemplate${templateIndex}`];
+            if (template && template.path && template.path.toLowerCase().includes('task')) {
+                return {
+                    canCreateTask: true,
+                    taskTemplateInfo: {
+                        templatePath: template.path,
+                        templateDisplay: template.display || 'Task',
+                        fieldName: 'branchTemplate',
+                        index: templateIndex,
+                        folderField: `branchFolder${templateIndex}`,
+                        embedField: `branchEmbed${templateIndex}`
+                    }
+                };
+            }
+            templateIndex++;
+        }
+        
+        return { canCreateTask: false, taskTemplateInfo: null };
     }
 
     // ============================================================================
@@ -338,12 +425,57 @@ class dvHelperFuncs {
     }
 
     // ============================================================================
+    // ACTION-TO-TASK CONVERSION URI FUNCTIONS
+    // ============================================================================
+
+    /**
+     * Create link to open parent note for conversion
+     * Since we can't pass parameters via Advanced URI to Templater easily,
+     * we open the parent note where user can manually trigger conversion
+     */
+    createActionToTaskLink(dv, action) {
+        // Just return a link to open the note containing the action
+        // User will need to use a separate conversion command/template
+        const parentPath = action.path;
+        return `obsidian://open?vault=${encodeURIComponent(this.getVaultName())}&file=${encodeURIComponent(parentPath)}`;
+    }
+
+    /**
+     * Store action data for conversion
+     * This stores the action info so the Templater script can access it
+     */
+    storeActionForConversion(action) {
+        // Store in window object for Templater to access
+        window.pendingActionConversion = {
+            text: action.text,
+            path: action.path,
+            scheduled: action.scheduledDate ? action.scheduledDate.toFormat("yyyy-MM-dd") : ""
+        };
+    }
+
+    // ============================================================================
+    // TASK FORWARDING URI FUNCTIONS
+    // ============================================================================
+
+    /**
+     * Store task data for forwarding
+     * This stores the task info so the Templater script can access it
+     */
+    storeTaskForForwarding(task) {
+        window.pendingTaskForward = {
+            path: task.file.path,
+            currentParents: task.parent
+        };
+    }
+
+    // ============================================================================
     // TABLE DISPLAY FUNCTIONS - ACTIONS
     // ============================================================================
 
     displayScheduledActionsTable(dv, title, actions, limit) {
         const { DateTime } = dv.luxon;
-        this._luxon = dv.luxon;  // Store for URI creation
+        this._luxon = dv.luxon;
+        this._dv = dv;
         
         if (title) dv.header(3, title);
         
@@ -354,7 +486,7 @@ class dvHelperFuncs {
         if (filteredActions.length === 0) return;
         
         dv.table(
-            ["✓", "📅", "Action", "Scheduled", "Parent", "noteType", "noteBook", "Note", "Created"], 
+            ["✓", "📅", "📝", "Action", "Scheduled", "Parent", "noteType", "noteBook", "Note", "Created"], 
             filteredActions
                 .map(a => {
                     const reschedule = this.createRescheduleUris(
@@ -364,9 +496,17 @@ class dvHelperFuncs {
                     );
                     const rescheduleLinks = `[+1](${reschedule.plusOne}) [+3](${reschedule.plusThree}) [+7](${reschedule.plusSeven})`;
                     
+                    // Check if parent can create tasks
+                    const parentPath = a.path;
+                    const taskCheck = this.checkCanCreateTask(dv, parentPath);
+                    const conversionLink = taskCheck.canCreateTask 
+                        ? `[→T](${a.noteLink.path}#conversion-${a.line})`  // Link to note with anchor
+                        : "";
+                    
                     return [
                         `[✓](${this.createActionCompletionUri(a)})`,
                         rescheduleLinks,
+                        conversionLink,
                         a.visual,
                         a.scheduledDate.toFormat("DD"),
                         this.convertLinksToCommaSeparatedList(a.parent),
@@ -383,6 +523,7 @@ class dvHelperFuncs {
     displayUnscheduledActionsTable(dv, title, actions, limit) {
         const { DateTime } = dv.luxon;
         this._luxon = dv.luxon;
+        this._dv = dv;
         
         if (title) dv.header(3, title);
         
@@ -393,15 +534,23 @@ class dvHelperFuncs {
         if (filteredActions.length === 0) return;
         
         dv.table(
-            ["✓", "📅", "Action", "Notebook", "Project", "Note", "Created"], 
+            ["✓", "📅", "📝", "Action", "Notebook", "Project", "Note", "Created"], 
             filteredActions
                 .map(a => {
                     const schedule = this.createQuickScheduleUris(a, false);
                     const scheduleLinks = `[T](${schedule.today}) [Tm](${schedule.tomorrow}) [W](${schedule.nextWeek}) [M](${schedule.nextMonth})`;
                     
+                    // Check if parent can create tasks
+                    const parentPath = a.path;
+                    const taskCheck = this.checkCanCreateTask(dv, parentPath);
+                    const conversionLink = taskCheck.canCreateTask 
+                        ? `[→T](${a.noteLink.path}#conversion-${a.line})`
+                        : "";
+                    
                     return [
                         `[✓](${this.createActionCompletionUri(a)})`,
                         scheduleLinks,
+                        conversionLink,
                         a.visual,
                         this.convertLinksToCommaSeparatedList(a.noteBook),
                         this.convertLinksToCommaSeparatedList(a.parent),
@@ -446,6 +595,7 @@ class dvHelperFuncs {
     displayScheduledTasksTable(dv, title, tasks, limit) {
         const { DateTime } = dv.luxon;
         this._luxon = dv.luxon;
+        this._dv = dv;
         
         if (title) dv.header(3, title);
         
@@ -456,7 +606,7 @@ class dvHelperFuncs {
         if (filteredTasks.length === 0) return;
         
         dv.table(
-            ["✓", "📅", "Task", "Scheduled", "Status", "Priority", "Parent", "noteType", "noteBook", "Created"], 
+            ["✓", "📅", "➡️", "Task", "Scheduled", "Status", "Priority", "Parent", "noteType", "noteBook", "Created"], 
             filteredTasks
                 .map(t => {
                     const reschedule = this.createRescheduleUris(
@@ -466,9 +616,13 @@ class dvHelperFuncs {
                     );
                     const rescheduleLinks = `[+1](${reschedule.plusOne}) [+3](${reschedule.plusThree}) [+7](${reschedule.plusSeven})`;
                     
+                    // Link to open task note with forwarding context
+                    const forwardLink = `[→](${t.file.path}#forward)`;
+                    
                     return [
                         `[✓](${this.createTaskCompletionUri(t)})`,
                         rescheduleLinks,
+                        forwardLink,
                         t.visual,
                         t.scheduledDate.toFormat("DD"),
                         t.status || "",
@@ -486,6 +640,7 @@ class dvHelperFuncs {
     displayUnscheduledTasksTable(dv, title, tasks, limit) {
         const { DateTime } = dv.luxon;
         this._luxon = dv.luxon;
+        this._dv = dv;
         
         if (title) dv.header(3, title);
         
@@ -496,15 +651,18 @@ class dvHelperFuncs {
         if (filteredTasks.length === 0) return;
         
         dv.table(
-            ["✓", "📅", "Task", "Status", "Priority", "Notebook", "Project", "Created"], 
+            ["✓", "📅", "➡️", "Task", "Status", "Priority", "Notebook", "Project", "Created"], 
             filteredTasks
                 .map(t => {
                     const schedule = this.createQuickScheduleUris(t, true);
                     const scheduleLinks = `[T](${schedule.today}) [Tm](${schedule.tomorrow}) [W](${schedule.nextWeek}) [M](${schedule.nextMonth})`;
                     
+                    const forwardLink = `[→](${t.file.path}#forward)`;
+                    
                     return [
                         `[✓](${this.createTaskCompletionUri(t)})`,
                         scheduleLinks,
+                        forwardLink,
                         t.file.link,
                         t.status || "",
                         t.priority || "",
